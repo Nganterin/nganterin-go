@@ -29,7 +29,12 @@ func (s *compServices) RegisterUserCredential(data dto.User) error {
 		CompleteAddress: data.CompleteAddress,
 	}
 
-	_, err = s.repo.RegisterUserCredential(user_data)
+	user_id, err := s.repo.RegisterUserCredential(user_data)
+	if err != nil {
+		return err
+	}
+
+	err = s.GenerateVerificationEmail(*user_id)
 	if err != nil {
 		return err
 	}

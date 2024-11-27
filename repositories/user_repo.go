@@ -2,20 +2,27 @@ package repositories
 
 import (
 	"errors"
+	"log"
 	"nganterin-go/models"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
-func (r *compRepository) RegisterUserCredential(data models.Users) (string, error) {
+func (r *compRepository) RegisterUserCredential(data models.Users) (*string, error) {
+	data.ID = uuid.NewString()
+
 	result := r.DB.Create(&data)
 	if result.Error != nil {
 		if strings.Contains(result.Error.Error(), "duplicate key") {
-			return "", errors.New("409")
+			return nil, errors.New("409")
 		}
-		return "", result.Error
+		return nil, result.Error
 	}
 
-	return data.ID, nil
+	log.Println("INSERTED USER ID: ", data.ID)
+
+	return &data.ID, nil
 }
 
 func (r *compRepository) GetUserDetailsByID(id string) (*models.Users, error) {
@@ -37,4 +44,3 @@ func (r *compRepository) GetUserDetailsByEmail(email string) (*models.Users, err
 
 	return &user_data, nil
 }
-

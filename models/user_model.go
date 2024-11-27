@@ -8,7 +8,7 @@ import (
 
 type Users struct {
 	gorm.Model
-	ID              string     `gorm:"type:uniqueidentifier;default:NEWID()"`
+	ID              string     `gorm:"primaryKey"`
 	Name            string     `gorm:"not null"`
 	Email           string     `gorm:"unique;not null"`
 	HashedPassword  string     `gorm:"not null"`

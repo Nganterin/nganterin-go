@@ -8,10 +8,12 @@ import (
 )
 
 type CompRepository interface {
-	RegisterUserCredential(data models.Users) (string, error)
-	
+	RegisterUserCredential(data models.Users) (*string, error)
+
 	GetUserDetailsByEmail(email string) (*models.Users, error)
 	GetUserDetailsByID(id string) (*models.Users, error)
+
+	RegisterEmailVerificationToken(data models.Users) (*string, error)
 }
 
 type compRepository struct {
