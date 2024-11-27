@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"nganterin-go/dto"
-	"nganterin-go/models"
 	"net/http"
 	"net/url"
+	"nganterin-go/dto"
+	"nganterin-go/models"
 	"os"
 	"strings"
 
@@ -53,8 +53,14 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		user := dto.User{
-			ID:        claims["id"].(string),
-			Email:     claims["email"].(string),
+			ID:              claims["id"].(string),
+			Email:           claims["email"].(string),
+			PhoneNumber:     claims["phone_number"].(string),
+			Country:         claims["country"].(string),
+			Province:        claims["province"].(string),
+			City:            claims["city"].(string),
+			ZipCode:         claims["zip_code"].(string),
+			CompleteAddress: claims["complete_address"].(string),
 		}
 
 		c.Set("user", user)
