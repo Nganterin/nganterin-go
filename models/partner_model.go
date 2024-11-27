@@ -8,7 +8,7 @@ import (
 
 type Partners struct {
 	gorm.Model
-	ID              string     `gorm:"type:uniqueidentifier;default:NEWID()"`
+	ID              string     `gorm:"primaryKey"`
 	Name            string     `gorm:"not null"`
 	Email           string     `gorm:"unique;not null"`
 	HashedPassword  string     `gorm:"not null"`
@@ -20,8 +20,8 @@ type Partners struct {
 	CompanyAddress  string     `gorm:"not null"`
 	LegalityFile    string     `gorm:"not null"`
 	MOUFile         string     `gorm:"not null"`
-	DataVerifiedAt  *time.Time `gorm:"null;default:null"`
-	CreatedAt       time.Time  `gorm:"null"`
-	UpdatedAt       time.Time  `gorm:"null"`
-	DeletedAt       *time.Time `gorm:"null;default:null"`
+	DataVerifiedAt  *time.Time `gorm:"default:null"`
+	CreatedAt       time.Time 
+	UpdatedAt       time.Time 
+	DeletedAt       *time.Time `gorm:"default:null"`
 }

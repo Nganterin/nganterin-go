@@ -19,7 +19,7 @@ type Users struct {
 	City            string     `gorm:"not null"`
 	ZipCode         string     `gorm:"not null"`
 	CompleteAddress string     `gorm:"not null"`
-	CreatedAt       time.Time  `gorm:"null"`
-	UpdatedAt       time.Time  `gorm:"null"`
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 	DeletedAt       *time.Time `gorm:"null;default:null"`
 }

@@ -13,6 +13,7 @@ func main() {
 		&models.Users{},
 		&models.Partners{},
 		&models.Tokens{},
+		&models.Hotels{},
 	)
 	if err != nil {
 		panic("failed to migrate database: " + err.Error())
