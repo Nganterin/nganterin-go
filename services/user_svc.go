@@ -52,6 +52,10 @@ func (s *compServices) LoginUserCredentials(email string, password string) (*str
 		return nil, errors.New("401")
 	}
 
+	if data.EmailVerifiedAt == nil {
+		return nil, errors.New("403")
+	}
+
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		panic("JWT_SECRET not set")
@@ -63,6 +67,12 @@ func (s *compServices) LoginUserCredentials(email string, password string) (*str
 	claims["id"] = data.ID
 	claims["email"] = data.Email
 	claims["name"] = data.Name
+	claims["phone_number"] = data.PhoneNumber
+	claims["country"] = data.Country
+	claims["province"] = data.Province
+	claims["city"] = data.City
+	claims["zip_code"] = data.ZipCode
+	claims["complete_address"] = data.CompleteAddress
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
