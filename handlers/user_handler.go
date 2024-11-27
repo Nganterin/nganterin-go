@@ -47,7 +47,7 @@ func (h *compHandlers) LoginUserCredentials(c *gin.Context) {
 	token, err := h.service.LoginUserCredentials(data.Email, data.Password)
 	if err != nil {
 		if err.Error() == "403" {
-			c.JSON(http.StatusForbidden, dto.Response{Status: http.StatusForbidden, Error: "please log in using google"})
+			c.JSON(http.StatusForbidden, dto.Response{Status: http.StatusForbidden, Error: "email not verified, check your email include spam folder"})
 			return
 		} else if err.Error() == "401" {
 			c.JSON(http.StatusUnauthorized, dto.Response{Status: http.StatusUnauthorized, Error: "invalid email or password"})
