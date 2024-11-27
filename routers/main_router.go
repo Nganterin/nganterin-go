@@ -23,6 +23,7 @@ func CompRouter(api *gin.RouterGroup) {
 	{
 		authRoute.POST("/register", compHandler.RegisterUserCredential)
 		authRoute.POST("/login", compHandler.LoginUserCredentials)
+		authRoute.POST("/verify", compHandler.VerifyUserEmail)
 	}
 
 	authRoute.Use(middleware.AuthMiddleware())

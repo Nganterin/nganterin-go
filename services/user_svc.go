@@ -84,3 +84,7 @@ func (s *compServices) LoginUserCredentials(email string, password string) (*str
 
 	return &tokenString, nil
 }
+
+func (s *compServices) VerifyUserEmail(token string) error {
+	return s.repo.VerifyUserEmail(token)
+}

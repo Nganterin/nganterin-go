@@ -10,6 +10,7 @@ type CompService interface{
 	LoginUserCredentials(email string, password string) (*string, error)
 
 	SendEmail(data dto.Email) error
+	VerifyUserEmail(token string) error
 }
 
 type compServices struct {

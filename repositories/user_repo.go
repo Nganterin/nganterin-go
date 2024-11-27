@@ -5,8 +5,10 @@ import (
 	"log"
 	"nganterin-go/models"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func (r *compRepository) RegisterUserCredential(data models.Users) (*string, error) {
@@ -43,4 +45,32 @@ func (r *compRepository) GetUserDetailsByEmail(email string) (*models.Users, err
 	}
 
 	return &user_data, nil
+}
+
+func (r *compRepository) VerifyUserEmail(token string) error {
+	var token_data models.Tokens
+	result := r.DB.Where("token = ?", token).First(&token_data)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return errors.New("404")
+		}
+		return result.Error
+	}
+
+	user_model := models.Users{
+		ID: token_data.UserID,
+	}
+
+	result = r.DB.Delete(&token_data)
+	if result.Error != nil {
+		return result.Error
+	}
+
+
+	result = r.DB.Model(&user_model).Select("email_verified_at").Updates(map[string]interface{}{"email_verified_at": time.Now()})
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

@@ -14,6 +14,7 @@ type CompRepository interface {
 	GetUserDetailsByID(id string) (*models.Users, error)
 
 	RegisterEmailVerificationToken(data models.Users) (*string, error)
+	VerifyUserEmail(token string) error
 }
 
 type compRepository struct {
