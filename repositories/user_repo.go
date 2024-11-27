@@ -18,7 +18,17 @@ func (r *compRepository) RegisterUserCredential(data models.Users) (string, erro
 	return data.ID, nil
 }
 
-func (r *compRepository) LoginUserCredentials(email string) (*models.Users, error) {
+func (r *compRepository) GetUserDetailsByID(id string) (*models.Users, error) {
+	var user_data models.Users
+	result := r.DB.Where("id = ?", id).First(&user_data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &user_data, nil
+}
+
+func (r *compRepository) GetUserDetailsByEmail(email string) (*models.Users, error) {
 	var user_data models.Users
 	result := r.DB.Where("email = ?", email).First(&user_data)
 	if result.Error != nil {
@@ -27,3 +37,4 @@ func (r *compRepository) LoginUserCredentials(email string) (*models.Users, erro
 
 	return &user_data, nil
 }
+

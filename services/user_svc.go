@@ -38,7 +38,7 @@ func (s *compServices) RegisterUserCredential(data dto.User) error {
 }
 
 func (s *compServices) LoginUserCredentials(email string, password string) (*string, error) {
-	data, err := s.repo.LoginUserCredentials(email)
+	data, err := s.repo.GetUserDetailsByEmail(email)
 	if err != nil {
 		return nil, errors.New("404")
 	}

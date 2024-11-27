@@ -9,7 +9,9 @@ import (
 
 type CompRepository interface {
 	RegisterUserCredential(data models.Users) (string, error)
-	LoginUserCredentials(email string) (*models.Users, error)
+	
+	GetUserDetailsByEmail(email string) (*models.Users, error)
+	GetUserDetailsByID(id string) (*models.Users, error)
 }
 
 type compRepository struct {
