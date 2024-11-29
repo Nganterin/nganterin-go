@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"nganterin-go/dto"
+	"nganterin-go/helpers"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,18 @@ func (h *compHandlers) PartnerRegister(c *gin.Context) {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: "all fields can't be null"})
+		return
+	}
+
+	err = helpers.ValidateURL(data.LegalityFile)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: "invalid url for legality_file"})
+		return
+	}
+
+	err = helpers.ValidateURL(data.MOUFile)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: "invalid url for mou_file"})
 		return
 	}
 
