@@ -21,6 +21,7 @@ type Env struct {
 	SMTP_EMAIL         string
 	SMTP_PASSWORD      string
 	FRONT_END_BASE_URL string
+	DASHBOARD_BASE_URL string
 }
 
 func InitEnvCheck() {
@@ -38,6 +39,7 @@ func InitEnvCheck() {
 		SMTP_EMAIL:         os.Getenv("SMTP_EMAIL"),
 		SMTP_PASSWORD:      os.Getenv("SMTP_PASSWORD"),
 		FRONT_END_BASE_URL: os.Getenv("FRONT_END_BASE_URL"),
+		DASHBOARD_BASE_URL: os.Getenv("DASHBOARD_BASE_URL"),
 	}
 
 	isEmpty, emptyFields := checkEmptyFields(environment)

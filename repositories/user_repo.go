@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"errors"
-	"log"
 	"nganterin-go/models"
 	"strings"
 	"time"
@@ -21,8 +20,6 @@ func (r *compRepository) RegisterUserCredential(data models.Users) (*string, err
 		}
 		return nil, result.Error
 	}
-
-	log.Println("INSERTED USER ID: ", data.ID)
 
 	return &data.ID, nil
 }

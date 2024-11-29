@@ -11,6 +11,8 @@ type CompService interface{
 
 	SendEmail(data dto.Email) error
 	VerifyUserEmail(token string) error
+
+	RegisterPartner(data dto.Partner) error 
 }
 
 type compServices struct {

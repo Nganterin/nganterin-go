@@ -31,4 +31,11 @@ func CompRouter(api *gin.RouterGroup) {
 		authRoute.GET("/auth-test", compHandler.AuthTest)
 	}
 
+	partnerRoute := api.Group("/partner")
+	{
+		partnerAuthRoute := partnerRoute.Group("/auth")
+		{
+			partnerAuthRoute.POST("/register", compHandler.PartnerRegister)
+		}
+	}
 }

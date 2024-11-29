@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"nganterin-go/dto"
 	"nganterin-go/helpers"
 	"nganterin-go/models"
@@ -34,10 +35,12 @@ func (s *compServices) RegisterUserCredential(data dto.User) error {
 		return err
 	}
 
-	err = s.GenerateVerificationEmail(*user_id)
-	if err != nil {
-		return err
-	}
+	go func() {
+		err = s.GenerateVerificationEmail(*user_id)
+		if err != nil {
+			fmt.Printf("Error generating verification email: %v\n", err)
+		}
+	}()
 
 	return nil
 }
