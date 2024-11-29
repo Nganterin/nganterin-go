@@ -61,7 +61,7 @@ func (h *compHandlers) LoginUserCredentials(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "login successfully", Body: token})
+	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "login successfully", Data: token})
 }
 
 func (h *compHandlers) VerifyUserEmail(c *gin.Context) {

@@ -11,9 +11,7 @@ func main() {
 	err := db.AutoMigrate(
 		&models.Client{},
 		&models.Users{},
-		&models.Partners{},
 		&models.Tokens{},
-		&models.Hotels{},
 	)
 	if err != nil {
 		panic("failed to migrate database: " + err.Error())
