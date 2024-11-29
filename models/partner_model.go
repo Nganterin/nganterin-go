@@ -12,7 +12,7 @@ type Partners struct {
 	Name            string     `gorm:"not null"`
 	Email           string     `gorm:"unique;not null"`
 	HashedPassword  string     `gorm:"not null"`
-	EmailVerifiedAt *time.Time `gorm:"null;default:null"`
+	EmailVerifiedAt *time.Time `gorm:"default:null"`
 	CompanyName     string     `gorm:"unique;not null"`
 	Owner           string     `gorm:"not null"`
 	CompanyField    string     `gorm:"not null"`
