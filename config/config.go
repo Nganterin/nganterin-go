@@ -31,7 +31,7 @@ func InitDB() *gorm.DB {
 
 	dbURI := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 
-	db, err := gorm.Open(postgres.Open(dbURI + "?prefer_simple_protocol=true"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dbURI), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
