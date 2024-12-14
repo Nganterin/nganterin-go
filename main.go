@@ -29,7 +29,7 @@ func main() {
 	config.AllowCredentials = true
 	r.Use(cors.New(config))
 
-	api := r.Group("/v1")
+	api := r.Group("/api")
 	routers.CompRouter(api)
 
 	if environment == "production" {

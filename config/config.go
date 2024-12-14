@@ -36,5 +36,8 @@ func InitDB() *gorm.DB {
 		log.Fatal(err)
 	}
 
+	sqlDB, _ := db.DB()
+	sqlDB.Close()
+
 	return db
 }
