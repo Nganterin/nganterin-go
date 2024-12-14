@@ -22,4 +22,5 @@ type Users struct {
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	DeletedAt       *time.Time `gorm:"null;default:null"`
+	Tokens []Tokens `gorm:"foreignKey:UserID;references:ID"`
 }

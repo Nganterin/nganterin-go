@@ -24,4 +24,5 @@ type Partners struct {
 	CreatedAt       time.Time 
 	UpdatedAt       time.Time 
 	DeletedAt       *time.Time `gorm:"default:null"`
+	Hotels []Hotels `gorm:"foreignKey:PartnerID;references:ID"`
 }

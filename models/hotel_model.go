@@ -1,9 +1,29 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Hotels struct {
-	ID             string `gorm:"primaryKey"`
+	gorm.Model
+
+	ID             string           `gorm:"primaryKey"`
+	PartnerID      string           `gorm:"not null"`
+	Name           string           `gorm:"not null"`
+	Description    string           `gorm:"not null"`
+	HotelDetails   []HotelDetails   `gorm:"foreignKey:HotelID;references:ID"`
+	HotelsLocation []HotelsLocation `gorm:"foreignKey:HotelID;references:ID"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	DeletedAt      *time.Time `gorm:"null;default:null"`
+}
+
+type HotelDetails struct {
+	gorm.Model
+
+	HotelID        string `gorm:"not null"`
 	Type           string `gorm:"not null"`
 	MaxVisitor     int    `gorm:"not null"`
 	BedType        string `gorm:"not null"`
@@ -12,7 +32,23 @@ type Hotels struct {
 	OvernightPrice int64  `gorm:"not null"`
 	TotalRoom      int    `gorm:"not null"`
 	TotalBooked    int    `gorm:"not null"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-	DeletedAt      *time.Time `gorm:"null;default:null"`
+}
+
+type HotelsLocation struct {
+	gorm.Model
+
+	HotelID         string `gorm:"not null"`
+	Country         string `gorm:"not null"`
+	State           string `gorm:"not null"`
+	City            string `gorm:"not null"`
+	ZipCode         string `gorm:"not null"`
+	CompleteAddress string `gorm:"not null"`
+	Gmaps           string `gorm:"not null"`
+}
+
+type HotelPhotos struct {
+	gorm.Model
+
+	HotelID string `gorm:"not null"`
+	URL     string `gorm:"not null"`
 }
