@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *compHandlers) PartnerRegister(c *gin.Context) {
+func (h *compHandlers) RegisterPartner(c *gin.Context) {
 	var data dto.Partner
 
 	err := c.ShouldBindJSON(&data)
