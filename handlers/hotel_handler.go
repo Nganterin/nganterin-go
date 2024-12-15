@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"nganterin-go/dto"
+	"nganterin-go/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,10 @@ func (h *compHandlers) RegisterHotel(c *gin.Context) {
 		})
 		return
 	}
+
+	partnerData := helpers.GetPartnerData(c)
+
+	hotelInput.PartnerID = partnerData.ID
 
 	hotelID, err := h.service.RegisterHotel(hotelInput)
 	if err != nil {
