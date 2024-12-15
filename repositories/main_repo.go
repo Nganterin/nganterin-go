@@ -19,6 +19,8 @@ type CompRepository interface {
 	GetPartnerDetailsByID(id string) (*models.Partners, error)
 
 	RegisterPartnerEmailVerificationToken(data models.Partners) (*string, error)
+
+	RegisterHotel(data models.Hotels) (*string, error)
 }
 
 type compRepository struct {

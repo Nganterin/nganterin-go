@@ -1,25 +1,14 @@
-package hotels
+package handlers
 
 import (
 	"net/http"
 
 	"nganterin-go/dto"
-	"nganterin-go/services/hotels"
 
 	"github.com/gin-gonic/gin"
 )
 
-type HotelHandler struct {
-	service hotels.HotelService
-}
-
-func NewHotelHandler(s hotels.HotelService) *HotelHandler {
-	return &HotelHandler{
-		service: s,
-	}
-}
-
-func (h *HotelHandler) CreateHotel(c *gin.Context) {
+func (h *compHandlers) RegisterHotel(c *gin.Context) {
 	var hotelInput dto.HotelInputDTO
 
 	if err := c.ShouldBindJSON(&hotelInput); err != nil {
@@ -31,7 +20,7 @@ func (h *HotelHandler) CreateHotel(c *gin.Context) {
 		return
 	}
 
-	hotelID, err := h.service.CreateHotel(hotelInput)
+	hotelID, err := h.service.RegisterHotel(hotelInput)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.Response{
 			Status:  http.StatusInternalServerError,
