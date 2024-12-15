@@ -36,6 +36,16 @@ func (s *compServices) SearchHotels(keyword string) (*[]dto.HotelOutputDTO, erro
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		result = append(result, output)
 	}
-	
+
+	return &result, nil
+}
+
+func (s *compServices) GetHotelByID(id string) (*dto.HotelOutputDTO, error) {
+	data, err := s.repo.GetHotelByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	result := mapper.MapHotelModelToOutput(*data)
 	return &result, nil
 }

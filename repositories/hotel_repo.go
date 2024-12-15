@@ -58,3 +58,18 @@ func (r *compRepository) SearchHotels(keyword string) ([]models.Hotels, error) {
 
 	return data, nil
 }
+
+func (r *compRepository) GetHotelByID(id string) (*models.Hotels, error) {
+	var data models.Hotels
+	result := r.DB.
+		Preload("HotelDetails").
+		Preload("HotelsLocation").
+		Preload("HotelPhotos").
+		Where("id = ?", id).
+		First(&data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &data, nil
+}
