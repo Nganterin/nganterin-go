@@ -21,3 +21,19 @@ func (r *compRepository) RegisterHotel(data models.Hotels) (*string, error) {
 
 	return &data.ID, nil
 }
+
+func (r *compRepository) GetAllHotels() ([]models.Hotels, error) {
+	var data []models.Hotels
+
+	result := r.DB.
+		Preload("HotelDetails").
+		Preload("HotelsLocation").
+		Preload("HotelPhotos").
+		Find(&data)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return data, nil
+}

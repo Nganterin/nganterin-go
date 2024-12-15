@@ -1,8 +1,5 @@
 package dto
 
-import "time"
-
-
 type HotelOutputDTO struct {
 	ID             string                 `json:"id"`
 	PartnerID      string                 `json:"partner_id"`
@@ -11,8 +8,6 @@ type HotelOutputDTO struct {
 	HotelDetails   []HotelDetailOutput    `json:"hotel_details"`
 	HotelsLocation []HotelsLocationOutput `json:"hotels_location"`
 	HotelPhotos    []HotelPhotoOutput     `json:"hotel_photos"`
-	CreatedAt      time.Time              `json:"created_at"`
-	UpdatedAt      time.Time              `json:"updated_at"`
 }
 
 type HotelDetailOutput struct {

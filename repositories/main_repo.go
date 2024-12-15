@@ -21,6 +21,7 @@ type CompRepository interface {
 	RegisterPartnerEmailVerificationToken(data models.Partners) (*string, error)
 
 	RegisterHotel(data models.Hotels) (*string, error)
+	GetAllHotels() ([]models.Hotels, error)
 }
 
 type compRepository struct {

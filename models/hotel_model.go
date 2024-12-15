@@ -24,6 +24,7 @@ type Hotels struct {
 type HotelDetails struct {
 	gorm.Model
 
+	ID             uint   `gorm:"primaryKey"`
 	HotelID        string `gorm:"not null"`
 	Type           string `gorm:"not null"`
 	MaxVisitor     int    `gorm:"not null"`
@@ -38,6 +39,7 @@ type HotelDetails struct {
 type HotelsLocation struct {
 	gorm.Model
 
+	ID              uint   `gorm:"primaryKey"`
 	HotelID         string `gorm:"not null"`
 	Country         string `gorm:"not null"`
 	State           string `gorm:"not null"`
@@ -50,6 +52,7 @@ type HotelsLocation struct {
 type HotelPhotos struct {
 	gorm.Model
 
+	ID      uint   `gorm:"primaryKey"`
 	HotelID string `gorm:"not null"`
 	URL     string `gorm:"not null"`
 }

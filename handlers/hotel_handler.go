@@ -36,3 +36,19 @@ func (h *compHandlers) RegisterHotel(c *gin.Context) {
 		Data:    hotelID,
 	})
 }
+
+func (h *compHandlers) GetAllHotels(c *gin.Context) {
+	result, err := h.service.GetAllHotels()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Status:  http.StatusInternalServerError,
+			Error:   err.Error(),
+		})
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "Get all hotels successfully",
+		Data:    result,
+	})
+}

@@ -15,6 +15,7 @@ type CompService interface {
 	RegisterPartner(data dto.Partner) error
 
 	RegisterHotel(data dto.HotelInputDTO) (*string, error)
+	GetAllHotels() (*[]dto.HotelOutputDTO, error)
 }
 
 type compServices struct {
