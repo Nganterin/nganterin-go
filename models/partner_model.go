@@ -21,8 +21,8 @@ type Partners struct {
 	LegalityFile    string     `gorm:"not null"`
 	MOUFile         string     `gorm:"not null"`
 	DataVerifiedAt  *time.Time `gorm:"default:null"`
-	CreatedAt       time.Time 
-	UpdatedAt       time.Time 
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 	DeletedAt       *time.Time `gorm:"default:null"`
-	Hotels []Hotels `gorm:"foreignKey:PartnerID;references:ID"`
+	Hotels          []Hotels   `gorm:"foreignKey:PartnerID;references:ID"`
 }

@@ -15,6 +15,7 @@ type Hotels struct {
 	Description    string           `gorm:"not null"`
 	HotelDetails   []HotelDetails   `gorm:"foreignKey:HotelID;references:ID"`
 	HotelsLocation []HotelsLocation `gorm:"foreignKey:HotelID;references:ID"`
+	HotelPhotos    []HotelPhotos    `gorm:"foreignKey:HotelID;references:ID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	DeletedAt      *time.Time `gorm:"null;default:null"`

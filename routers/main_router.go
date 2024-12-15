@@ -1,21 +1,30 @@
 package routers
 
 import (
+	"github.com/gin-gonic/gin"
 	"nganterin-go/config"
 	"nganterin-go/handlers"
 	"nganterin-go/middleware"
 	"nganterin-go/repositories"
 	"nganterin-go/services"
-
-	"github.com/gin-gonic/gin"
+	hotelHandlers "nganterin-go/handlers/hotels"
+	hotelRepos "nganterin-go/repositories/hotels"
+	hotelServices "nganterin-go/services/hotels"
 )
 
 func CompRouter(api *gin.RouterGroup) {
-	api.Use(middleware.ClientTracker(config.InitDB()))
+	db := config.InitDB()
 
-	compRepository := repositories.NewComponentRepository(config.InitDB())
+	api.Use(middleware.ClientTracker(db))
+
+	compRepository := repositories.NewComponentRepository(db)
+	hotelRepository := hotelRepos.NewHotelRepository(db)
+
 	compService := services.NewService(compRepository)
+	hotelService := hotelServices.NewHotelService(hotelRepository)
+
 	compHandler := handlers.NewCompHandlers(compService)
+	hotelHandler := hotelHandlers.NewHotelHandler(hotelService)
 
 	api.GET("/ping", compHandler.Ping)
 
@@ -37,5 +46,10 @@ func CompRouter(api *gin.RouterGroup) {
 		{
 			partnerAuthRoute.POST("/register", compHandler.RegisterPartner)
 		}
+	}
+
+	hotelRoute := api.Group("/hotel")
+	{
+		hotelRoute.POST("/register", hotelHandler.CreateHotel)
 	}
 }
