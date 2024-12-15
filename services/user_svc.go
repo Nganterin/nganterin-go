@@ -70,6 +70,7 @@ func (s *compServices) LoginUserCredentials(email string, password string) (*str
 	claims["id"] = data.ID
 	claims["email"] = data.Email
 	claims["name"] = data.Name
+	claims["email_verified_at"] = data.EmailVerifiedAt
 	claims["phone_number"] = data.PhoneNumber
 	claims["country"] = data.Country
 	claims["province"] = data.Province

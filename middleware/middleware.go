@@ -54,7 +54,9 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		user := dto.User{
 			ID:              claims["id"].(string),
+			Name:            claims["name"].(string),
 			Email:           claims["email"].(string),
+			EmailVerifiedAt: claims["email_verified_at"].(string),
 			PhoneNumber:     claims["phone_number"].(string),
 			Country:         claims["country"].(string),
 			Province:        claims["province"].(string),
@@ -107,8 +109,10 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if claims["is_partner"] != true {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+		isPartner, ok := claims["is_partner"].(bool)
+		if !ok || !isPartner {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Access restricted to partners"})
+			return
 		}
 
 		partner := dto.Partner{

@@ -28,11 +28,11 @@ func CompRouter(api *gin.RouterGroup) {
 		authRoute.POST("/register", compHandler.RegisterUserCredential)
 		authRoute.POST("/login", compHandler.LoginUserCredentials)
 		authRoute.POST("/verify", compHandler.VerifyUserEmail)
-	}
 
-	authRoute.Use(middleware.AuthMiddleware())
-	{
-		authRoute.GET("/auth-test", compHandler.AuthTest)
+		authRoute.Use(middleware.AuthMiddleware())
+		{
+			authRoute.GET("/auth-test", compHandler.AuthTest)
+		}
 	}
 
 	partnerRoute := api.Group("/partner")
@@ -45,7 +45,11 @@ func CompRouter(api *gin.RouterGroup) {
 
 	hotelRoute := api.Group("/hotel")
 	{
-		hotelRoute.POST("/register", compHandler.RegisterHotel)
 		hotelRoute.GET("/getall", compHandler.GetAllHotels)
+
+		hotelRoute.Use(middleware.PartnerAuthMiddleware())
+		{
+			hotelRoute.POST("/register", compHandler.RegisterHotel)
+		}
 	}
 }
