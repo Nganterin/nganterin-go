@@ -22,6 +22,7 @@ type CompRepository interface {
 
 	RegisterHotel(data models.Hotels) (*string, error)
 	GetAllHotels() ([]models.Hotels, error)
+	SearchHotels(keyword string) ([]models.Hotels, error)
 }
 
 type compRepository struct {

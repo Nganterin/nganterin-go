@@ -16,6 +16,7 @@ type CompService interface {
 
 	RegisterHotel(data dto.HotelInputDTO) (*string, error)
 	GetAllHotels() (*[]dto.HotelOutputDTO, error)
+	SearchHotels(keyword string) (*[]dto.HotelOutputDTO, error)
 }
 
 type compServices struct {

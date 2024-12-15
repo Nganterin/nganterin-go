@@ -46,14 +46,33 @@ func (h *compHandlers) GetAllHotels(c *gin.Context) {
 	result, err := h.service.GetAllHotels()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.Response{
-			Status:  http.StatusInternalServerError,
-			Error:   err.Error(),
+			Status: http.StatusInternalServerError,
+			Error:  err.Error(),
 		})
 	}
 
 	c.JSON(http.StatusOK, dto.Response{
 		Status:  http.StatusOK,
 		Message: "Get all hotels successfully",
+		Data:    result,
+	})
+}
+
+func (h *compHandlers) SearchHotels(c *gin.Context) {
+	keyword := c.Query("q")
+
+	result, err := h.service.SearchHotels(keyword)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Status: http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "Search hotels successfully",
 		Data:    result,
 	})
 }

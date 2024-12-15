@@ -24,3 +24,18 @@ func (s *compServices) GetAllHotels() (*[]dto.HotelOutputDTO, error) {
 	}
 	return &result, nil
 }
+
+func (s *compServices) SearchHotels(keyword string) (*[]dto.HotelOutputDTO, error) {
+	hotels, err := s.repo.SearchHotels(keyword)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []dto.HotelOutputDTO
+	for i := range hotels {
+		output := mapper.MapHotelModelToOutput(hotels[i])
+		result = append(result, output)
+	}
+	
+	return &result, nil
+}
