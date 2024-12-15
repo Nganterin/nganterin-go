@@ -35,21 +35,24 @@ func CompRouter(api *gin.RouterGroup) {
 		}
 	}
 
+	hotelRoute := api.Group("/hotel")
+	{
+		hotelRoute.GET("/getall", compHandler.GetAllHotels)
+	}
+
 	partnerRoute := api.Group("/partner")
 	{
 		partnerAuthRoute := partnerRoute.Group("/auth")
 		{
 			partnerAuthRoute.POST("/register", compHandler.RegisterPartner)
 		}
-	}
 
-	hotelRoute := api.Group("/hotel")
-	{
-		hotelRoute.GET("/getall", compHandler.GetAllHotels)
-
-		hotelRoute.Use(middleware.PartnerAuthMiddleware())
+		partnerRoute.Use(middleware.PartnerAuthMiddleware())
 		{
-			hotelRoute.POST("/register", compHandler.RegisterHotel)
+			hotelRoute := partnerRoute.Group("/hotel")
+			{
+				hotelRoute.POST("/register", compHandler.RegisterHotel)
+			}
 		}
 	}
 }
