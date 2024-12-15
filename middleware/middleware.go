@@ -17,22 +17,24 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secret := os.Getenv("JWT_SECRET")
-		if secret == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Error getting secret"})
-			return
-		}
 
 		var secretKey = []byte(secret)
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
+				Status: http.StatusForbidden,
+				Error: "Forbidden",
+			})
 			return
 		}
 
 		authHeaderParts := strings.Split(authHeader, " ")
 		if len(authHeaderParts) != 2 || authHeaderParts[0] != "Bearer" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
@@ -43,12 +45,18 @@ func AuthMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
 		if !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
@@ -74,22 +82,24 @@ func AuthMiddleware() gin.HandlerFunc {
 func PartnerAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secret := os.Getenv("JWT_SECRET")
-		if secret == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Error getting secret"})
-			return
-		}
 
 		var secretKey = []byte(secret)
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
+				Status: http.StatusForbidden,
+				Error: "Forbidden",
+			})
 			return
 		}
 
 		authHeaderParts := strings.Split(authHeader, " ")
 		if len(authHeaderParts) != 2 || authHeaderParts[0] != "Bearer" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
@@ -100,18 +110,27 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
 		if !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error: "Invalid Authorization token",
+			})
 			return
 		}
 
 		isPartner, ok := claims["is_partner"].(bool)
 		if !ok || !isPartner {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Access restricted to partners"})
+			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
+				Status: http.StatusForbidden,
+				Error: "Access restricted to partners",
+			})
 			return
 		}
 
@@ -160,13 +179,7 @@ func ClientTracker(db *gorm.DB) gin.HandlerFunc {
 			API:     fullURL.String(),
 		}
 
-		result := db.Create(&data)
-		if result.Error != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-			return
-		}
-
-		c.Next()
+		db.Create(&data)
 	}
 }
 
