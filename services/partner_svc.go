@@ -76,6 +76,7 @@ func (s *compServices) LoginPartner(email string, password string) (*string, err
 	claims["company_field"] = data.CompanyField
 	claims["company_email"] = data.CompanyEmail
 	claims["company_address"] = data.CompanyAddress
+	claims["is_partner"] = true
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
