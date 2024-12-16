@@ -17,6 +17,7 @@ type CompRepository interface {
 
 	RegisterPartner(data models.Partners) (*string, error)
 	GetPartnerDetailsByID(id string) (*models.Partners, error)
+	GetPartnerDetailsByEmail(email string) (*models.Partners, error)
 
 	RegisterPartnerEmailVerificationToken(data models.Partners) (*string, error)
 

@@ -26,3 +26,13 @@ func (r *compRepository) GetPartnerDetailsByID(id string) (*models.Partners, err
 
 	return &partner_data, nil
 }
+
+func (r *compRepository) GetPartnerDetailsByEmail(email string) (*models.Partners, error) {
+	var partner_data models.Partners
+	result := r.DB.Where("email = ?", email).First(&partner_data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &partner_data, nil
+}

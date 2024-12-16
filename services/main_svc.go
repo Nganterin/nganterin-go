@@ -13,6 +13,7 @@ type CompService interface {
 	VerifyUserEmail(token string) error
 
 	RegisterPartner(data dto.Partner) error
+	LoginPartner(email string, password string) (*string, error)
 
 	RegisterHotel(data dto.HotelInputDTO) (*string, error)
 	GetAllHotels() (*[]dto.HotelOutputDTO, error)

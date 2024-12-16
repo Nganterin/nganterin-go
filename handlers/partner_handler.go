@@ -53,3 +53,37 @@ func (h *compHandlers) RegisterPartner(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "partner successfully registered"})
 }
+
+func (h *compHandlers) LoginPartner(c *gin.Context) {
+	type Credentials struct {
+		Email    string `form:"email" binding:"required"`
+		Password string `form:"password" binding:"required"`
+	}
+
+	var data Credentials
+
+	err := c.ShouldBindJSON(&data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: err.Error()})
+		return
+	}
+
+	token, err := h.service.LoginPartner(data.Email, data.Password)
+	if err != nil {
+		if err.Error() == "403" {
+			c.JSON(http.StatusForbidden, dto.Response{Status: http.StatusForbidden, Error: "email not verified, check your email include spam folder"})
+			return
+		} else if err.Error() == "401" {
+			c.JSON(http.StatusUnauthorized, dto.Response{Status: http.StatusUnauthorized, Error: "invalid email or password"})
+			return
+		} else if err.Error() == "404" {
+			c.JSON(http.StatusNotFound, dto.Response{Status: http.StatusNotFound, Error: "email not found, please register"})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, dto.Response{Status: http.StatusInternalServerError, Error: err.Error()})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "login successfully", Data: token})
+}
