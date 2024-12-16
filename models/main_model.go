@@ -3,7 +3,8 @@ package models
 var AllModels = []interface{}{
 	&Client{},
 	&Users{},
-	&Tokens{},
+	&UserTokens{},
+	&PartnerTokens{},
 	&Partners{},
 	&Hotels{},
 	&HotelDetails{},

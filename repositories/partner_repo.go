@@ -41,7 +41,7 @@ func (r *compRepository) GetPartnerDetailsByEmail(email string) (*models.Partner
 }
 
 func (r *compRepository) VerifyPartnerEmail(token string) error {
-	var token_data models.Tokens
+	var token_data models.PartnerTokens
 	result := r.DB.Where("token = ?", token).First(&token_data)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
@@ -51,7 +51,7 @@ func (r *compRepository) VerifyPartnerEmail(token string) error {
 	}
 
 	partner_model := models.Partners{
-		ID: token_data.UserID,
+		ID: token_data.PartnerID,
 	}
 
 	result = r.DB.Delete(&token_data)

@@ -14,7 +14,7 @@ func (r *compRepository) RegisterEmailVerificationToken(data models.Users) (*str
 		}
 	}()
 
-	delete_result := tx.Where("user_id = ? AND category = ?", data.ID, "email_verification").Delete(&models.Tokens{})
+	delete_result := tx.Where("user_id = ? AND category = ?", data.ID, "email_verification").Delete(&models.UserTokens{})
 	if delete_result.Error != nil {
 		tx.Rollback()
 		return nil, delete_result.Error
@@ -26,7 +26,7 @@ func (r *compRepository) RegisterEmailVerificationToken(data models.Users) (*str
 		return nil, err
 	}
 
-	token_data := models.Tokens{
+	token_data := models.UserTokens{
 		UserID:    data.ID,
 		Token:     token,
 		Category:  "email_verification",
@@ -54,7 +54,7 @@ func (r *compRepository) RegisterPartnerEmailVerificationToken(data models.Partn
 		}
 	}()
 
-	delete_result := tx.Where("user_id = ? AND category = ?", data.ID, "partner_email_verification").Delete(&models.Tokens{})
+	delete_result := tx.Where("user_id = ? AND category = ?", data.ID, "email_verification").Delete(&models.PartnerTokens{})
 	if delete_result.Error != nil {
 		tx.Rollback()
 		return nil, delete_result.Error
@@ -66,10 +66,10 @@ func (r *compRepository) RegisterPartnerEmailVerificationToken(data models.Partn
 		return nil, err
 	}
 
-	token_data := models.Tokens{
-		UserID:    data.ID,
+	token_data := models.PartnerTokens{
+		PartnerID: data.ID,
 		Token:     token,
-		Category:  "partner_email_verification",
+		Category:  "email_verification",
 		ExpiredAt: time.Now().Add(time.Hour * 24 * 3),
 	}
 

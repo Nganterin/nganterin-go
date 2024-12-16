@@ -45,7 +45,7 @@ func (r *compRepository) GetUserDetailsByEmail(email string) (*models.Users, err
 }
 
 func (r *compRepository) VerifyUserEmail(token string) error {
-	var token_data models.Tokens
+	var token_data models.UserTokens
 	result := r.DB.Where("token = ?", token).First(&token_data)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
