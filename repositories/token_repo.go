@@ -54,7 +54,7 @@ func (r *compRepository) RegisterPartnerEmailVerificationToken(data models.Partn
 		}
 	}()
 
-	delete_result := tx.Where("user_id = ? AND category = ?", data.ID, "email_verification").Delete(&models.PartnerTokens{})
+	delete_result := tx.Where("partner_id = ? AND category = ?", data.ID, "email_verification").Delete(&models.PartnerTokens{})
 	if delete_result.Error != nil {
 		tx.Rollback()
 		return nil, delete_result.Error
