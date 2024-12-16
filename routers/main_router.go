@@ -48,6 +48,7 @@ func CompRouter(api *gin.RouterGroup) {
 		{
 			partnerAuthRoute.POST("/register", compHandler.RegisterPartner)
 			partnerAuthRoute.POST("/login", compHandler.LoginPartner)
+			partnerAuthRoute.POST("/verify", compHandler.VerifyPartnerEmail)
 		}
 
 		partnerRoute.Use(middleware.PartnerAuthMiddleware())

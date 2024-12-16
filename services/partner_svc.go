@@ -87,3 +87,7 @@ func (s *compServices) LoginPartner(email string, password string) (*string, err
 
 	return &tokenString, nil
 }
+
+func (s *compServices) VerifyPartnerEmail(token string) error {
+	return s.repo.VerifyPartnerEmail(token)
+}

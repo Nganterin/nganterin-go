@@ -87,3 +87,24 @@ func (h *compHandlers) LoginPartner(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "login successfully", Data: token})
 }
+
+func (h *compHandlers) VerifyPartnerEmail(c *gin.Context) {
+	token := c.Query("token")
+
+	if token == "" {
+		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: "token required"})
+		return
+	}
+
+	err := h.service.VerifyPartnerEmail(token)
+	if err != nil {
+		if err.Error() == "404" {
+			c.JSON(http.StatusNotFound, dto.Response{Status: http.StatusNotFound, Error: "token not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, dto.Response{Status: http.StatusInternalServerError, Error: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "partner email successfully verified"})
+}

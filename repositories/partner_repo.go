@@ -1,9 +1,12 @@
 package repositories
 
 import (
+	"errors"
 	"nganterin-go/models"
+	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func (r *compRepository) RegisterPartner(data models.Partners) (*string, error) {
@@ -35,4 +38,31 @@ func (r *compRepository) GetPartnerDetailsByEmail(email string) (*models.Partner
 	}
 
 	return &partner_data, nil
+}
+
+func (r *compRepository) VerifyPartnerEmail(token string) error {
+	var token_data models.Tokens
+	result := r.DB.Where("token = ?", token).First(&token_data)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return errors.New("404")
+		}
+		return result.Error
+	}
+
+	partner_model := models.Partners{
+		ID: token_data.UserID,
+	}
+
+	result = r.DB.Delete(&token_data)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	result = r.DB.Model(&partner_model).Select("email_verified_at").Updates(map[string]interface{}{"email_verified_at": time.Now()})
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

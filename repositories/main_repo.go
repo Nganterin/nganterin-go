@@ -20,6 +20,7 @@ type CompRepository interface {
 	GetPartnerDetailsByEmail(email string) (*models.Partners, error)
 
 	RegisterPartnerEmailVerificationToken(data models.Partners) (*string, error)
+	VerifyPartnerEmail(token string) error
 
 	RegisterHotel(data models.Hotels) (*string, error)
 	GetAllHotels() ([]models.Hotels, error)
