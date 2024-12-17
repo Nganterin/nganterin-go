@@ -73,7 +73,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 		return nil, nil, errors.New("failed to set file permissions: " + err.Error())
 	}
 
-	publicLink := fmt.Sprintf("https://www.googleapis.com/drive/v3/files/%s?alt=%s", uploadedFile.Id, CLIENT_API_KEY)
+	publicLink := fmt.Sprintf("https://www.googleapis.com/drive/v3/files/%s?alt=media&key=%s", uploadedFile.Id, CLIENT_API_KEY)
 
 	metadata := map[string]interface{}{
 		"id":          uploadedFile.Id,
