@@ -42,6 +42,11 @@ func CompRouter(api *gin.RouterGroup) {
 		hotelRoute.GET("/search", compHandler.SearchHotels)
 	}
 
+	filesRoute := api.Group("/files")
+	{
+		filesRoute.POST("/upload", compHandler.FileUpload)
+	}
+
 	partnerRoute := api.Group("/partner")
 	{
 		partnerAuthRoute := partnerRoute.Group("/auth")

@@ -20,6 +20,8 @@ type CompService interface {
 	GetAllHotels() (*[]dto.HotelOutputDTO, error)
 	SearchHotels(keyword string) (*[]dto.HotelOutputDTO, error)
 	GetHotelByID(id string) (*dto.HotelOutputDTO, error)
+
+	FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error)
 }
 
 type compServices struct {
