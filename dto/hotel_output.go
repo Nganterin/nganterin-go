@@ -6,13 +6,13 @@ type HotelOutputDTO struct {
 	Name            string                  `json:"name"`
 	Description     string                  `json:"description"`
 	PricingStart    int64                   `json:"pricing_start"`
-	HotelDetails    []HotelDetailOutput     `json:"hotel_details"`
+	HotelRooms      []HotelRoomOutput       `json:"hotel_rooms"`
 	HotelsLocation  HotelsLocationOutput    `json:"hotels_location"`
 	HotelPhotos     []HotelPhotoOutput      `json:"hotel_photos"`
 	HotelFacilities []HotelFacilitiesOutput `json:"hotel_facilities"`
 }
 
-type HotelDetailOutput struct {
+type HotelRoomOutput struct {
 	ID             uint   `json:"id"`
 	Type           string `json:"type"`
 	MaxVisitor     int    `json:"max_visitor"`
@@ -22,6 +22,8 @@ type HotelDetailOutput struct {
 	OvernightPrice int64  `json:"overnight_price"`
 	TotalRoom      int    `json:"total_room"`
 	TotalBooked    int    `json:"total_booked"`
+
+	HotelRoomPhotoInput     []HotelRoomPhotoInput      `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
 }
 
 type HotelsLocationOutput struct {
@@ -35,6 +37,11 @@ type HotelsLocationOutput struct {
 }
 
 type HotelPhotoOutput struct {
+	ID  uint   `json:"id"`
+	URL string `json:"url"`
+}
+
+type HotelRoomPhotoOutput struct {
 	ID  uint   `json:"id"`
 	URL string `json:"url"`
 }

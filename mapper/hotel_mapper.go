@@ -9,6 +9,7 @@ import (
 
 func MapHotelInputToModel(input dto.HotelInputDTO) models.Hotels {
 	var hotel models.Hotels
+	
 	mapstructure.Decode(input, &hotel)
 	return hotel
 }

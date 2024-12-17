@@ -17,7 +17,7 @@ type Hotels struct {
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time `gorm:"null;default:null"`
 
-	HotelDetails    []HotelDetails    `gorm:"foreignKey:HotelID;references:ID"`
+	HotelRooms      []HotelRooms      `gorm:"foreignKey:HotelID;references:ID"`
 	HotelsLocation  HotelsLocation    `gorm:"foreignKey:HotelID;references:ID"`
 	HotelPhotos     []HotelPhotos     `gorm:"foreignKey:HotelID;references:ID"`
 	HotelFacilities []HotelFacilities `gorm:"foreignKey:HotelID;references:ID"`
@@ -25,7 +25,7 @@ type Hotels struct {
 	HotelOrders     []HotelOrders     `gorm:"foreignKey:HotelID;references:ID"`
 }
 
-type HotelDetails struct {
+type HotelRooms struct {
 	gorm.Model
 
 	ID             uint   `gorm:"primaryKey"`
@@ -39,7 +39,8 @@ type HotelDetails struct {
 	TotalRoom      int    `gorm:"not null"`
 	TotalBooked    int    `gorm:"not null"`
 
-	HotelOrders []HotelOrders `gorm:"foreignKey:HotelDetailID;references:ID"`
+	HotelOrders     []HotelOrders     `gorm:"foreignKey:HotelRoomID;references:ID"`
+	HotelRoomPhotos []HotelRoomPhotos `gorm:"foreignKey:HotelRoomID;references:ID" mapstructure:"hotel_room_photos"`
 }
 
 type HotelsLocation struct {
@@ -63,6 +64,14 @@ type HotelPhotos struct {
 	URL     string `gorm:"not null"`
 }
 
+type HotelRoomPhotos struct {
+	gorm.Model
+
+	ID          uint   `gorm:"primaryKey"`
+	HotelRoomID string `gorm:"not null"`
+	URL         string `gorm:"not null"`
+}
+
 type HotelFacilities struct {
 	gorm.Model
 
@@ -77,7 +86,7 @@ type HotelOrders struct {
 	ID             string    `gorm:"primaryKey"`
 	UserID         string    `gorm:"not null"`
 	HotelID        string    `gorm:"not null"`
-	HotelDetailID  uint      `gorm:"not null"`
+	HotelRoomID    uint      `gorm:"not null"`
 	CheckInDate    time.Time `gorm:"not null"`
 	CheckOutDate   time.Time `gorm:"not null"`
 	TotalGuests    int       `gorm:"not null"`

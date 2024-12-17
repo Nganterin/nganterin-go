@@ -1,16 +1,17 @@
 package dto
 
 type HotelInputDTO struct {
-	PartnerID       string                 `json:"partner_id" validate:"required"`
-	Name            string                 `json:"name" validate:"required"`
-	Description     string                 `json:"description" validate:"required"`
-	HotelDetails    []HotelDetailInput     `json:"hotel_details"`
+	PartnerID   string `json:"partner_id" validate:"required"`
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description" validate:"required"`
+
+	HotelRooms      []HotelRoomInput       `json:"hotel_rooms"`
 	HotelsLocation  HotelsLocationInput    `json:"hotels_location"`
 	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos"`
 	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities"`
 }
 
-type HotelDetailInput struct {
+type HotelRoomInput struct {
 	Type           string `json:"type" validate:"required"`
 	MaxVisitor     int    `json:"max_visitor" validate:"required"`
 	BedType        string `json:"bed_type" validate:"required"`
@@ -19,6 +20,8 @@ type HotelDetailInput struct {
 	OvernightPrice int64  `json:"overnight_price" validate:"required"`
 	TotalRoom      int    `json:"total_room" validate:"required"`
 	TotalBooked    int    `json:"total_booked" validate:"required"`
+
+	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
 }
 
 type HotelsLocationInput struct {
@@ -31,6 +34,10 @@ type HotelsLocationInput struct {
 }
 
 type HotelPhotoInput struct {
+	URL string `json:"url" validate:"required"`
+}
+
+type HotelRoomPhotoInput struct {
 	URL string `json:"url" validate:"required"`
 }
 

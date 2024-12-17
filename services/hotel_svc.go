@@ -20,7 +20,7 @@ func (s *compServices) GetAllHotels() (*[]dto.HotelOutputDTO, error) {
 
 	var result []dto.HotelOutputDTO
 	for i := range hotels {
-		pricingStart := s.GetPricingStartHotelDetails(hotels[i].HotelDetails)
+		pricingStart := s.GetPricingStartHotelRooms(hotels[i].HotelRooms)
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
@@ -37,7 +37,7 @@ func (s *compServices) SearchHotels(keyword string) (*[]dto.HotelOutputDTO, erro
 
 	var result []dto.HotelOutputDTO
 	for i := range hotels {
-		pricingStart := s.GetPricingStartHotelDetails(hotels[i].HotelDetails)
+		pricingStart := s.GetPricingStartHotelRooms(hotels[i].HotelRooms)
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
@@ -53,15 +53,15 @@ func (s *compServices) GetHotelByID(id string) (*dto.HotelOutputDTO, error) {
 		return nil, err
 	}
 
-	pricingStart := s.GetPricingStartHotelDetails(hotels.HotelDetails)
+	pricingStart := s.GetPricingStartHotelRooms(hotels.HotelRooms)
 	result := mapper.MapHotelModelToOutput(*hotels)
 	result.PricingStart = pricingStart
 	return &result, nil
 }
 
-func (s *compServices) GetPricingStartHotelDetails(data []models.HotelDetails) (int64) {
+func (s *compServices) GetPricingStartHotelRooms(data []models.HotelRooms) int64 {
 	var pricingStart int64
-	
+
 	if len(data) > 0 {
 		pricingStart = data[0].OvernightPrice
 		for _, detail := range data {
@@ -70,7 +70,6 @@ func (s *compServices) GetPricingStartHotelDetails(data []models.HotelDetails) (
 			}
 		}
 	}
-
 
 	return pricingStart
 }

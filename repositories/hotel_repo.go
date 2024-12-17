@@ -26,7 +26,8 @@ func (r *compRepository) GetAllHotels() ([]models.Hotels, error) {
 	var data []models.Hotels
 
 	result := r.DB.
-		Preload("HotelDetails").
+		Preload("HotelRooms").
+		Preload("HotelRooms.HotelRoomPhotos").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
@@ -44,7 +45,8 @@ func (r *compRepository) SearchHotels(keyword string) ([]models.Hotels, error) {
 	searchKeyword := "%" + keyword + "%"
 
 	result := r.DB.
-		Preload("HotelDetails").
+		Preload("HotelRooms").
+		Preload("HotelRooms.HotelRoomPhotos").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
@@ -64,7 +66,8 @@ func (r *compRepository) SearchHotels(keyword string) ([]models.Hotels, error) {
 func (r *compRepository) GetHotelByID(id string) (*models.Hotels, error) {
 	var data models.Hotels
 	result := r.DB.
-		Preload("HotelDetails").
+		Preload("HotelRooms").
+		Preload("HotelRooms.HotelRoomPhotos").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
