@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"compress/gzip"
+	"io"
 	"net/http"
 	"net/url"
 	"nganterin-go/dto"
@@ -14,6 +16,39 @@ import (
 	"gorm.io/gorm"
 )
 
+func GzipResponseMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		if !strings.Contains(c.Request.Header.Get("Accept-Encoding"), "gzip") {
+			c.Next()
+			return
+		}
+
+		gzipWriter := gzip.NewWriter(c.Writer)
+		defer gzipWriter.Close()
+
+		wrappedWriter := &gzipResponseWriter{
+			ResponseWriter: c.Writer,
+			Writer:         gzipWriter,
+		}
+
+		c.Writer = wrappedWriter
+		c.Writer.Header().Set("Content-Encoding", "gzip")
+		c.Writer.Header().Set("Vary", "Accept-Encoding")
+
+		c.Next()
+	}
+}
+
+type gzipResponseWriter struct {
+	gin.ResponseWriter
+	Writer io.Writer
+}
+
+func (g *gzipResponseWriter) Write(data []byte) (int, error) {
+	return g.Writer.Write(data)
+}
+
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secret := os.Getenv("JWT_SECRET")
@@ -24,7 +59,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if authHeader == "" {
 			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
 				Status: http.StatusForbidden,
-				Error: "Forbidden",
+				Error:  "Forbidden",
 			})
 			return
 		}
@@ -33,7 +68,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if len(authHeaderParts) != 2 || authHeaderParts[0] != "Bearer" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -47,7 +82,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -55,7 +90,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if !token.Valid {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -89,7 +124,7 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		if authHeader == "" {
 			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
 				Status: http.StatusForbidden,
-				Error: "Forbidden",
+				Error:  "Forbidden",
 			})
 			return
 		}
@@ -98,7 +133,7 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		if len(authHeaderParts) != 2 || authHeaderParts[0] != "Bearer" {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -112,7 +147,7 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -120,7 +155,7 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		if !token.Valid {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error: "Invalid Authorization token",
+				Error:  "Invalid Authorization token",
 			})
 			return
 		}
@@ -129,7 +164,7 @@ func PartnerAuthMiddleware() gin.HandlerFunc {
 		if !ok || !isPartner {
 			c.AbortWithStatusJSON(http.StatusForbidden, dto.Response{
 				Status: http.StatusForbidden,
-				Error: "Access restricted to partners",
+				Error:  "Access restricted to partners",
 			})
 			return
 		}

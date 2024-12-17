@@ -14,6 +14,7 @@ func CompRouter(api *gin.RouterGroup) {
 	db := config.InitDB()
 
 	api.Use(middleware.ClientTracker(db))
+	api.Use(middleware.GzipResponseMiddleware())
 
 	compRepository := repositories.NewComponentRepository(db)
 
