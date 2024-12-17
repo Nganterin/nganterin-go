@@ -23,6 +23,7 @@ type Env struct {
 	FRONT_END_BASE_URL             string
 	DASHBOARD_BASE_URL             string
 	GOOGLE_APPLICATION_CREDENTIALS string
+	GOOGLE_CLIENT_API_KEY          string
 }
 
 func InitEnvCheck() {
@@ -42,6 +43,7 @@ func InitEnvCheck() {
 		FRONT_END_BASE_URL:             os.Getenv("FRONT_END_BASE_URL"),
 		DASHBOARD_BASE_URL:             os.Getenv("DASHBOARD_BASE_URL"),
 		GOOGLE_APPLICATION_CREDENTIALS: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+		GOOGLE_CLIENT_API_KEY:          os.Getenv("GOOGLE_CLIENT_API_KEY"),
 	}
 
 	isEmpty, emptyFields := checkEmptyFields(environment)
