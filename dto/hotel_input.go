@@ -5,7 +5,7 @@ type HotelInputDTO struct {
 	Name            string                 `json:"name" validate:"required"`
 	Description     string                 `json:"description" validate:"required"`
 	HotelDetails    []HotelDetailInput     `json:"hotel_details"`
-	HotelsLocation  []HotelsLocationInput  `json:"hotels_location"`
+	HotelsLocation  HotelsLocationInput    `json:"hotels_location"`
 	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos"`
 	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities"`
 }

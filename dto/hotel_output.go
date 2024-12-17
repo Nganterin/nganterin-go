@@ -7,7 +7,7 @@ type HotelOutputDTO struct {
 	Description     string                  `json:"description"`
 	PricingStart    int64                   `json:"pricing_start"`
 	HotelDetails    []HotelDetailOutput     `json:"hotel_details"`
-	HotelsLocation  []HotelsLocationOutput  `json:"hotels_location"`
+	HotelsLocation  HotelsLocationOutput    `json:"hotels_location"`
 	HotelPhotos     []HotelPhotoOutput      `json:"hotel_photos"`
 	HotelFacilities []HotelFacilitiesOutput `json:"hotel_facilities"`
 }

@@ -18,7 +18,7 @@ type Hotels struct {
 	DeletedAt   *time.Time `gorm:"null;default:null"`
 
 	HotelDetails    []HotelDetails    `gorm:"foreignKey:HotelID;references:ID"`
-	HotelsLocation  []HotelsLocation  `gorm:"foreignKey:HotelID;references:ID"`
+	HotelsLocation  HotelsLocation    `gorm:"foreignKey:HotelID;references:ID"`
 	HotelPhotos     []HotelPhotos     `gorm:"foreignKey:HotelID;references:ID"`
 	HotelFacilities []HotelFacilities `gorm:"foreignKey:HotelID;references:ID"`
 	HotelReviews    []HotelReviews    `gorm:"foreignKey:HotelID;references:ID"`
@@ -89,7 +89,7 @@ type HotelOrders struct {
 	UpdatedAt      time.Time
 	DeletedAt      *time.Time `gorm:"null;default:null"`
 
-	HotelReservations []HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
+	HotelReservations HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
 }
 
 type HotelReservations struct {
@@ -104,7 +104,7 @@ type HotelReservations struct {
 	UpdatedAt         time.Time
 	DeletedAt         *time.Time `gorm:"null;default:null"`
 
-	HotelReviews []HotelReviews `gorm:"foreignKey:HotelReservationID;references:ID"`
+	HotelReviews HotelReviews `gorm:"foreignKey:HotelReservationID;references:ID"`
 }
 
 type HotelReviews struct {
