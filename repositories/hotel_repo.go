@@ -29,6 +29,7 @@ func (r *compRepository) GetAllHotels() ([]models.Hotels, error) {
 		Preload("HotelDetails").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
+		Preload("HotelFacilities").
 		Find(&data)
 
 	if result.Error != nil {
@@ -46,6 +47,7 @@ func (r *compRepository) SearchHotels(keyword string) ([]models.Hotels, error) {
 		Preload("HotelDetails").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
+		Preload("HotelFacilities").
 		Where("LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?) OR "+
 			"EXISTS (SELECT 1 FROM hotels_locations WHERE hotels_locations.hotel_id = hotels.id AND "+
 			"(LOWER(hotels_locations.city) LIKE LOWER(?) OR LOWER(hotels_locations.state) LIKE LOWER(?) OR LOWER(hotels_locations.country) LIKE LOWER(?)))",
@@ -65,6 +67,7 @@ func (r *compRepository) GetHotelByID(id string) (*models.Hotels, error) {
 		Preload("HotelDetails").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
+		Preload("HotelFacilities").
 		Where("id = ?", id).
 		First(&data)
 	if result.Error != nil {

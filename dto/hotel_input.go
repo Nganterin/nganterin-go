@@ -1,12 +1,13 @@
 package dto
 
 type HotelInputDTO struct {
-	PartnerID      string                `json:"partner_id" validate:"required"`
-	Name           string                `json:"name" validate:"required"`
-	Description    string                `json:"description" validate:"required"`
-	HotelDetails   []HotelDetailInput    `json:"hotel_details"`
-	HotelsLocation []HotelsLocationInput `json:"hotels_location"`
-	HotelPhotos    []HotelPhotoInput     `json:"hotel_photos"`
+	PartnerID       string                 `json:"partner_id" validate:"required"`
+	Name            string                 `json:"name" validate:"required"`
+	Description     string                 `json:"description" validate:"required"`
+	HotelDetails    []HotelDetailInput     `json:"hotel_details"`
+	HotelsLocation  []HotelsLocationInput  `json:"hotels_location"`
+	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos"`
+	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities"`
 }
 
 type HotelDetailInput struct {
@@ -31,4 +32,8 @@ type HotelsLocationInput struct {
 
 type HotelPhotoInput struct {
 	URL string `json:"url" validate:"required"`
+}
+
+type HotelFacilitiesInput struct {
+	Facility string `json:"facility" validate:"required"`
 }

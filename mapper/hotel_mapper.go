@@ -15,6 +15,7 @@ func MapHotelInputToModel(input dto.HotelInputDTO) models.Hotels {
 
 func MapHotelModelToOutput(model models.Hotels) dto.HotelOutputDTO {
 	var hotelOutput dto.HotelOutputDTO
+
 	mapstructure.Decode(model, &hotelOutput)
 	return hotelOutput
 }

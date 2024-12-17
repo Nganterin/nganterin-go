@@ -1,14 +1,15 @@
 package dto
 
 type HotelOutputDTO struct {
-	ID             string                 `json:"id"`
-	PartnerID      string                 `json:"partner_id"`
-	Name           string                 `json:"name"`
-	Description    string                 `json:"description"`
-	PricingStart   int64                  `json:"pricing_start"`
-	HotelDetails   []HotelDetailOutput    `json:"hotel_details"`
-	HotelsLocation []HotelsLocationOutput `json:"hotels_location"`
-	HotelPhotos    []HotelPhotoOutput     `json:"hotel_photos"`
+	ID              string                  `json:"id"`
+	PartnerID       string                  `json:"partner_id"`
+	Name            string                  `json:"name"`
+	Description     string                  `json:"description"`
+	PricingStart    int64                   `json:"pricing_start"`
+	HotelDetails    []HotelDetailOutput     `json:"hotel_details"`
+	HotelsLocation  []HotelsLocationOutput  `json:"hotels_location"`
+	HotelPhotos     []HotelPhotoOutput      `json:"hotel_photos"`
+	HotelFacilities []HotelFacilitiesOutput `json:"hotel_facilities"`
 }
 
 type HotelDetailOutput struct {
@@ -36,4 +37,9 @@ type HotelsLocationOutput struct {
 type HotelPhotoOutput struct {
 	ID  uint   `json:"id"`
 	URL string `json:"url"`
+}
+
+type HotelFacilitiesOutput struct {
+	ID       uint   `json:"id"`
+	Facility string `json:"facility"`
 }

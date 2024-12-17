@@ -9,16 +9,17 @@ import (
 type Hotels struct {
 	gorm.Model
 
-	ID             string           `gorm:"primaryKey"`
-	PartnerID      string           `gorm:"not null"`
-	Name           string           `gorm:"not null"`
-	Description    string           `gorm:"not null"`
-	HotelDetails   []HotelDetails   `gorm:"foreignKey:HotelID;references:ID"`
-	HotelsLocation []HotelsLocation `gorm:"foreignKey:HotelID;references:ID"`
-	HotelPhotos    []HotelPhotos    `gorm:"foreignKey:HotelID;references:ID"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-	DeletedAt      *time.Time `gorm:"null;default:null"`
+	ID              string            `gorm:"primaryKey"`
+	PartnerID       string            `gorm:"not null"`
+	Name            string            `gorm:"not null"`
+	Description     string            `gorm:"not null"`
+	HotelDetails    []HotelDetails    `gorm:"foreignKey:HotelID;references:ID"`
+	HotelsLocation  []HotelsLocation  `gorm:"foreignKey:HotelID;references:ID"`
+	HotelPhotos     []HotelPhotos     `gorm:"foreignKey:HotelID;references:ID"`
+	HotelFacilities []HotelFacilities `gorm:"foreignKey:HotelID;references:ID"`
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	DeletedAt       *time.Time `gorm:"null;default:null"`
 }
 
 type HotelDetails struct {
@@ -55,4 +56,12 @@ type HotelPhotos struct {
 	ID      uint   `gorm:"primaryKey"`
 	HotelID string `gorm:"not null"`
 	URL     string `gorm:"not null"`
+}
+
+type HotelFacilities struct {
+	gorm.Model
+
+	ID       uint   `gorm:"primaryKey"`
+	HotelID  string `gorm:"not null"`
+	Facility string `gorm:"not null"`
 }
