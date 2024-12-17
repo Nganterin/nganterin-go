@@ -14,7 +14,15 @@ func (h *compHandlers) FileUpload(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.Response{
 			Status: http.StatusBadRequest,
-			Error: "file can't be null",
+			Error:  "file can't be null",
+		})
+		return
+	}
+
+	if file.Size > (10 * 1024 * 1024) {
+		c.JSON(http.StatusBadRequest, dto.Response{
+			Status: http.StatusBadRequest,
+			Error:  "file size exceeds the 10MB limit",
 		})
 		return
 	}
@@ -23,7 +31,7 @@ func (h *compHandlers) FileUpload(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.Response{
 			Status: http.StatusBadRequest,
-			Error: "error to open the uploaded file",
+			Error:  "error to open the uploaded file",
 		})
 		return
 	}
@@ -34,7 +42,7 @@ func (h *compHandlers) FileUpload(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.Response{
 			Status: http.StatusBadRequest,
-			Error: "failed to read the uploaded file content",
+			Error:  "failed to read the uploaded file content",
 		})
 		return
 	}
@@ -67,7 +75,7 @@ func (h *compHandlers) FileUpload(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, dto.Response{
-		Status: http.StatusOK,
+		Status:  http.StatusOK,
 		Message: "file uploaded successfully",
 		Data:    result,
 	})
