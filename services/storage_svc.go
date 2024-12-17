@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"nganterin-go/dto"
 	"nganterin-go/helpers"
 	"nganterin-go/mapper"
@@ -17,7 +18,7 @@ import (
 func (s *compServices) FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error) {
 	modelData := mapper.MapFilesInputToModel(data)
 
-	uniqueName := helpers.GenerateUniqueFileName()
+	uniqueName := helpers.GenerateUniqueFileName() + "." + data.Extension
 
 	publicURL, metadata, err := s.SaveFileToDrive(file, uniqueName, data.MimeType)
 	if err != nil {
@@ -57,7 +58,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 
 	uploadedFile, err := driveService.Files.Create(fileMetadata).
 		Media(fileReader).
-		Fields("id, name, mimeType, size, createdTime, webViewLink").
+		Fields("id, name, mimeType, size, createdTime").
 		Do()
 	if err != nil {
 		return nil, nil, errors.New("failed to upload file to drive: " + err.Error())
@@ -71,7 +72,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 		return nil, nil, errors.New("failed to set file permissions: " + err.Error())
 	}
 
-	publicLink := "https://drive.google.com/file/d/" + uploadedFile.Id + "/view?usp=sharing"
+	publicLink := fmt.Sprintf("https://www.googleapis.com/drive/v3/files/%s?alt=media&key=AIzaSyDGtWELelKgh6HoM1rKI99DRtxxjwRLVIc", uploadedFile.Id)
 
 	metadata := map[string]interface{}{
 		"id":          uploadedFile.Id,
@@ -79,7 +80,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 		"mimeType":    uploadedFile.MimeType,
 		"size":        uploadedFile.Size,
 		"createdTime": uploadedFile.CreatedTime,
-		"webViewLink": uploadedFile.WebViewLink,
+		"publicLink":  publicLink,
 	}
 
 	stringifiedMetadata, err := json.Marshal(metadata)
