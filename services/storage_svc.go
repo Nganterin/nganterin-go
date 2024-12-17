@@ -42,7 +42,7 @@ func (s *compServices) FileUpload(file []byte, data dto.FilesInputDTO) (*dto.Fil
 
 func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*string, *string, error) {
 	APPLICATION_CREDENTIALS := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	CLIENT_API_KEY := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	CLIENT_API_KEY := os.Getenv("GOOGLE_CLIENT_API_KEY")
 
 	ctx := context.Background()
 	driveService, err := drive.NewService(ctx, option.WithCredentialsJSON([]byte(APPLICATION_CREDENTIALS)))
