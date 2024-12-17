@@ -21,7 +21,9 @@ type Users struct {
 	CompleteAddress string     `gorm:"not null"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
-	DeletedAt       *time.Time     `gorm:"null;default:null"`
-	UserTokens      []UserTokens   `gorm:"foreignKey:UserID;references:ID"`
-	HotelReviews    []HotelReviews `gorm:"foreignKey:UserID;references:ID"`
+	DeletedAt       *time.Time `gorm:"null;default:null"`
+
+	UserTokens   []UserTokens   `gorm:"foreignKey:UserID;references:ID"`
+	HotelReviews []HotelReviews `gorm:"foreignKey:UserID;references:ID"`
+	HotelOrders  []HotelOrders  `gorm:"foreignKey:UserID;references:ID"`
 }
