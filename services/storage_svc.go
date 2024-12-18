@@ -42,7 +42,6 @@ func (s *compServices) FileUpload(file []byte, data dto.FilesInputDTO) (*dto.Fil
 
 func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*string, *string, error) {
 	APPLICATION_CREDENTIALS := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	CLIENT_API_KEY := os.Getenv("GOOGLE_CLIENT_API_KEY")
 
 	ctx := context.Background()
 	driveService, err := drive.NewService(ctx, option.WithCredentialsJSON([]byte(APPLICATION_CREDENTIALS)))
@@ -73,7 +72,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 		return nil, nil, errors.New("failed to set file permissions: " + err.Error())
 	}
 
-	publicLink := fmt.Sprintf("https://www.googleapis.com/drive/v3/files/%s?alt=media&key=%s", uploadedFile.Id, CLIENT_API_KEY)
+	publicLink := fmt.Sprintf("https://lh3.googleusercontent.com/d/%s", uploadedFile.Id)
 
 	metadata := map[string]interface{}{
 		"id":          uploadedFile.Id,
