@@ -24,7 +24,7 @@ func (h *compHandlers) RegisterHotelOrder(c *gin.Context) {
 		if orderInput.SomeoneName == "" || orderInput.SomeoneRegion == "" {
 			c.JSON(http.StatusBadRequest, dto.Response{
 				Status: http.StatusBadGateway,
-				Error: "someone_name and someone_region required for is_for_someone_else true",
+				Error:  "someone_name and someone_region required for is_for_someone_else true",
 			})
 			return
 		}
@@ -36,15 +36,28 @@ func (h *compHandlers) RegisterHotelOrder(c *gin.Context) {
 
 	result, err := h.service.RegisterHotelOrder(orderInput)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, dto.Response{
-			Status: http.StatusInternalServerError,
-			Error: err.Error(),
-		})
+		if err.Error() == "400" {
+			c.JSON(http.StatusBadRequest, dto.Response{
+				Status: http.StatusBadRequest,
+				Error:  "bad request",
+			})
+		} else if err.Error() == "401" {
+			c.JSON(http.StatusUnauthorized, dto.Response{
+				Status: http.StatusUnauthorized,
+				Error:  err.Error(),
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, dto.Response{
+				Status: http.StatusInternalServerError,
+				Error:  err.Error(),
+			})
+		}
+		return
 	}
 
 	c.JSON(http.StatusOK, dto.Response{
-		Status: http.StatusOK,
-		Data: result,
+		Status:  http.StatusOK,
+		Data:    result,
 		Message: "order successfully registered",
 	})
 }

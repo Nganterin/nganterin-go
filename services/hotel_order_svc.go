@@ -19,13 +19,17 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Respo
 
 	userData, err := s.repo.GetUserDetailsByID(data.UserID)
 	if err != nil {
-		return nil, errors.New("403")
+		return nil, errors.New("401")
 	}
 
 	input := mapper.MapHotelOrderInputToModel(data)
 
 	duration := input.CheckOutDate.Sub(input.CheckInDate)
-	days := int(duration.Hours() / 24)
+	days := int(duration.Hours() / 24) + 1
+
+	if days <= 0 {
+		return nil, errors.New("400")
+	}
 
 	input.TotalPrice = roomData.OvernightPrice * int64(days)
 	input.ID = uuid.NewString()
