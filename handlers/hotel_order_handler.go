@@ -44,7 +44,7 @@ func (h *compHandlers) RegisterHotelOrder(c *gin.Context) {
 		} else if err.Error() == "401" {
 			c.JSON(http.StatusUnauthorized, dto.Response{
 				Status: http.StatusUnauthorized,
-				Error:  err.Error(),
+				Error:  "user not found, who are you?",
 			})
 		} else {
 			c.JSON(http.StatusInternalServerError, dto.Response{
