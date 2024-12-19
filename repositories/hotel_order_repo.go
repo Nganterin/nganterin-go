@@ -4,20 +4,16 @@ import (
 	"errors"
 	"nganterin-go/models"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
-func (r *compRepository) RegisterHotelOrder(data models.HotelOrders) (*string, error) {
-	data.ID = uuid.NewString()
-
+func (r *compRepository) RegisterHotelOrder(data models.HotelOrders) error {
 	result := r.DB.Create(&data)
 	if result.Error != nil {
 		if strings.Contains(result.Error.Error(), "duplicate key") {
-			return nil, errors.New("409")
+			return errors.New("409")
 		}
-		return nil, result.Error
+		return result.Error
 	}
 
-	return &data.ID, nil
+	return nil
 } 

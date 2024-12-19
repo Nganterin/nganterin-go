@@ -3,6 +3,8 @@ package services
 import (
 	"nganterin-go/dto"
 	"nganterin-go/repositories"
+
+	"github.com/midtrans/midtrans-go/snap"
 )
 
 type CompService interface {
@@ -23,7 +25,7 @@ type CompService interface {
 
 	FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error)
 
-	RegisterHotelOrder(data dto.HotelOrderInput) error
+	RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Response, error)
 }
 
 type compServices struct {

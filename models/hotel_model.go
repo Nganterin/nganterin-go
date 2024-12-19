@@ -91,6 +91,7 @@ type HotelOrders struct {
 	CheckOutDate     time.Time `gorm:"not null"`
 	TotalPrice       int64     `gorm:"not null"`
 	PaymentStatus    string    `gorm:"not null;default:pending"` // Enum: "Pending", "Paid", "Cancelled"
+	SnapToken        string    `gorm:"not null"`
 	SpecialRequest   string    `gorm:"type:text"`
 	IsForSomeoneElse bool      `gorm:"not null;default:false"`
 	SomeoneName      string

@@ -30,7 +30,7 @@ type CompRepository interface {
 
 	FileUpload(data models.Files) (*models.Files, error)
 
-	RegisterHotelOrder(data models.HotelOrders) (*string, error)
+	RegisterHotelOrder(data models.HotelOrders) error
 }
 
 type compRepository struct {
