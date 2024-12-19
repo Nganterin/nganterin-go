@@ -83,20 +83,21 @@ type HotelFacilities struct {
 type HotelOrders struct {
 	gorm.Model
 
-	ID             string    `gorm:"primaryKey"`
-	UserID         string    `gorm:"not null"`
-	HotelID        string    `gorm:"not null"`
-	HotelRoomID    uint      `gorm:"not null"`
-	CheckInDate    time.Time `gorm:"not null"`
-	CheckOutDate   time.Time `gorm:"not null"`
-	TotalGuests    int       `gorm:"not null"`
-	TotalRooms     int       `gorm:"not null"`
-	TotalPrice     int64     `gorm:"not null"`
-	PaymentStatus  string    `gorm:"not null"` // Enum: "Pending", "Paid", "Cancelled"
-	SpecialRequest string    `gorm:"type:text"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-	DeletedAt      *time.Time `gorm:"null;default:null"`
+	ID               string    `gorm:"primaryKey"`
+	UserID           string    `gorm:"not null"`
+	HotelID          string    `gorm:"not null"`
+	HotelRoomID      uint      `gorm:"not null"`
+	CheckInDate      time.Time `gorm:"not null"`
+	CheckOutDate     time.Time `gorm:"not null"`
+	TotalPrice       int64     `gorm:"not null"`
+	PaymentStatus    string    `gorm:"not null;default:pending"` // Enum: "Pending", "Paid", "Cancelled"
+	SpecialRequest   string    `gorm:"type:text"`
+	IsForSomeoneElse bool      `gorm:"not null;default:false"`
+	SomeoneName      string
+	SomeoneRegion    string
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
+	DeletedAt        *time.Time `gorm:"null;default:null"`
 
 	HotelReservations HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
 }

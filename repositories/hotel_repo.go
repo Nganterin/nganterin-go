@@ -79,3 +79,13 @@ func (r *compRepository) GetHotelByID(id string) (*models.Hotels, error) {
 
 	return &data, nil
 }
+
+func (r *compRepository) GetHotelRoomByID(id uint) (*models.HotelRooms, error) {
+	var data models.HotelRooms
+	result := r.DB.Where("id = ?", id).First(&data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &data, nil
+}

@@ -26,8 +26,11 @@ type CompRepository interface {
 	GetAllHotels() ([]models.Hotels, error)
 	SearchHotels(keyword string) ([]models.Hotels, error)
 	GetHotelByID(id string)(*models.Hotels, error)
+	GetHotelRoomByID(id uint) (*models.HotelRooms, error)
 
 	FileUpload(data models.Files) (*models.Files, error)
+
+	RegisterHotelOrder(data models.HotelOrders) (*string, error)
 }
 
 type compRepository struct {

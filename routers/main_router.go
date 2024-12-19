@@ -43,6 +43,15 @@ func CompRouter(api *gin.RouterGroup) {
 		hotelRoute.GET("/search", compHandler.SearchHotels)
 	}
 
+	orderRoute := api.Group("/order")
+	orderRoute.Use(middleware.AuthMiddleware())
+	{
+		hotelRoute := orderRoute.Group("/hotel")
+		{
+			hotelRoute.POST("/register", compHandler.RegisterHotelOrder)
+		}
+	}
+
 	filesRoute := api.Group("/files")
 	{
 		filesRoute.POST("/upload", compHandler.FileUpload)

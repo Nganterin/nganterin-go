@@ -22,6 +22,8 @@ type CompService interface {
 	GetHotelByID(id string) (*dto.HotelOutputDTO, error)
 
 	FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error)
+
+	RegisterHotelOrder(data dto.HotelOrderInput) error
 }
 
 type compServices struct {
