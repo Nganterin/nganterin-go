@@ -26,6 +26,8 @@ type CompService interface {
 	FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error)
 
 	RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Response, error)
+
+	MidtransNotification(data dto.MidtransNotification) error
 }
 
 type compServices struct {

@@ -74,4 +74,9 @@ func CompRouter(api *gin.RouterGroup) {
 			}
 		}
 	}
+
+	midtransRoute := api.Group("/midtrans")
+	{
+		midtransRoute.POST("/notification", compHandler.MidtransNotification)
+	}
 }
