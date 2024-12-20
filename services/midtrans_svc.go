@@ -6,7 +6,7 @@ import (
 )
 
 func (s *compServices) MidtransNotification(data dto.MidtransNotification) error {
-	log.Println(data)
+	log.Println("ORDER ID: ", data.OrderID)
 
 	return nil
 }
