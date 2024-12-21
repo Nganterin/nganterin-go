@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"bytes"
 	"crypto/hmac"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"nganterin-go/dto"
@@ -14,15 +12,6 @@ import (
 )
 
 func (h *compHandlers) MidtransNotification(c *gin.Context) {
-    bodyBytes, err := ioutil.ReadAll(c.Request.Body)
-    if err != nil {
-        log.Println("Error reading request body:", err)
-        c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Message: "Invalid request"})
-        return
-    }
-
-    c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
-
     var data dto.MidtransNotification
     if err := c.ShouldBindJSON(&data); err != nil {
         log.Println("JSON Binding Error:", err)
@@ -30,16 +19,8 @@ func (h *compHandlers) MidtransNotification(c *gin.Context) {
         return
     }
 
-    if data.SignatureKey == "" {
-        log.Println("Missing signature in body")
-        c.JSON(http.StatusUnauthorized, dto.Response{Status: http.StatusUnauthorized, Message: "Unauthorized"})
-        return
-    }
-
 	serverKey := os.Getenv("MIDTRANS_SERVER_KEY")
-
     dataString := data.OrderID + data.StatusCode + data.GrossAmount + serverKey
-
     calculatedSignature := helpers.EncryptToSHA512(dataString)
 
 	log.Println("CALCULATED SIGNATURE: ", calculatedSignature)
