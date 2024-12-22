@@ -61,3 +61,28 @@ func (h *compHandlers) RegisterHotelOrder(c *gin.Context) {
 		Message: "order successfully registered",
 	})
 }
+
+func (h *compHandlers) GetHotelOrderByID(c *gin.Context) {
+	id := c.Query("id")
+
+	if id == "" {
+		c.JSON(http.StatusBadRequest, dto.Response{
+			Status: http.StatusBadRequest,
+			Error:  "id is required",
+		})
+	}
+
+	result, err := h.service.GetHotelOrderByID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Status: http.StatusInternalServerError,
+			Error: err.Error(),
+		})
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Status: http.StatusOK,
+		Data: result,
+		Message: "data retrieved successfully",
+	})
+}

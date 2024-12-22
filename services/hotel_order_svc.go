@@ -68,3 +68,14 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelO
 
 	return &output, nil
 }
+
+func (s *compServices) GetHotelOrderByID(id string) (*dto.HotelOrderDetailsOutput, error) {
+	data, err := s.repo.GetHotelOrderByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	result := mapper.MapHotelOrderModelToOutput(*data)
+
+	return &result, nil
+}

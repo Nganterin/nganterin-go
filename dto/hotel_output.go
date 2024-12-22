@@ -1,5 +1,7 @@
 package dto
 
+import "time"
+
 type HotelOutputDTO struct {
 	ID              string                  `json:"id"`
 	PartnerID       string                  `json:"partner_id"`
@@ -55,4 +57,22 @@ type HotelOrderOutput struct {
 	ID          string `json:"id"`
 	Token       string `json:"token"`
 	RedirectURL string `json:"redirect_url"`
+}
+
+type HotelOrderDetailsOutput struct {
+	ID               string    `json:"id"`
+	UserID           string    `json:"user_id"`
+	HotelID          string    `json:"hotel_id"`
+	HotelRoomID      uint      `json:"hotel_room_id"`
+	CheckInDate      time.Time `json:"check_in_date"`
+	CheckOutDate     time.Time `json:"check_out_date"`
+	TotalPrice       int64     `json:"total_price"`
+	PaymentStatus    string    `json:"payment_status"`
+	SnapToken        string    `json:"snap_token"`
+	SpecialRequest   string    `json:"special_request"`
+	IsForSomeoneElse bool      `json:"is_for_someone_else"`
+	SomeoneName      string    `json:"someone_name"`
+	SomeoneRegion    string    `json:"someone_region"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
 }

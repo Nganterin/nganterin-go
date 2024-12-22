@@ -49,6 +49,7 @@ func CompRouter(api *gin.RouterGroup) {
 		hotelRoute := orderRoute.Group("/hotel")
 		{
 			hotelRoute.POST("/register", compHandler.RegisterHotelOrder)
+			hotelRoute.GET("/get", compHandler.GetHotelOrderByID)
 		}
 	}
 

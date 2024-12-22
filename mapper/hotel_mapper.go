@@ -30,3 +30,15 @@ func MapHotelOrderInputToModel(input dto.HotelOrderInput) models.HotelOrders {
 	
 	return hotelOrder
 }
+
+func MapHotelOrderModelToOutput(model models.HotelOrders) dto.HotelOrderDetailsOutput {
+	var orderOutput dto.HotelOrderDetailsOutput
+
+	mapstructure.Decode(model, &orderOutput)
+	orderOutput.CheckInDate = model.CheckInDate
+	orderOutput.CheckInDate = model.CheckInDate
+	orderOutput.CreatedAt = model.CreatedAt
+	orderOutput.UpdatedAt = model.UpdatedAt
+
+	return orderOutput
+}

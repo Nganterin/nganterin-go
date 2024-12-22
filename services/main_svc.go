@@ -23,7 +23,8 @@ type CompService interface {
 
 	FileUpload(file []byte, data dto.FilesInputDTO) (*dto.FilesOutputDTO, error)
 
-	RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelOrderOutput, error) 
+	RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelOrderOutput, error)
+	GetHotelOrderByID(id string) (*dto.HotelOrderDetailsOutput, error)
 
 	MidtransNotification(data dto.MidtransNotification) error
 }
