@@ -32,7 +32,7 @@ func (r *compRepository) GetHotelOrderByID(id string) (*models.HotelOrders, erro
 func (s *compRepository) UpdateHotelOrderPaymentStatus(id string, status string) error {
 	var data models.HotelOrders
 
-	result := s.DB.Model(&data).Where("id = ?", id).Update("status",
+	result := s.DB.Model(&data).Where("id = ?", id).Update("payment_status",
 		status)
 	if result.Error != nil {
 		return result.Error
