@@ -23,7 +23,7 @@ type HotelRoomOutput struct {
 	TotalRoom      int    `json:"total_room"`
 	TotalBooked    int    `json:"total_booked"`
 
-	HotelRoomPhotoInput     []HotelRoomPhotoInput      `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
+	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
 }
 
 type HotelsLocationOutput struct {
@@ -49,4 +49,10 @@ type HotelRoomPhotoOutput struct {
 type HotelFacilitiesOutput struct {
 	ID       uint   `json:"id"`
 	Facility string `json:"facility"`
+}
+
+type HotelOrderOutput struct {
+	ID          string `json:"id"`
+	Token       string `json:"token"`
+	RedirectURL string `json:"redirect_url"`
 }

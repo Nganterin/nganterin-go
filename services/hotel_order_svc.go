@@ -11,7 +11,7 @@ import (
 	"github.com/midtrans/midtrans-go/snap"
 )
 
-func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Response, error) {
+func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelOrderOutput, error) {
 	roomData, err := s.repo.GetHotelRoomByID(data.HotelRoomID)
 	if err != nil {
 		return nil, errors.New("400")
@@ -25,7 +25,7 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Respo
 	input := mapper.MapHotelOrderInputToModel(data)
 
 	duration := input.CheckOutDate.Sub(input.CheckInDate)
-	days := int(duration.Hours() / 24) + 1
+	days := int(duration.Hours()/24) + 1
 
 	if days <= 0 {
 		return nil, errors.New("400")
@@ -60,5 +60,11 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*snap.Respo
 		return nil, err
 	}
 
-	return snapResp, nil
+	output := dto.HotelOrderOutput{
+		ID:          input.ID,
+		Token:       snapResp.Token,
+		RedirectURL: snapResp.RedirectURL,
+	}
+
+	return &output, nil
 }
