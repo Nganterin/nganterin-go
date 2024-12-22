@@ -3,6 +3,8 @@ package helpers
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
+	"fmt"
 	"time"
 )
 
@@ -21,4 +23,15 @@ func GenerateUniqueFileName() string {
 
 func GenerateMilliseconds() string {
 	return time.Now().Format(".000")[1:]
+}
+
+func GenerateSecret(byteLength int) (string, error) {
+	bytes := make([]byte, byteLength)
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate secret: %w", err)
+	}
+	secret := hex.EncodeToString(bytes)
+
+	return secret, nil
 }

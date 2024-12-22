@@ -31,6 +31,10 @@ type CompRepository interface {
 	FileUpload(data models.Files) (*models.Files, error)
 
 	RegisterHotelOrder(data models.HotelOrders) error
+	GetHotelOrderByID(id string) (*models.HotelOrders, error) 
+	UpdateHotelOrderPaymentStatus(id string, status string) error
+
+	RegisterHotelReservation(data models.HotelReservations) error
 }
 
 type compRepository struct {

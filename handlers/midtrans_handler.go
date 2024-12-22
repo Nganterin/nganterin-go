@@ -23,17 +23,12 @@ func (h *compHandlers) MidtransNotification(c *gin.Context) {
     dataString := data.OrderID + data.StatusCode + data.GrossAmount + serverKey
     calculatedSignature := helpers.EncryptToSHA512(dataString)
 
-	log.Println("CALCULATED SIGNATURE: ", calculatedSignature)
-	log.Println("RECIEVED SIGNATURE: ", data.SignatureKey)
-
     if !hmac.Equal([]byte(calculatedSignature), []byte(data.SignatureKey)) {
-        log.Println("Invalid signature")
         c.JSON(http.StatusUnauthorized, dto.Response{Status: http.StatusUnauthorized, Message: "Unauthorized"})
         return
     }
 
     if err := h.service.MidtransNotification(data); err != nil {
-        log.Println("Service Error:", err)
         c.JSON(http.StatusInternalServerError, dto.Response{Status: http.StatusInternalServerError, Message: "Internal Server Error"})
         return
     }

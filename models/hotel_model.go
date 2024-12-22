@@ -109,8 +109,8 @@ type HotelReservations struct {
 	ID                string `gorm:"primaryKey"`
 	HotelOrdersID     string `gorm:"not null"`
 	UserID            string `gorm:"not null"`
-	ReservationKey    string `gorm:"not null"`
-	ReservationStatus string `gorm:"not null"` // Enum: "Confirmed", "CheckedIn", "Completed"
+	ReservationKey    string `gorm:"not null;unique"`
+	ReservationStatus string `gorm:"not null;default:confirmed"` // Enum: "Confirmed", "CheckedIn", "Completed"
 	CreatedAt         time.Time
 	UpdatedAt         time.Time
 	DeletedAt         *time.Time `gorm:"null;default:null"`

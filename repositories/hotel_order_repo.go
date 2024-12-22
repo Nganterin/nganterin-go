@@ -16,4 +16,26 @@ func (r *compRepository) RegisterHotelOrder(data models.HotelOrders) error {
 	}
 
 	return nil
-} 
+}
+
+func (r *compRepository) GetHotelOrderByID(id string) (*models.HotelOrders, error) {
+	var data models.HotelOrders
+
+	result := r.DB.Where("id = ?", id).First(&data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &data, nil
+}
+
+func (s *compRepository) UpdateHotelOrderPaymentStatus(id string, status string) error {
+	var data models.HotelOrders
+
+	result := s.DB.Model(&data).Where("id = ?", id).Update("status",
+		status)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
