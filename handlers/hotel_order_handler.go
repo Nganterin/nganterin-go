@@ -70,6 +70,7 @@ func (h *compHandlers) GetHotelOrderByID(c *gin.Context) {
 			Status: http.StatusBadRequest,
 			Error:  "id is required",
 		})
+		return
 	}
 
 	result, err := h.service.GetHotelOrderByID(id)
@@ -78,6 +79,7 @@ func (h *compHandlers) GetHotelOrderByID(c *gin.Context) {
 			Status: http.StatusInternalServerError,
 			Error: err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, dto.Response{

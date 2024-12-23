@@ -75,4 +75,11 @@ type HotelOrderDetailsOutput struct {
 	SomeoneRegion    string    `json:"someone_region"`
 	CreatedAt        time.Time `json:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at"`
+
+	HotelReservations HotelReservationOutput `json:"hotel_reservation"`
+}
+
+type HotelReservationOutput struct {
+	ReservationKey    string `json:"reservation_key"`
+	ReservationStatus string `json:"reservation_status"`
 }

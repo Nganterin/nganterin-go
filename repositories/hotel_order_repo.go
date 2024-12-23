@@ -21,7 +21,10 @@ func (r *compRepository) RegisterHotelOrder(data models.HotelOrders) error {
 func (r *compRepository) GetHotelOrderByID(id string) (*models.HotelOrders, error) {
 	var data models.HotelOrders
 
-	result := r.DB.Where("id = ?", id).First(&data)
+	result := r.DB.
+		Preload("HotelReservations").
+		Where("id = ?", id).
+		First(&data)
 	if result.Error != nil {
 		return nil, result.Error
 	}
