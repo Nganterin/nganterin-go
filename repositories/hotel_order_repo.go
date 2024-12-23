@@ -50,8 +50,8 @@ func (r *compRepository) GetAllHotelOrderByUserID(id string) ([]models.HotelOrde
 		Preload("HotelReservations").
 		Preload("Hotel").
 		Preload("Hotel.HotelsLocation").
-		Preload("Hotel.HotelPhotos").
 		Preload("HotelRoom").
+		Preload("HotelRoom.HotelRoomPhotos").
 		Where("user_id = ?", id).
 		Order("created_at DESC").
 		Find(&data)
