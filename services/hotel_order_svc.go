@@ -79,3 +79,17 @@ func (s *compServices) GetHotelOrderByID(id string) (*dto.HotelOrderDetailsOutpu
 
 	return &result, nil
 }
+
+func (s *compServices) GetAllHotelOrderByUserID(id string) ([]dto.HotelOrderDetailsOutput, error) {
+	data, err := s.repo.GetAllHotelOrderByUserID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []dto.HotelOrderDetailsOutput
+	for _, item := range data {
+		result = append(result, mapper.MapHotelOrderModelToOutput(item))
+	}
+
+	return result, nil
+}

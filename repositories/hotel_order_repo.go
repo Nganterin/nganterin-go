@@ -42,3 +42,17 @@ func (s *compRepository) UpdateHotelOrderPaymentStatus(id string, status string)
 	}
 	return nil
 }
+
+func (r *compRepository) GetAllHotelOrderByUserID(id string) ([]models.HotelOrders, error) {
+	var data []models.HotelOrders
+
+	result := r.DB.
+		Preload("HotelReservations").
+		Where("user_id = ?", id).
+		Find(&data)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	
+	return data, nil
+}

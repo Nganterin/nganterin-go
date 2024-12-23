@@ -25,6 +25,7 @@ type CompService interface {
 
 	RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelOrderOutput, error)
 	GetHotelOrderByID(id string) (*dto.HotelOrderDetailsOutput, error)
+	GetAllHotelOrderByUserID(id string) ([]dto.HotelOrderDetailsOutput, error) 
 
 	MidtransNotification(data dto.MidtransNotification) error
 }

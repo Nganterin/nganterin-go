@@ -33,6 +33,7 @@ type CompRepository interface {
 	RegisterHotelOrder(data models.HotelOrders) error
 	GetHotelOrderByID(id string) (*models.HotelOrders, error) 
 	UpdateHotelOrderPaymentStatus(id string, status string) error
+	GetAllHotelOrderByUserID(id string) ([]models.HotelOrders, error) 
 
 	RegisterHotelReservation(data models.HotelReservations) error
 }

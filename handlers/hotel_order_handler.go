@@ -77,14 +77,33 @@ func (h *compHandlers) GetHotelOrderByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.Response{
 			Status: http.StatusInternalServerError,
-			Error: err.Error(),
+			Error:  err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, dto.Response{
-		Status: http.StatusOK,
-		Data: result,
+		Status:  http.StatusOK,
+		Data:    result,
+		Message: "data retrieved successfully",
+	})
+}
+
+func (h *compHandlers) GetAllHotelOrderByUserID(c *gin.Context) {
+	userData := helpers.GetUserData(c)
+
+	result, err := h.service.GetAllHotelOrderByUserID(userData.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Status: http.StatusInternalServerError,
+			Error:  err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Data:    result,
 		Message: "data retrieved successfully",
 	})
 }
