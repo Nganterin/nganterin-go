@@ -101,6 +101,8 @@ type HotelOrders struct {
 	DeletedAt        *time.Time `gorm:"null;default:null"`
 
 	HotelReservations HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
+	Hotel             Hotels            `gorm:"foreignKey:HotelID"`
+	HotelRoom         HotelRooms        `gorm:"foreignKey:HotelRoomID"`
 }
 
 type HotelReservations struct {

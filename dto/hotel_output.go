@@ -8,10 +8,10 @@ type HotelOutputDTO struct {
 	Name            string                  `json:"name"`
 	Description     string                  `json:"description"`
 	PricingStart    int64                   `json:"pricing_start"`
-	HotelRooms      []HotelRoomOutput       `json:"hotel_rooms"`
-	HotelsLocation  HotelsLocationOutput    `json:"hotels_location"`
-	HotelPhotos     []HotelPhotoOutput      `json:"hotel_photos"`
-	HotelFacilities []HotelFacilitiesOutput `json:"hotel_facilities"`
+	HotelRooms      []HotelRoomOutput       `json:"hotel_rooms,omitempty"`
+	HotelsLocation  HotelsLocationOutput    `json:"hotels_location,omitempty"`
+	HotelPhotos     []HotelPhotoOutput      `json:"hotel_photos,omitempty"`
+	HotelFacilities []HotelFacilitiesOutput `json:"hotel_facilities,omitempty"`
 }
 
 type HotelRoomOutput struct {
@@ -77,6 +77,8 @@ type HotelOrderDetailsOutput struct {
 	UpdatedAt        time.Time `json:"updated_at"`
 
 	HotelReservations HotelReservationOutput `json:"hotel_reservation"`
+	Hotel             HotelOutputDTO         `json:"hotel"`
+	HotelRoom         HotelRoomOutput        `json:"hotel_room"`
 }
 
 type HotelReservationOutput struct {

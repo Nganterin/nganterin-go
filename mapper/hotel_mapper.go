@@ -36,7 +36,7 @@ func MapHotelOrderModelToOutput(model models.HotelOrders) dto.HotelOrderDetailsO
 
 	mapstructure.Decode(model, &orderOutput)
 	orderOutput.CheckInDate = model.CheckInDate
-	orderOutput.CheckInDate = model.CheckInDate
+	orderOutput.CheckOutDate = model.CheckOutDate
 	orderOutput.CreatedAt = model.CreatedAt
 	orderOutput.UpdatedAt = model.UpdatedAt
 
