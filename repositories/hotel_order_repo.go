@@ -49,10 +49,11 @@ func (r *compRepository) GetAllHotelOrderByUserID(id string) ([]models.HotelOrde
 	result := r.DB.
 		Preload("HotelReservations").
 		Where("user_id = ?", id).
+		Order("created_at DESC").
 		Find(&data)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	
+
 	return data, nil
 }
