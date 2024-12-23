@@ -1,7 +1,9 @@
 package services
 
 import (
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"nganterin-go/dto"
 	"nganterin-go/mapper"
 	"os"
@@ -37,6 +39,8 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelO
 	var m snap.Client
 	m.New(os.Getenv("MIDTRANS_SERVER_KEY"), midtrans.Sandbox)
 
+	secdat := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("{\n  id: %s\n}", input.ID)))
+
 	req := &snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{
 			OrderID:  input.ID,
@@ -49,6 +53,9 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelO
 			FName: userData.Name,
 			Email: userData.Email,
 			Phone: userData.PhoneNumber,
+		},
+		Callbacks: &snap.Callbacks{
+			Finish: os.Getenv("FRONT_END_BASE_URL") + "/payment/hotel?secdat=" + secdat,
 		},
 	}
 
