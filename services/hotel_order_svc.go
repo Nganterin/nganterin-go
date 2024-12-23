@@ -27,7 +27,7 @@ func (s *compServices) RegisterHotelOrder(data dto.HotelOrderInput) (*dto.HotelO
 	input := mapper.MapHotelOrderInputToModel(data)
 
 	duration := input.CheckOutDate.Sub(input.CheckInDate)
-	days := int(duration.Hours()/24) + 1
+	days := int(duration.Hours()/24)
 
 	if days <= 0 {
 		return nil, errors.New("400")
