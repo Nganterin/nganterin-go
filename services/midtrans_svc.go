@@ -9,7 +9,14 @@ import (
 )
 
 func (s *compServices) MidtransNotification(data dto.MidtransNotification) error {
-	if data.TransactionStatus != "settlement" && data.TransactionStatus != "capture" {
+	if data.TransactionStatus == "deny" || data.TransactionStatus == "cancel" || data.TransactionStatus == "expire" || data.TransactionStatus == "failure" {
+		err := s.repo.UpdateHotelOrderPaymentStatus(data.OrderID, data.TransactionStatus)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	} else if data.TransactionStatus != "settlement" && data.TransactionStatus != "capture" {
 		return nil
 	}
 
