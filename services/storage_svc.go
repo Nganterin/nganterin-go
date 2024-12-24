@@ -42,6 +42,7 @@ func (s *compServices) FileUpload(file []byte, data dto.FilesInputDTO) (*dto.Fil
 
 func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*string, *string, error) {
 	APPLICATION_CREDENTIALS := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	APPLICATION_FOLDER_ID := os.Getenv("APPLICATION_FOLDER_ID")
 
 	ctx := context.Background()
 	driveService, err := drive.NewService(ctx, option.WithCredentialsJSON([]byte(APPLICATION_CREDENTIALS)))
@@ -50,12 +51,13 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 	}
 
 	fileMetadata := &drive.File{
-		Name:     name,
+		Name:    name,
+		Parents: []string{APPLICATION_FOLDER_ID},
 		MimeType: mimeType,
+
 	}
 
 	fileReader := bytes.NewReader(file)
-
 	uploadedFile, err := driveService.Files.Create(fileMetadata).
 		Media(fileReader).
 		Fields("id, name, mimeType, size, createdTime").
@@ -69,7 +71,7 @@ func (s *compServices) SaveFileToDrive(file []byte, name, mimeType string) (*str
 		Type: "anyone",
 	}).Do()
 	if err != nil {
-		return nil, nil, errors.New("failed to set file permissions: " + err.Error())
+		return nil, nil, errors.New("failed to set reader permissions: " + err.Error())
 	}
 
 	publicLink := fmt.Sprintf("https://lh3.googleusercontent.com/d/%s", uploadedFile.Id)
