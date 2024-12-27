@@ -84,3 +84,44 @@ func (h *compHandlers) VerifyUserEmail(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "user email successfully verified"})
 }
+
+func (h *compHandlers) LoginUserGoogleOAuth(c *gin.Context) {
+	type Credentials struct {
+		Email     string `json:"email" binding:"required"`
+		GoogleSUB string `json:"google_sub" binding:"required"`
+	}
+
+	var data Credentials
+
+	err := c.ShouldBindBodyWithJSON(&data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.Response{Status: http.StatusBadRequest, Error: "invalid request"})
+		return
+	}
+
+	token, err := h.service.LoginUserGoogleOAuth(data.Email, data.GoogleSUB)
+	if err != nil {
+		if err.Error() == "422" {
+			c.JSON(http.StatusUnprocessableEntity, dto.Response{
+				Status: http.StatusUnprocessableEntity,
+				Error:  "incomplete user data",
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, dto.Response{
+				Status: http.StatusInternalServerError,
+				Error:  err.Error(),
+			})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "login successfully",
+		Data:    token,
+	})
+}
+
+func (h *compHandlers) RegisterUserGoogleOauth(c *gin.Context) {
+	
+}

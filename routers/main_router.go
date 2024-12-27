@@ -30,6 +30,11 @@ func CompRouter(api *gin.RouterGroup) {
 		authRoute.POST("/login", compHandler.LoginUserCredentials)
 		authRoute.POST("/verify", compHandler.VerifyUserEmail)
 
+		googleRoute := authRoute.Group("/google")
+		{
+			googleRoute.POST("/login", compHandler.LoginUserGoogleOAuth)
+		}
+
 		authRoute.Use(middleware.AuthMiddleware())
 		{
 			authRoute.GET("/auth-test", compHandler.AuthTest)

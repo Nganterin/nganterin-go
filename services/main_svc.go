@@ -10,6 +10,8 @@ type CompService interface {
 	LoginUserCredentials(email string, password string) (*string, error)
 	VerifyUserEmail(token string) error
 
+	LoginUserGoogleOAuth(email string, googleSUB string) (*string, error)
+
 	RegisterPartner(data dto.Partner) error
 	LoginPartner(email string, password string) (*string, error)
 	VerifyPartnerEmail(token string) error

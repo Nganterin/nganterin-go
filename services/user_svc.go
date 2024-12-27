@@ -92,3 +92,43 @@ func (s *compServices) LoginUserCredentials(email string, password string) (*str
 func (s *compServices) VerifyUserEmail(token string) error {
 	return s.repo.VerifyUserEmail(token)
 }
+
+func (s *compServices) LoginUserGoogleOAuth(email string, googleSUB string) (*string, error) {
+	data, err := s.repo.GetUserDetailsByEmail(email)
+	if err != nil {
+		return nil, errors.New("422")
+	}
+
+	if !helpers.CheckPasswordHash(googleSUB, data.HashedGoogleSUB) {
+		return nil, errors.New("401")
+	}
+
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		panic("JWT_SECRET not set")
+	}
+
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["id"] = data.ID
+	claims["email"] = data.Email
+	claims["name"] = data.Name
+	claims["email_verified_at"] = data.EmailVerifiedAt
+	claims["phone_number"] = data.PhoneNumber
+	claims["country"] = data.Country
+	claims["province"] = data.Province
+	claims["city"] = data.City
+	claims["zip_code"] = data.ZipCode
+	claims["complete_address"] = data.CompleteAddress
+
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+
+	secretKey := []byte(secret)
+	tokenString, err := token.SignedString(secretKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tokenString, nil
+}
