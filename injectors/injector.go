@@ -16,16 +16,18 @@ import (
 	orderControllers "nganterin-go/orders/controllers"
 	orderRepositories "nganterin-go/orders/repositories"
 	orderServices "nganterin-go/orders/services"
-	
+
 	midtransControllers "nganterin-go/midtrans/controllers"
 	midtransServices "nganterin-go/midtrans/services"
-	
+
+	emailServices "nganterin-go/emails/services"
+
 	reservationRepositories "nganterin-go/reservations/repositories"
-	
+
 	storageControllers "nganterin-go/storages/controllers"
 	storageRepositories "nganterin-go/storages/repositories"
 	storageServices "nganterin-go/storages/services"
-	
+
 	partnerControllers "nganterin-go/partners/controllers"
 	partnerRepositories "nganterin-go/partners/repositories"
 	partnerServices "nganterin-go/partners/services"
@@ -36,6 +38,7 @@ import (
 
 var userFeatureSet = wire.NewSet(
 	userRepositories.NewComponentRepository,
+	emailServices.NewComponentServices,
 	userServices.NewComponentServices,
 	userControllers.NewCompController,
 )
@@ -69,6 +72,7 @@ var storageFeatureSet = wire.NewSet(
 
 var partnerFeatureSet = wire.NewSet(
 	partnerRepositories.NewComponentRepository,
+	emailServices.NewComponentServices,
 	partnerServices.NewComponentServices,
 	partnerControllers.NewCompController,
 )

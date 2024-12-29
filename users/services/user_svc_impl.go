@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"net/http"
-	emailServices "nganterin-go/emails/services"
 	"nganterin-go/exceptions"
 	"nganterin-go/helpers"
 	"nganterin-go/models/database"
@@ -12,20 +11,24 @@ import (
 	"os"
 	"time"
 
+	emailServices "nganterin-go/emails/services"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type CompServicesImpl struct {
-	repo repositories.CompRepositories
-	DB   *gorm.DB
+	repo         repositories.CompRepositories
+	emailService emailServices.CompServices
+	DB           *gorm.DB
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB) CompServices {
+func NewComponentServices(compRepositories repositories.CompRepositories, compEmailService emailServices.CompServices, db *gorm.DB) CompServices {
 	return &CompServicesImpl{
-		repo: compRepositories,
-		DB:   db,
+		repo:         compRepositories,
+		emailService: compEmailService,
+		DB:           db,
 	}
 }
 
@@ -62,12 +65,12 @@ func (s *CompServicesImpl) CreateCredentials(ctx *gin.Context, data dto.User) *e
 
 	go func() {
 		verificationEmail := dto.EmailVerification{
-			Email:   data.Email,
-			Subject: "Nganterin - Verification Email",
+			Email:           data.Email,
+			Subject:         "Nganterin - Verification Email",
 			VerificationURL: os.Getenv("WEBCLIENT_BASE_URL") + "/auth/verify?token=" + *token,
 		}
 
-		err = emailServices.NewComponentServices().VerificationEmail(verificationEmail)
+		err = s.emailService.VerificationEmail(verificationEmail)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -142,7 +145,7 @@ func (s *CompServicesImpl) LoginGoogleOAuth(ctx *gin.Context, email string, goog
 	if err != nil {
 		return nil, err
 	}
-	
+
 	secret := os.Getenv("JWT_SECRET")
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)

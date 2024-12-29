@@ -9,38 +9,40 @@ package injectors
 import (
 	"github.com/google/wire"
 	"gorm.io/gorm"
+	"nganterin-go/emails/services"
 	controllers2 "nganterin-go/hotels/controllers"
 	repositories2 "nganterin-go/hotels/repositories"
-	services2 "nganterin-go/hotels/services"
+	services3 "nganterin-go/hotels/services"
 	controllers4 "nganterin-go/midtrans/controllers"
-	services4 "nganterin-go/midtrans/services"
+	services5 "nganterin-go/midtrans/services"
 	controllers3 "nganterin-go/orders/controllers"
 	repositories3 "nganterin-go/orders/repositories"
-	services3 "nganterin-go/orders/services"
+	services4 "nganterin-go/orders/services"
 	controllers6 "nganterin-go/partners/controllers"
 	repositories6 "nganterin-go/partners/repositories"
-	services6 "nganterin-go/partners/services"
+	services7 "nganterin-go/partners/services"
 	repositories4 "nganterin-go/reservations/repositories"
 	controllers5 "nganterin-go/storages/controllers"
 	repositories5 "nganterin-go/storages/repositories"
-	services5 "nganterin-go/storages/services"
+	services6 "nganterin-go/storages/services"
 	"nganterin-go/users/controllers"
 	"nganterin-go/users/repositories"
-	"nganterin-go/users/services"
+	services2 "nganterin-go/users/services"
 )
 
 // Injectors from injector.go:
 
 func InitializeUserController(db *gorm.DB) controllers.CompControllers {
 	compRepositories := repositories.NewComponentRepository()
-	compServices := services.NewComponentServices(compRepositories, db)
-	compControllers := controllers.NewCompController(compServices)
+	compServices := services.NewComponentServices()
+	servicesCompServices := services2.NewComponentServices(compRepositories, compServices, db)
+	compControllers := controllers.NewCompController(servicesCompServices)
 	return compControllers
 }
 
 func InitializeHotelController(db *gorm.DB) controllers2.CompControllers {
 	compRepositories := repositories2.NewComponentRepository()
-	compService := services2.NewComponentServices(compRepositories, db)
+	compService := services3.NewComponentServices(compRepositories, db)
 	compControllers := controllers2.NewCompController(compService)
 	return compControllers
 }
@@ -49,7 +51,7 @@ func InitializeOrderController(db *gorm.DB) controllers3.CompControllers {
 	compRepositories := repositories3.NewComponentRepository()
 	repositoriesCompRepositories := repositories2.NewComponentRepository()
 	compRepositories2 := repositories.NewComponentRepository()
-	compServices := services3.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db)
+	compServices := services4.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db)
 	compControllers := controllers3.NewCompController(compServices)
 	return compControllers
 }
@@ -57,35 +59,36 @@ func InitializeOrderController(db *gorm.DB) controllers3.CompControllers {
 func InitializeMidtransController(db *gorm.DB) controllers4.CompControllers {
 	compRepositories := repositories3.NewComponentRepository()
 	repositoriesCompRepositories := repositories4.NewComponentRepository()
-	compServices := services4.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
+	compServices := services5.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
 	compControllers := controllers4.NewCompController(compServices)
 	return compControllers
 }
 
 func InitializeStorageController(db *gorm.DB) controllers5.CompControllers {
 	compRepositories := repositories5.NewComponentRepository()
-	compServices := services5.NewComponentServices(compRepositories, db)
+	compServices := services6.NewComponentServices(compRepositories, db)
 	compControllers := controllers5.NewCompController(compServices)
 	return compControllers
 }
 
 func InitializePartnerController(db *gorm.DB) controllers6.CompControllers {
 	compRepositories := repositories6.NewComponentRepository()
-	compServices := services6.NewComponentServices(compRepositories, db)
-	compControllers := controllers6.NewCompController(compServices)
+	compServices := services.NewComponentServices()
+	servicesCompServices := services7.NewComponentServices(compRepositories, compServices, db)
+	compControllers := controllers6.NewCompController(servicesCompServices)
 	return compControllers
 }
 
 // injector.go:
 
-var userFeatureSet = wire.NewSet(repositories.NewComponentRepository, services.NewComponentServices, controllers.NewCompController)
+var userFeatureSet = wire.NewSet(repositories.NewComponentRepository, services.NewComponentServices, services2.NewComponentServices, controllers.NewCompController)
 
-var hotelFeatureSet = wire.NewSet(repositories2.NewComponentRepository, services2.NewComponentServices, controllers2.NewCompController)
+var hotelFeatureSet = wire.NewSet(repositories2.NewComponentRepository, services3.NewComponentServices, controllers2.NewCompController)
 
-var orderFeatureSet = wire.NewSet(repositories.NewComponentRepository, repositories2.NewComponentRepository, repositories3.NewComponentRepository, services3.NewComponentServices, controllers3.NewCompController)
+var orderFeatureSet = wire.NewSet(repositories.NewComponentRepository, repositories2.NewComponentRepository, repositories3.NewComponentRepository, services4.NewComponentServices, controllers3.NewCompController)
 
-var midtransFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories4.NewComponentRepository, services4.NewComponentServices, controllers4.NewCompController)
+var midtransFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories4.NewComponentRepository, services5.NewComponentServices, controllers4.NewCompController)
 
-var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services5.NewComponentServices, controllers5.NewCompController)
+var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services6.NewComponentServices, controllers5.NewCompController)
 
-var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services6.NewComponentServices, controllers6.NewCompController)
+var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services.NewComponentServices, services7.NewComponentServices, controllers6.NewCompController)

@@ -19,18 +19,23 @@ import (
 )
 
 type CompServicesImpl struct {
-	repo repositories.CompRepositories
-	DB   *gorm.DB
+	repo         repositories.CompRepositories
+	emailService emailServices.CompServices
+	DB           *gorm.DB
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB) CompServices {
+func NewComponentServices(compRepositories repositories.CompRepositories, compEmailService emailServices.CompServices, db *gorm.DB) CompServices {
 	return &CompServicesImpl{
-		repo: compRepositories,
-		DB:   db,
+		repo:         compRepositories,
+		emailService: compEmailService,
+		DB:           db,
 	}
 }
 
 func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.Partner) *exceptions.Exception {
+	tx := s.DB.Begin()
+	defer helpers.CommitOrRollback(tx)
+
 	hashed_password, err := helpers.HashPassword(data.Password)
 	if err != nil {
 		return err
@@ -49,12 +54,12 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.Partner) *exception
 		MOUFile:        data.MOUFile,
 	}
 
-	partner_id, err := s.repo.Create(ctx, s.DB, partner_data)
+	partner_id, err := s.repo.Create(ctx, tx, partner_data)
 	if err != nil {
 		return err
 	}
 
-	token, err := s.repo.CreateVerificationToken(ctx, s.DB, *partner_id)
+	token, err := s.repo.CreateVerificationToken(ctx, tx, *partner_id)
 	if err != nil {
 		return err
 	}
@@ -66,7 +71,7 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.Partner) *exception
 			VerificationURL: os.Getenv("DASHBOARD_BASE_URL") + "/auth/verify?token=" + *token,
 		}
 
-		err = emailServices.NewComponentServices().VerificationEmail(verificationEmail)
+		err = s.emailService.VerificationEmail(verificationEmail)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -90,7 +95,6 @@ func (s *CompServicesImpl) Login(ctx *gin.Context, email string, password string
 		return nil, exceptions.NewException(http.StatusForbidden, exceptions.ErrEmailNotVerified)
 	}
 
-	
 	secret := os.Getenv("JWT_SECRET")
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
