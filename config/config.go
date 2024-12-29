@@ -31,10 +31,10 @@ func InitDB() *gorm.DB {
 
 	dbURI := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 
-	db, err := gorm.Open(postgres.Open(dbURI), &gorm.Config{})
+	connection, err := gorm.Open(postgres.Open(dbURI), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return db
+	return connection
 }

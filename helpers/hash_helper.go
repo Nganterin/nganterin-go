@@ -1,15 +1,26 @@
 package helpers
 
 import (
-    "golang.org/x/crypto/bcrypt"
+	"net/http"
+	"nganterin-go/exceptions"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPassword(password string) (string, error) {
+func HashPassword(password string) (string, *exceptions.Exception) {
     bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-    return string(bytes), err
+    if err != nil {
+        return "", exceptions.NewException(http.StatusInternalServerError, exceptions.ErrCredentialsHash)
+    }
+
+    return string(bytes), nil
 }
 
-func CheckPasswordHash(password, hash string) bool {
+func CheckPasswordHash(password, hash string) *exceptions.Exception {
     err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-    return err == nil
+    if err != nil {
+        return exceptions.NewException(http.StatusUnauthorized, exceptions.ErrInvalidCredentials)
+    }
+
+    return nil
 }

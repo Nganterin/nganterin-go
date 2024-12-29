@@ -20,7 +20,7 @@ type Env struct {
 	SMTP_PORT                      string
 	SMTP_EMAIL                     string
 	SMTP_PASSWORD                  string
-	FRONT_END_BASE_URL             string
+	WEBCLIENT_BASE_URL             string
 	DASHBOARD_BASE_URL             string
 	GOOGLE_APPLICATION_CREDENTIALS string
 	MIDTRANS_SERVER_KEY            string
@@ -41,7 +41,7 @@ func InitEnvCheck() {
 		SMTP_PORT:                      os.Getenv("SMTP_PORT"),
 		SMTP_EMAIL:                     os.Getenv("SMTP_EMAIL"),
 		SMTP_PASSWORD:                  os.Getenv("SMTP_PASSWORD"),
-		FRONT_END_BASE_URL:             os.Getenv("FRONT_END_BASE_URL"),
+		WEBCLIENT_BASE_URL:             os.Getenv("WEBCLIENT_BASE_URL"),
 		DASHBOARD_BASE_URL:             os.Getenv("DASHBOARD_BASE_URL"),
 		GOOGLE_APPLICATION_CREDENTIALS: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
 		MIDTRANS_SERVER_KEY:            os.Getenv("MIDTRANS_SERVER_KEY"),

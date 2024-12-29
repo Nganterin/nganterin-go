@@ -1,28 +1,28 @@
 package mapper
 
 import (
-	"nganterin-go/dto"
-	"nganterin-go/models"
+	"nganterin-go/models/database"
+	"nganterin-go/models/dto"
 
 	"github.com/go-viper/mapstructure/v2"
 )
 
-func MapHotelInputToModel(input dto.HotelInputDTO) models.Hotels {
-	var hotel models.Hotels
+func MapHotelInputToModel(input dto.HotelInputDTO) database.Hotels {
+	var hotel database.Hotels
 	
 	mapstructure.Decode(input, &hotel)
 	return hotel
 }
 
-func MapHotelModelToOutput(model models.Hotels) dto.HotelOutputDTO {
+func MapHotelModelToOutput(model database.Hotels) dto.HotelOutputDTO {
 	var hotelOutput dto.HotelOutputDTO
 
 	mapstructure.Decode(model, &hotelOutput)
 	return hotelOutput
 }
 
-func MapHotelOrderInputToModel(input dto.HotelOrderInput) models.HotelOrders {
-	var hotelOrder models.HotelOrders
+func MapHotelOrderInputToModel(input dto.HotelOrderInput) database.HotelOrders {
+	var hotelOrder database.HotelOrders
 
 	mapstructure.Decode(input, &hotelOrder)
 	hotelOrder.CheckInDate = input.CheckInDate
@@ -31,7 +31,7 @@ func MapHotelOrderInputToModel(input dto.HotelOrderInput) models.HotelOrders {
 	return hotelOrder
 }
 
-func MapHotelOrderModelToOutput(model models.HotelOrders) dto.HotelOrderDetailsOutput {
+func MapHotelOrderModelToOutput(model database.HotelOrders) dto.HotelOrderDetailsOutput {
 	var orderOutput dto.HotelOrderDetailsOutput
 
 	mapstructure.Decode(model, &orderOutput)

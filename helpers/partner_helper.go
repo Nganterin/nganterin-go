@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"nganterin-go/dto"
+	"nganterin-go/models/dto"
 
 	"github.com/gin-gonic/gin"
 )

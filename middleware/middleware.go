@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"nganterin-go/dto"
-	"nganterin-go/models"
+	"nganterin-go/models/database"
+	"nganterin-go/models/dto"
 	"os"
 	"strings"
 
@@ -204,7 +204,7 @@ func ClientTracker(db *gorm.DB) gin.HandlerFunc {
 			RawQuery: rawQuery,
 		}
 
-		data := models.Client{
+		data := database.Client{
 			IP:      clientIP,
 			Browser: name,
 			Version: version,
