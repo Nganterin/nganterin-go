@@ -18,7 +18,7 @@ func NewComponentRepository() CompRepositories {
 	return &CompRepositoriesImpl{}
 }
 
-func (r *CompRepositoriesImpl) CreateCredentials(ctx *gin.Context, tx *gorm.DB, data database.Users) (*string, *exceptions.Exception) {
+func (r *CompRepositoriesImpl) Create(ctx *gin.Context, tx *gorm.DB, data database.Users) (*string, *exceptions.Exception) {
 	data.ID = uuid.NewString()
 
 	result := tx.Create(&data)

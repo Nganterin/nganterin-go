@@ -53,7 +53,7 @@ func (s *CompServicesImpl) CreateCredentials(ctx *gin.Context, data dto.User) *e
 		CompleteAddress: data.CompleteAddress,
 	}
 
-	userID, err := s.repo.CreateCredentials(ctx, tx, user_data)
+	userID, err := s.repo.Create(ctx, tx, user_data)
 	if err != nil {
 		return err
 	}
@@ -77,6 +77,62 @@ func (s *CompServicesImpl) CreateCredentials(ctx *gin.Context, data dto.User) *e
 	}()
 
 	return nil
+}
+
+func (s *CompServicesImpl) CreateGoogleOAuth(ctx *gin.Context, data dto.UserGoogle) (*string, *exceptions.Exception) {
+	tx := s.DB.Begin()
+	defer helpers.CommitOrRollback(tx)
+
+	hashedGoogleSUB, err := helpers.HashPassword(data.GoogleSUB)
+	if err != nil {
+		return nil, exceptions.NewException(http.StatusInternalServerError, exceptions.ErrCredentialsHash)
+	}
+
+	now := time.Now()
+
+	user_data := database.Users{
+		Name:            data.Name,
+		Email:           data.Email,
+		EmailVerifiedAt: &now,
+		HashedGoogleSUB: hashedGoogleSUB,
+		PhoneNumber:     data.PhoneNumber,
+		Country:         data.Country,
+		Province:        data.Province,
+		City:            data.City,
+		ZipCode:         data.ZipCode,
+		CompleteAddress: data.CompleteAddress,
+		Avatar:          data.Avatar,
+	}
+
+	userID, err := s.repo.Create(ctx, tx, user_data)
+	if err != nil {
+		return nil, err
+	}
+
+	secret := os.Getenv("JWT_SECRET")
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["id"] = userID
+	claims["email"] = data.Email
+	claims["name"] = data.Name
+	claims["email_verified_at"] = data.EmailVerifiedAt
+	claims["phone_number"] = data.PhoneNumber
+	claims["country"] = data.Country
+	claims["province"] = data.Province
+	claims["city"] = data.City
+	claims["zip_code"] = data.ZipCode
+	claims["complete_address"] = data.CompleteAddress
+
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+
+	secretKey := []byte(secret)
+	tokenString, signError := token.SignedString(secretKey)
+	if signError != nil {
+		return nil, exceptions.NewException(http.StatusInternalServerError, exceptions.ErrTokenGenerate)
+	}
+
+	return &tokenString, nil
 }
 
 func (s *CompServicesImpl) LoginCredentials(ctx *gin.Context, email string, password string) (*string, *exceptions.Exception) {

@@ -35,7 +35,32 @@ func (h *CompControllersImpl) CreateCredentials(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "successfully register user"})
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status: http.StatusOK, 
+		Message: "successfully register user",
+	})
+}
+
+func (h *CompControllersImpl) CreateGoogleOAuth(ctx *gin.Context) {
+	var data dto.UserGoogle
+
+	jsonErr := ctx.ShouldBindJSON(&data)
+	if jsonErr != nil {
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		return
+	}
+
+	token, err := h.services.CreateGoogleOAuth(ctx, data)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status: http.StatusOK,
+		Data: token,
+		Message: "successfully register user",
+	})
 }
 
 func (h *CompControllersImpl) LoginCredentials(ctx *gin.Context) {
@@ -58,7 +83,10 @@ func (h *CompControllersImpl) LoginCredentials(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Data: token, Message: "successfully login user"})
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status: http.StatusOK, 
+		Data: token, Message: "successfully login user",
+	})
 }
 
 func (h *CompControllersImpl) VerifyEmail(ctx *gin.Context) {
@@ -75,7 +103,10 @@ func (h *CompControllersImpl) VerifyEmail(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "user email successfully verified"})
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status: http.StatusOK, 
+		Message: "user email successfully verified",
+	})
 }
 
 func (h *CompControllersImpl) LoginGoogleOAuth(ctx *gin.Context) {
@@ -108,5 +139,9 @@ func (h *CompControllersImpl) LoginGoogleOAuth(ctx *gin.Context) {
 func (h *CompControllersImpl) AuthTest(ctx *gin.Context) {
 	user_data := helpers.GetUserData(ctx)
 
-	ctx.JSON(http.StatusAccepted, dto.Response{Status: http.StatusAccepted, Message: "Test Auth Success", Data: user_data})
+	ctx.JSON(http.StatusAccepted, dto.Response{
+		Status: http.StatusAccepted, 
+		Message: "Test Auth Success", 
+		Data: user_data,
+	})
 }

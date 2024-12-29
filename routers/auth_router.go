@@ -17,6 +17,7 @@ func AuthRoutes(r *gin.RouterGroup, userController controllers.CompControllers) 
 		googleGroup := r.Group("/google")
 		{
 			googleGroup.POST("/login", userController.LoginGoogleOAuth)
+			googleGroup.POST("/register", userController.CreateGoogleOAuth)
 		}
 
 		authGroup.Use(middleware.AuthMiddleware())
