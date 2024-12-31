@@ -14,7 +14,7 @@ func AuthRoutes(r *gin.RouterGroup, userController controllers.CompControllers) 
 		authGroup.POST("/login", userController.LoginCredentials)
 		authGroup.POST("/verify", userController.VerifyEmail)
 
-		googleGroup := r.Group("/google")
+		googleGroup := authGroup.Group("/google")
 		{
 			googleGroup.POST("/login", userController.LoginGoogleOAuth)
 			googleGroup.POST("/register", userController.CreateGoogleOAuth)

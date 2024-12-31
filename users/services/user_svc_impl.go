@@ -141,6 +141,10 @@ func (s *CompServicesImpl) LoginCredentials(ctx *gin.Context, email string, pass
 		return nil, err
 	}
 
+	if data.HashedGoogleSUB != "" {
+		return nil, exceptions.NewException(http.StatusForbidden, exceptions.ErrRegisteredWithGoogle)
+	}
+
 	err = helpers.CheckPasswordHash(password, data.HashedPassword)
 	if err != nil {
 		return nil, err
@@ -189,12 +193,13 @@ func (s *CompServicesImpl) VerifyEmail(ctx *gin.Context, token string) *exceptio
 }
 
 func (s *CompServicesImpl) LoginGoogleOAuth(ctx *gin.Context, email string, googleSUB string) (*string, *exceptions.Exception) {
-	tx := s.DB.Begin()
-	defer helpers.CommitOrRollback(tx)
-
-	data, err := s.repo.FindByEmail(ctx, tx, email)
+	data, err := s.repo.FindByEmail(ctx, s.DB, email)
 	if err != nil {
 		return nil, err
+	}
+
+	if data.HashedPassword != "" {
+		return nil, exceptions.NewException(http.StatusForbidden, exceptions.ErrRegisteredWithCredentials)
 	}
 
 	err = helpers.CheckPasswordHash(googleSUB, data.HashedGoogleSUB)
