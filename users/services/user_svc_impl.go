@@ -123,6 +123,7 @@ func (s *CompServicesImpl) CreateGoogleOAuth(ctx *gin.Context, data dto.UserGoog
 	claims["city"] = data.City
 	claims["zip_code"] = data.ZipCode
 	claims["complete_address"] = data.CompleteAddress
+	claims["avatar"] = data.Avatar
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
@@ -168,6 +169,7 @@ func (s *CompServicesImpl) LoginCredentials(ctx *gin.Context, email string, pass
 	claims["city"] = data.City
 	claims["zip_code"] = data.ZipCode
 	claims["complete_address"] = data.CompleteAddress
+	claims["avatar"] = data.Avatar
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
@@ -221,6 +223,7 @@ func (s *CompServicesImpl) LoginGoogleOAuth(ctx *gin.Context, email string, goog
 	claims["city"] = data.City
 	claims["zip_code"] = data.ZipCode
 	claims["complete_address"] = data.CompleteAddress
+	claims["avatar"] = data.Avatar
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
