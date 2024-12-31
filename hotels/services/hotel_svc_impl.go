@@ -45,8 +45,8 @@ func (s *CompServicesImpl) FindAll(ctx *gin.Context) (*[]dto.HotelOutputDTO, *ex
 	return &result, nil
 }
 
-func (s *CompServicesImpl) FindByKeyword(ctx *gin.Context, keyword string) (*[]dto.HotelOutputDTO, *exceptions.Exception) {
-	hotels, err := s.repo.FindByKeyword(ctx, s.DB, keyword)
+func (s *CompServicesImpl) SearchEngine(ctx *gin.Context, searchInput dto.HotelSearch) (*[]dto.HotelOutputDTO, *exceptions.Exception) {
+	hotels, err := s.repo.SearchEngine(ctx, s.DB, searchInput)
 	if err != nil {
 		return nil, err
 	}

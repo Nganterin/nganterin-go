@@ -11,6 +11,6 @@ func HotelRoutes(r *gin.RouterGroup, hotelController controllers.CompControllers
 	{	
 		hotelGroup.GET("/getall", hotelController.FindAll)
 		hotelGroup.GET("/details", hotelController.FindByID)
-		hotelGroup.GET("/search", hotelController.FindByKeyword)
+		hotelGroup.GET("/search", hotelController.SearchEngine)
 	}
 }

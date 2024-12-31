@@ -6,5 +6,5 @@ type CompControllers interface {
 	Create(ctx *gin.Context)
 	FindAll(ctx *gin.Context)
 	FindByID(ctx *gin.Context)
-	FindByKeyword(ctx *gin.Context)
+	SearchEngine(ctx *gin.Context)
 }
