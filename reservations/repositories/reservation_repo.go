@@ -9,5 +9,6 @@ import (
 )
 
 type CompRepositories interface {
-	Create(ctx *gin.Context, tx *gorm.DB, data database.HotelReservations) *exceptions.Exception 
+	Create(ctx *gin.Context, tx *gorm.DB, data database.HotelReservations) *exceptions.Exception
+	FindByUserID(ctx *gin.Context, tx *gorm.DB, id string) ([]database.HotelOrders, *exceptions.Exception)
 }

@@ -1,5 +1,5 @@
 // go:build wireinject
-//go:build wireinject
+// go:build wireinject
 // +build wireinject
 
 package injectors
@@ -22,15 +22,17 @@ import (
 
 	emailServices "nganterin-go/emails/services"
 
-	reservationRepositories "nganterin-go/reservations/repositories"
-
 	storageControllers "nganterin-go/storages/controllers"
 	storageRepositories "nganterin-go/storages/repositories"
 	storageServices "nganterin-go/storages/services"
-
+	
 	partnerControllers "nganterin-go/partners/controllers"
 	partnerRepositories "nganterin-go/partners/repositories"
 	partnerServices "nganterin-go/partners/services"
+	
+	reservationControllers "nganterin-go/reservations/controllers"
+	reservationRepositories "nganterin-go/reservations/repositories"
+	reservationServices "nganterin-go/reservations/services"
 
 	"github.com/google/wire"
 	"gorm.io/gorm"
@@ -77,6 +79,12 @@ var partnerFeatureSet = wire.NewSet(
 	partnerControllers.NewCompController,
 )
 
+var reservationFeatureSet = wire.NewSet(
+	reservationRepositories.NewComponentRepository,
+	reservationServices.NewComponentServices,
+	reservationControllers.NewCompController,
+)
+
 func InitializeUserController(db *gorm.DB) userControllers.CompControllers {
 	wire.Build(userFeatureSet)
 	return nil
@@ -104,5 +112,10 @@ func InitializeStorageController(db *gorm.DB) storageControllers.CompControllers
 
 func InitializePartnerController(db *gorm.DB) partnerControllers.CompControllers {
 	wire.Build(partnerFeatureSet)
+	return nil
+}
+
+func InitializeReservationController(db *gorm.DB) reservationControllers.CompControllers {
+	wire.Build(reservationFeatureSet)
 	return nil
 }

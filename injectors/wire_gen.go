@@ -21,7 +21,9 @@ import (
 	controllers6 "nganterin-go/partners/controllers"
 	repositories6 "nganterin-go/partners/repositories"
 	services7 "nganterin-go/partners/services"
+	controllers7 "nganterin-go/reservations/controllers"
 	repositories4 "nganterin-go/reservations/repositories"
+	services8 "nganterin-go/reservations/services"
 	controllers5 "nganterin-go/storages/controllers"
 	repositories5 "nganterin-go/storages/repositories"
 	services6 "nganterin-go/storages/services"
@@ -79,6 +81,13 @@ func InitializePartnerController(db *gorm.DB) controllers6.CompControllers {
 	return compControllers
 }
 
+func InitializeReservationController(db *gorm.DB) controllers7.CompControllers {
+	compRepositories := repositories4.NewComponentRepository()
+	compServices := services8.NewComponentServices(compRepositories, db)
+	compControllers := controllers7.NewCompController(compServices)
+	return compControllers
+}
+
 // injector.go:
 
 var userFeatureSet = wire.NewSet(repositories.NewComponentRepository, services.NewComponentServices, services2.NewComponentServices, controllers.NewCompController)
@@ -92,3 +101,5 @@ var midtransFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repos
 var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services6.NewComponentServices, controllers5.NewCompController)
 
 var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services.NewComponentServices, services7.NewComponentServices, controllers6.NewCompController)
+
+var reservationFeatureSet = wire.NewSet(repositories4.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)

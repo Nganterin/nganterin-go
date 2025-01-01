@@ -29,6 +29,7 @@ func CompRouters(api *gin.RouterGroup) {
 	midtransController := injectors.InitializeMidtransController(db)
 	storageController := injectors.InitializeStorageController(db)
 	partnerController := injectors.InitializePartnerController(db)
+	reservationController := injectors.InitializeReservationController(db)
 
 	AuthRoutes(api, userController)
 	HotelRoutes(api, hotelController)
@@ -36,4 +37,5 @@ func CompRouters(api *gin.RouterGroup) {
 	MidtransRoutes(api, midtransController)
 	StorageRoutes(api, storageController)
 	PartnerRoutes(api, partnerController, hotelController)
+	ReservationRoutes(api, reservationController)
 }
