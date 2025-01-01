@@ -93,6 +93,6 @@ func (h *CompControllersImpl) CheckOut(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, dto.Response{
 		Status:  http.StatusOK,
-		Message: "reservation checked in successfully",
+		Message: "reservation checked out successfully",
 	})
 }
