@@ -19,7 +19,7 @@ func CompRouters(api *gin.RouterGroup) {
 	api.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, dto.Response{
 			Status: http.StatusOK,
-			Data: "pong",
+			Data:   "pong",
 		})
 	})
 
@@ -36,6 +36,6 @@ func CompRouters(api *gin.RouterGroup) {
 	OrderRoutes(api, orderController)
 	MidtransRoutes(api, midtransController)
 	StorageRoutes(api, storageController)
-	PartnerRoutes(api, partnerController, hotelController)
+	PartnerRoutes(api, partnerController, hotelController, reservationController)
 	ReservationRoutes(api, reservationController)
 }

@@ -43,3 +43,44 @@ func (r *CompRepositoriesImpl) FindByUserID(ctx *gin.Context, tx *gorm.DB, id st
 
 	return data, nil
 }
+
+func (r *CompRepositoriesImpl) FindByReservationKey(ctx *gin.Context, tx *gorm.DB, reservationKey string) (*database.HotelOrders, *exceptions.Exception) {
+	var data database.HotelOrders
+
+	result := tx.
+		Preload("HotelReservations").
+		Preload("Hotel").
+		Preload("Hotel.HotelsLocation").
+		Preload("HotelRoom").
+		Preload("HotelRoom.HotelRoomPhotos").
+		Where("hotel_reservations.reservation_key = ?", reservationKey).
+		Order("hotel_orders.created_at DESC").
+		Find(&data)
+	if result.Error != nil {
+		return nil, exceptions.ParseGormError(result.Error)
+	}
+
+	return &data, nil
+}
+
+func (r *CompRepositoriesImpl) CheckIn(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception {
+	var data database.HotelReservations
+
+	result := tx.Model(&data).Where("reservation_key = ?", reservationKey).Update("reservation_status",
+		"CheckedIn")
+	if result.Error != nil {
+		return exceptions.ParseGormError(result.Error)
+	}
+	return nil
+}
+
+func (r *CompRepositoriesImpl) CheckOut(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception {
+	var data database.HotelReservations
+
+	result := tx.Model(&data).Where("reservation_key = ?", reservationKey).Update("reservation_status",
+		"CheckedOut")
+	if result.Error != nil {
+		return exceptions.ParseGormError(result.Error)
+	}
+	return nil
+}

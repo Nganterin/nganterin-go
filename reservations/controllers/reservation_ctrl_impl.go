@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"nganterin-go/exceptions"
 	"nganterin-go/helpers"
 	"nganterin-go/models/dto"
 	"nganterin-go/reservations/services"
@@ -32,5 +33,66 @@ func (h *CompControllersImpl) FindByUserID(ctx *gin.Context) {
 		Status:  http.StatusOK,
 		Data:    result,
 		Message: "data retrieved successfully",
+	})
+}
+
+func (h *CompControllersImpl) FindByReservationKey(ctx *gin.Context) {
+	reservationKey := ctx.Query("key")
+
+	if reservationKey == "" {
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		return
+	}
+
+	result, err := h.services.FindByReservationKey(ctx, reservationKey)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Data:    result,
+		Message: "data retrieved successfully",
+	})
+}
+
+func (h *CompControllersImpl) CheckIn(ctx *gin.Context) {
+	reservationKey := ctx.Query("key")
+
+	if reservationKey == "" {
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		return
+	}
+
+	err := h.services.CheckIn(ctx, reservationKey)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "reservation checked in successfully",
+	})
+}
+
+func (h *CompControllersImpl) CheckOut(ctx *gin.Context) {
+	reservationKey := ctx.Query("key")
+
+	if reservationKey == "" {
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		return
+	}
+
+	err := h.services.CheckOut(ctx, reservationKey)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "reservation checked in successfully",
 	})
 }

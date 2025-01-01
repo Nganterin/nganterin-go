@@ -20,4 +20,7 @@ const (
 	ErrFileURL                   = "Invalid file URL"
 	ErrRegisteredWithGoogle      = "User already registered with Google"
 	ErrRegisteredWithCredentials = "User already registered with credentials"
+	ErrAlreadyCheckedIn          = "Reservation already checked in"
+	ErrNotCheckedInYet           = "Reservation not checked in yet"
+	ErrInvalidDate               = "Invalid date"
 )
