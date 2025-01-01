@@ -69,7 +69,7 @@ func (s *CompServicesImpl) CheckIn(ctx *gin.Context, reservationKey string) *exc
 		return exceptions.NewException(http.StatusForbidden, exceptions.ErrInvalidDate)
 	}
 
-	return s.repo.CheckIn(ctx, tx, data.ID)
+	return s.repo.CheckIn(ctx, tx, reservationKey)
 }
 
 func (s *CompServicesImpl) CheckOut(ctx *gin.Context, reservationKey string) *exceptions.Exception {
@@ -81,7 +81,7 @@ func (s *CompServicesImpl) CheckOut(ctx *gin.Context, reservationKey string) *ex
 		return err
 	}
 
-	if data.HotelReservations.ReservationStatus != "CheckIn" {
+	if data.HotelReservations.ReservationStatus != "CheckedIn" {
 		return exceptions.NewException(http.StatusForbidden, exceptions.ErrNotCheckedInYet)
 	}
 
@@ -91,5 +91,5 @@ func (s *CompServicesImpl) CheckOut(ctx *gin.Context, reservationKey string) *ex
 		return exceptions.NewException(http.StatusForbidden, exceptions.ErrInvalidDate)
 	}
 
-	return s.repo.CheckOut(ctx, tx, data.ID)
+	return s.repo.CheckOut(ctx, tx, reservationKey)
 }
