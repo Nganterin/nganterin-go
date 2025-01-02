@@ -1,5 +1,6 @@
 // go:build wireinject
 // go:build wireinject
+//go:build wireinject
 // +build wireinject
 
 package injectors
@@ -25,18 +26,22 @@ import (
 	storageControllers "nganterin-go/storages/controllers"
 	storageRepositories "nganterin-go/storages/repositories"
 	storageServices "nganterin-go/storages/services"
-	
+
 	partnerControllers "nganterin-go/partners/controllers"
 	partnerRepositories "nganterin-go/partners/repositories"
 	partnerServices "nganterin-go/partners/services"
-	
+
 	reservationControllers "nganterin-go/reservations/controllers"
 	reservationRepositories "nganterin-go/reservations/repositories"
 	reservationServices "nganterin-go/reservations/services"
 
+	reviewControllers "nganterin-go/reviews/controllers"
+	reviewRepositories "nganterin-go/reviews/repositories"
+	reviewServices "nganterin-go/reviews/services"
+
+	"github.com/go-playground/validator/v10"
 	"github.com/google/wire"
 	"gorm.io/gorm"
-	"github.com/go-playground/validator/v10"
 )
 
 var userFeatureSet = wire.NewSet(
@@ -86,6 +91,13 @@ var reservationFeatureSet = wire.NewSet(
 	reservationControllers.NewCompController,
 )
 
+var reviewFeatureSet = wire.NewSet(
+	reservationRepositories.NewComponentRepository,
+	reviewRepositories.NewComponentRepository,
+	reviewServices.NewComponentServices,
+	reviewControllers.NewCompController,
+)
+
 func InitializeUserController(db *gorm.DB, validate *validator.Validate) userControllers.CompControllers {
 	wire.Build(userFeatureSet)
 	return nil
@@ -118,5 +130,10 @@ func InitializePartnerController(db *gorm.DB, validate *validator.Validate) part
 
 func InitializeReservationController(db *gorm.DB, validate *validator.Validate) reservationControllers.CompControllers {
 	wire.Build(reservationFeatureSet)
+	return nil
+}
+
+func InitializeReviewController(db *gorm.DB, validate *validator.Validate) reviewControllers.CompControllers {
+	wire.Build(reviewFeatureSet)
 	return nil
 }

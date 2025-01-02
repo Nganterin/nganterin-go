@@ -25,6 +25,9 @@ import (
 	controllers7 "nganterin-go/reservations/controllers"
 	repositories4 "nganterin-go/reservations/repositories"
 	services8 "nganterin-go/reservations/services"
+	controllers8 "nganterin-go/reviews/controllers"
+	repositories7 "nganterin-go/reviews/repositories"
+	services9 "nganterin-go/reviews/services"
 	controllers5 "nganterin-go/storages/controllers"
 	repositories5 "nganterin-go/storages/repositories"
 	services6 "nganterin-go/storages/services"
@@ -89,6 +92,14 @@ func InitializeReservationController(db *gorm.DB, validate *validator.Validate) 
 	return compControllers
 }
 
+func InitializeReviewController(db *gorm.DB, validate *validator.Validate) controllers8.CompControllers {
+	compRepositories := repositories7.NewComponentRepository()
+	repositoriesCompRepositories := repositories4.NewComponentRepository()
+	compServices := services9.NewComponentServices(compRepositories, repositoriesCompRepositories, db, validate)
+	compControllers := controllers8.NewCompController(compServices)
+	return compControllers
+}
+
 // injector.go:
 
 var userFeatureSet = wire.NewSet(repositories.NewComponentRepository, services.NewComponentServices, services2.NewComponentServices, controllers.NewCompController)
@@ -104,3 +115,5 @@ var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, servic
 var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services.NewComponentServices, services7.NewComponentServices, controllers6.NewCompController)
 
 var reservationFeatureSet = wire.NewSet(repositories4.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)
+
+var reviewFeatureSet = wire.NewSet(repositories4.NewComponentRepository, repositories7.NewComponentRepository, services9.NewComponentServices, controllers8.NewCompController)

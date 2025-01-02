@@ -32,6 +32,7 @@ func CompRouters(api *gin.RouterGroup) {
 	storageController := injectors.InitializeStorageController(db, validate)
 	partnerController := injectors.InitializePartnerController(db, validate)
 	reservationController := injectors.InitializeReservationController(db, validate)
+	reviewController := injectors.InitializeReviewController(db, validate)
 
 	AuthRoutes(api, userController)
 	HotelRoutes(api, hotelController)
@@ -40,4 +41,5 @@ func CompRouters(api *gin.RouterGroup) {
 	StorageRoutes(api, storageController)
 	PartnerRoutes(api, partnerController, hotelController, reservationController)
 	ReservationRoutes(api, reservationController)
+	ReviewRoutes(api, reviewController)
 }
