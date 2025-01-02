@@ -13,6 +13,7 @@ var AllModels = []interface{}{
 	&HotelPhotos{},
 	&HotelRoomPhotos{},
 	&HotelFacilities{},
+	&HotelReservations{},
 	&HotelReviews{},
 	&HotelOrders{},
 }

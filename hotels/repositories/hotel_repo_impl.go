@@ -108,6 +108,7 @@ func (r *CompRepositoriesImpl) FindByID(ctx *gin.Context, tx *gorm.DB, id string
 	result := tx.
 		Preload("HotelRooms").
 		Preload("HotelReviews").
+		Preload("HotelReviews.User").
 		Preload("HotelRooms.HotelRoomPhotos").
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
