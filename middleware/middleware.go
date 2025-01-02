@@ -214,7 +214,7 @@ func ClientTracker(db *gorm.DB) gin.HandlerFunc {
 			API:     fullURL.String(),
 		}
 
-		db.Create(&data)
+		go db.Create(&data)
 	}
 }
 
