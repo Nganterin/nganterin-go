@@ -2,6 +2,7 @@ package services
 
 import (
 	"nganterin-go/exceptions"
+	"nganterin-go/helpers"
 	"nganterin-go/hotels/repositories"
 	"nganterin-go/mapper"
 	"nganterin-go/models/database"
@@ -32,8 +33,11 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelInputDTO) (*st
 		return nil, exceptions.NewValidationException(validateErr)
 	}
 
+	tx := s.DB.Begin()
+	defer helpers.CommitOrRollback(tx)
+
 	model_data := mapper.MapHotelInputToModel(data)
-	return s.repo.Create(ctx, s.DB, model_data)
+	return s.repo.Create(ctx, tx, model_data)
 }
 
 func (s *CompServicesImpl) FindAll(ctx *gin.Context) (*[]dto.HotelOutputDTO, *exceptions.Exception) {

@@ -12,7 +12,7 @@ type HotelInputDTO struct {
 	Description string `json:"description" validate:"required"`
 
 	HotelRooms      []HotelRoomInput       `json:"hotel_rooms" validate:"required,dive"`
-	HotelsLocation  HotelsLocationInput    `json:"hotels_location" validate:"required,dive"`
+	HotelsLocation  HotelsLocationInput    `json:"hotels_location" validate:"required"`
 	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos" validate:"required,dive"`
 	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities" validate:"required,dive"`
 }
@@ -22,10 +22,10 @@ type HotelRoomInput struct {
 	MaxVisitor     int    `json:"max_visitor" validate:"required,number"`
 	BedType        string `json:"bed_type" validate:"required"`
 	RoomSize       int    `json:"room_size" validate:"required,number"`
-	SmokingAllowed bool   `json:"smoking_allowed" validate:"required,boolean"`
-	OvernightPrice int64  `json:"overnight_price" validate:"required,number"`
-	TotalRoom      int    `json:"total_room" validate:"required,number"`
-	TotalBooked    int    `json:"total_booked" validate:"required,number"`
+	SmokingAllowed bool   `json:"smoking_allowed" validate:"boolean"`
+	OvernightPrice int64  `json:"overnight_price" validate:"required,number,min=0"`
+	TotalRoom      int    `json:"total_room" validate:"required,number,min=0"`
+	TotalBooked    int    `json:"total_booked" validate:"number,min=0"`
 
 	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" validate:"required,dive" mapstructure:"hotel_room_photos"`
 }
