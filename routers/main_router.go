@@ -26,12 +26,12 @@ func CompRouters(api *gin.RouterGroup) {
 	})
 
 	userController := injectors.InitializeUserController(db, validate)
-	hotelController := injectors.InitializeHotelController(db)
-	orderController := injectors.InitializeOrderController(db)
-	midtransController := injectors.InitializeMidtransController(db)
-	storageController := injectors.InitializeStorageController(db)
-	partnerController := injectors.InitializePartnerController(db)
-	reservationController := injectors.InitializeReservationController(db)
+	hotelController := injectors.InitializeHotelController(db, validate)
+	orderController := injectors.InitializeOrderController(db, validate)
+	midtransController := injectors.InitializeMidtransController(db, validate)
+	storageController := injectors.InitializeStorageController(db, validate)
+	partnerController := injectors.InitializePartnerController(db, validate)
+	reservationController := injectors.InitializeReservationController(db, validate)
 
 	AuthRoutes(api, userController)
 	HotelRoutes(api, hotelController)

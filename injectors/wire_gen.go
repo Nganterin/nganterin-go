@@ -43,14 +43,14 @@ func InitializeUserController(db *gorm.DB, validate *validator.Validate) control
 	return compControllers
 }
 
-func InitializeHotelController(db *gorm.DB) controllers2.CompControllers {
+func InitializeHotelController(db *gorm.DB, validate *validator.Validate) controllers2.CompControllers {
 	compRepositories := repositories2.NewComponentRepository()
 	compService := services3.NewComponentServices(compRepositories, db)
 	compControllers := controllers2.NewCompController(compService)
 	return compControllers
 }
 
-func InitializeOrderController(db *gorm.DB) controllers3.CompControllers {
+func InitializeOrderController(db *gorm.DB, validate *validator.Validate) controllers3.CompControllers {
 	compRepositories := repositories3.NewComponentRepository()
 	repositoriesCompRepositories := repositories2.NewComponentRepository()
 	compRepositories2 := repositories.NewComponentRepository()
@@ -59,7 +59,7 @@ func InitializeOrderController(db *gorm.DB) controllers3.CompControllers {
 	return compControllers
 }
 
-func InitializeMidtransController(db *gorm.DB) controllers4.CompControllers {
+func InitializeMidtransController(db *gorm.DB, validate *validator.Validate) controllers4.CompControllers {
 	compRepositories := repositories3.NewComponentRepository()
 	repositoriesCompRepositories := repositories4.NewComponentRepository()
 	compServices := services5.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
@@ -67,22 +67,22 @@ func InitializeMidtransController(db *gorm.DB) controllers4.CompControllers {
 	return compControllers
 }
 
-func InitializeStorageController(db *gorm.DB) controllers5.CompControllers {
+func InitializeStorageController(db *gorm.DB, validate *validator.Validate) controllers5.CompControllers {
 	compRepositories := repositories5.NewComponentRepository()
 	compServices := services6.NewComponentServices(compRepositories, db)
 	compControllers := controllers5.NewCompController(compServices)
 	return compControllers
 }
 
-func InitializePartnerController(db *gorm.DB) controllers6.CompControllers {
+func InitializePartnerController(db *gorm.DB, validate *validator.Validate) controllers6.CompControllers {
 	compRepositories := repositories6.NewComponentRepository()
 	compServices := services.NewComponentServices()
-	servicesCompServices := services7.NewComponentServices(compRepositories, compServices, db)
+	servicesCompServices := services7.NewComponentServices(compRepositories, compServices, db, validate)
 	compControllers := controllers6.NewCompController(servicesCompServices)
 	return compControllers
 }
 
-func InitializeReservationController(db *gorm.DB) controllers7.CompControllers {
+func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers7.CompControllers {
 	compRepositories := repositories4.NewComponentRepository()
 	compServices := services8.NewComponentServices(compRepositories, db)
 	compControllers := controllers7.NewCompController(compServices)

@@ -5,7 +5,7 @@ type User struct {
 	Name            string `json:"name" validate:"required"`
 	Email           string `json:"email" validate:"required,email"`
 	EmailVerifiedAt string `json:"email_verified_at"`
-	Password        string `json:"password,omitempty" validate:"required"`
+	Password        string `json:"password,omitempty" validate:"required,min=8"`
 	PhoneNumber     string `json:"phone_number" validate:"required,e164"`
 	Country         string `json:"country" validate:"required"`
 	Province        string `json:"province" validate:"required"`

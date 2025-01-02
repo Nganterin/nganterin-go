@@ -91,32 +91,32 @@ func InitializeUserController(db *gorm.DB, validate *validator.Validate) userCon
 	return nil
 }
 
-func InitializeHotelController(db *gorm.DB) hotelControllers.CompControllers {
+func InitializeHotelController(db *gorm.DB, validate *validator.Validate) hotelControllers.CompControllers {
 	wire.Build(hotelFeatureSet)
 	return nil
 }
 
-func InitializeOrderController(db *gorm.DB) orderControllers.CompControllers {
+func InitializeOrderController(db *gorm.DB, validate *validator.Validate) orderControllers.CompControllers {
 	wire.Build(orderFeatureSet)
 	return nil
 }
 
-func InitializeMidtransController(db *gorm.DB) midtransControllers.CompControllers {
+func InitializeMidtransController(db *gorm.DB, validate *validator.Validate) midtransControllers.CompControllers {
 	wire.Build(midtransFeatureSet)
 	return nil
 }
 
-func InitializeStorageController(db *gorm.DB) storageControllers.CompControllers {
+func InitializeStorageController(db *gorm.DB, validate *validator.Validate) storageControllers.CompControllers {
 	wire.Build(storageFeatureSet)
 	return nil
 }
 
-func InitializePartnerController(db *gorm.DB) partnerControllers.CompControllers {
+func InitializePartnerController(db *gorm.DB, validate *validator.Validate) partnerControllers.CompControllers {
 	wire.Build(partnerFeatureSet)
 	return nil
 }
 
-func InitializeReservationController(db *gorm.DB) reservationControllers.CompControllers {
+func InitializeReservationController(db *gorm.DB, validate *validator.Validate) reservationControllers.CompControllers {
 	wire.Build(reservationFeatureSet)
 	return nil
 }
