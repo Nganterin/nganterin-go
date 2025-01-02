@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	"nganterin-go/exceptions"
+	"nganterin-go/helpers"
 	"nganterin-go/models/dto"
 	"nganterin-go/reviews/services"
 
@@ -27,6 +28,8 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
 		return
 	}
+
+	data.UserID = helpers.GetUserData(ctx).ID
 
 	err := h.services.Create(ctx, data)
 	if err != nil {

@@ -4,6 +4,7 @@ const (
 	ErrInvalidCredentials        = "Invalid credentials"
 	ErrUnauthorized              = "Unauthorized access"
 	ErrBadRequest                = "Invalid request body or parameters"
+	ErrForbidden                 = "Forbidden access"
 	ErrNotFound                  = "Record not found"
 	ErrInternalServer            = "Something went wrong"
 	ErrEmailNotVerified          = "Email not verified"
