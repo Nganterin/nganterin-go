@@ -42,3 +42,21 @@ func MapHotelOrderModelToOutput(model database.HotelOrders) dto.HotelOrderDetail
 
 	return orderOutput
 }
+
+func MapHotelReviewInputToModel(input dto.HotelReviewInput) database.HotelReviews {
+	var hotelReview database.HotelReviews
+
+	mapstructure.Decode(input, &hotelReview)
+
+	return hotelReview
+}
+
+func MapHotelReviewModelToOutput(model database.HotelReviews) dto.HotelReviewOutput {
+	var reviewOutput dto.HotelReviewOutput
+
+	mapstructure.Decode(model, &reviewOutput)
+	reviewOutput.CreatedAt = model.CreatedAt
+	reviewOutput.UpdatedAt = model.UpdatedAt
+
+	return reviewOutput
+}

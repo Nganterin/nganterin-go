@@ -128,6 +128,11 @@ type HotelReviews struct {
 	HotelID            string `gorm:"not null"`
 	UserID             string `gorm:"not null"`
 	Review             string `gorm:"not null"`
+	Cleanliness        int    `gorm:"not null"`
+	Comfort            int    `gorm:"not null"`
+	ServiceQuality     int    `gorm:"not null"`
+	Facilities         int    `gorm:"not null"`
+	ValueForMoney      int    `gorm:"not null"`
 	Rating             int    `gorm:"not null"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
