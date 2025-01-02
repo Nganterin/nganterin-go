@@ -23,3 +23,14 @@ func (r *CompRepositoriesImpl) Create(ctx *gin.Context, tx *gorm.DB, data databa
 
 	return nil
 }
+
+func (r *CompRepositoriesImpl) FindByHotelID(ctx *gin.Context, tx *gorm.DB, id string) ([]database.HotelReviews, *exceptions.Exception) {
+	var data []database.HotelReviews
+
+	result := tx.Where("hotel_id = ?", id).Find(&data)
+	if result.Error != nil {
+		return nil, exceptions.ParseGormError(result.Error)
+	}
+
+	return data, nil
+}
