@@ -2,29 +2,29 @@ package dto
 
 type User struct {
 	ID              string `json:"id"`
-	Name            string `json:"name" binding:"required"`
-	Email           string `json:"email" binding:"required"`
-	Password        string `json:"password,omitempty" binding:"required"`
+	Name            string `json:"name" validate:"required"`
+	Email           string `json:"email" validate:"required,email"`
 	EmailVerifiedAt string `json:"email_verified_at"`
-	PhoneNumber     string `json:"phone_number" binding:"required"`
-	Country         string `json:"country" binding:"required"`
-	Province        string `json:"province" binding:"required"`
-	City            string `json:"city" binding:"required"`
-	ZipCode         string `json:"zip_code" binding:"required"`
-	CompleteAddress string `json:"complete_address" binding:"required"`
+	Password        string `json:"password,omitempty" validate:"required"`
+	PhoneNumber     string `json:"phone_number" validate:"required,e164"`
+	Country         string `json:"country" validate:"required"`
+	Province        string `json:"province" validate:"required"`
+	City            string `json:"city" validate:"required"`
+	ZipCode         string `json:"zip_code" validate:"required,numeric,min=4,max=6"`
+	CompleteAddress string `json:"complete_address" validate:"required,min=10"`
 }
 
 type UserGoogle struct {
 	ID              string `json:"id"`
-	Name            string `json:"name" binding:"required"`
-	Email           string `json:"email" binding:"required"`
-	GoogleSUB       string `json:"google_sub" binding:"required"`
+	Name            string `json:"name" validate:"required"`
+	Email           string `json:"email" validate:"required,email"`
 	EmailVerifiedAt string `json:"email_verified_at"`
-	PhoneNumber     string `json:"phone_number" binding:"required"`
-	Country         string `json:"country" binding:"required"`
-	Province        string `json:"province" binding:"required"`
-	City            string `json:"city" binding:"required"`
-	ZipCode         string `json:"zip_code" binding:"required"`
-	CompleteAddress string `json:"complete_address" binding:"required"`
-	Avatar          string `json:"avatar"`
+	GoogleSUB       string `json:"google_sub" validate:"required,numeric"`
+	PhoneNumber     string `json:"phone_number" validate:"required,e164"`
+	Country         string `json:"country" validate:"required"`
+	Province        string `json:"province" validate:"required"`
+	City            string `json:"city" validate:"required"`
+	ZipCode         string `json:"zip_code" validate:"required,numeric,min=4,max=6"`
+	CompleteAddress string `json:"complete_address" validate:"required,min=10"`
+	Avatar          string `json:"avatar" validate:"url"`
 }

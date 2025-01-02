@@ -1,6 +1,9 @@
 package exceptions
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 type Exception struct {
 	Status  int    `json:"status"`
@@ -15,5 +18,12 @@ func NewException(status int, message string) *Exception {
 	return &Exception{
 		Status:  status,
 		Message: message,
+	}
+}
+
+func NewValidationException(err error) *Exception {
+	return &Exception{
+		Status:  http.StatusBadRequest,
+		Message: err.Error(),
 	}
 }

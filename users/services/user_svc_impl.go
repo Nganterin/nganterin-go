@@ -15,6 +15,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
@@ -22,17 +23,24 @@ type CompServicesImpl struct {
 	repo         repositories.CompRepositories
 	emailService emailServices.CompServices
 	DB           *gorm.DB
+	validate     *validator.Validate
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, compEmailService emailServices.CompServices, db *gorm.DB) CompServices {
+func NewComponentServices(compRepositories repositories.CompRepositories, compEmailService emailServices.CompServices, db *gorm.DB, validate *validator.Validate) CompServices {
 	return &CompServicesImpl{
 		repo:         compRepositories,
 		emailService: compEmailService,
 		DB:           db,
+		validate:     validate,
 	}
 }
 
 func (s *CompServicesImpl) CreateCredentials(ctx *gin.Context, data dto.User) *exceptions.Exception {
+	validateErr := s.validate.Struct(data)
+	if validateErr != nil {
+		return exceptions.NewValidationException(validateErr)
+	}
+
 	tx := s.DB.Begin()
 	defer helpers.CommitOrRollback(tx)
 
@@ -80,6 +88,11 @@ func (s *CompServicesImpl) CreateCredentials(ctx *gin.Context, data dto.User) *e
 }
 
 func (s *CompServicesImpl) CreateGoogleOAuth(ctx *gin.Context, data dto.UserGoogle) (*string, *exceptions.Exception) {
+	validateErr := s.validate.Struct(data)
+	if validateErr != nil {
+		return nil, exceptions.NewValidationException(validateErr)
+	}
+
 	tx := s.DB.Begin()
 	defer helpers.CommitOrRollback(tx)
 

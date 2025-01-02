@@ -36,6 +36,7 @@ import (
 
 	"github.com/google/wire"
 	"gorm.io/gorm"
+	"github.com/go-playground/validator/v10"
 )
 
 var userFeatureSet = wire.NewSet(
@@ -85,7 +86,7 @@ var reservationFeatureSet = wire.NewSet(
 	reservationControllers.NewCompController,
 )
 
-func InitializeUserController(db *gorm.DB) userControllers.CompControllers {
+func InitializeUserController(db *gorm.DB, validate *validator.Validate) userControllers.CompControllers {
 	wire.Build(userFeatureSet)
 	return nil
 }

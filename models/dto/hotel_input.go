@@ -8,55 +8,55 @@ import (
 
 type HotelInputDTO struct {
 	PartnerID   string
-	Name        string `json:"name" binding:"required"`
-	Description string `json:"description" binding:"required"`
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description" validate:"required"`
 
-	HotelRooms      []HotelRoomInput       `json:"hotel_rooms"`
-	HotelsLocation  HotelsLocationInput    `json:"hotels_location"`
-	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos"`
-	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities"`
+	HotelRooms      []HotelRoomInput       `json:"hotel_rooms" validate:"required,dive"`
+	HotelsLocation  HotelsLocationInput    `json:"hotels_location" validate:"required,dive"`
+	HotelPhotos     []HotelPhotoInput      `json:"hotel_photos" validate:"required,dive"`
+	HotelFacilities []HotelFacilitiesInput `json:"hotel_facilities" validate:"required,dive"`
 }
 
 type HotelRoomInput struct {
-	Type           string `json:"type" binding:"required"`
-	MaxVisitor     int    `json:"max_visitor" binding:"required"`
-	BedType        string `json:"bed_type" binding:"required"`
-	RoomSize       int    `json:"room_size" binding:"required"`
-	SmokingAllowed bool   `json:"smoking_allowed" binding:"required"`
-	OvernightPrice int64  `json:"overnight_price" binding:"required"`
-	TotalRoom      int    `json:"total_room" binding:"required"`
-	TotalBooked    int    `json:"total_booked" binding:"required"`
+	Type           string `json:"type" validate:"required"`
+	MaxVisitor     int    `json:"max_visitor" validate:"required"`
+	BedType        string `json:"bed_type" validate:"required"`
+	RoomSize       int    `json:"room_size" validate:"required"`
+	SmokingAllowed bool   `json:"smoking_allowed" validate:"required"`
+	OvernightPrice int64  `json:"overnight_price" validate:"required"`
+	TotalRoom      int    `json:"total_room" validate:"required"`
+	TotalBooked    int    `json:"total_booked" validate:"required"`
 
-	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
+	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" validate:"required,dive" mapstructure:"hotel_room_photos"`
 }
 
 type HotelsLocationInput struct {
-	Country         string `json:"country" binding:"required"`
-	State           string `json:"state" binding:"required"`
-	City            string `json:"city" binding:"required"`
-	ZipCode         string `json:"zip_code" binding:"required"`
-	CompleteAddress string `json:"complete_address" binding:"required"`
-	Gmaps           string `json:"gmaps" binding:"required"`
+	Country         string `json:"country" validate:"required"`
+	State           string `json:"state" validate:"required"`
+	City            string `json:"city" validate:"required"`
+	ZipCode         string `json:"zip_code" validate:"required"`
+	CompleteAddress string `json:"complete_address" validate:"required"`
+	Gmaps           string `json:"gmaps" validate:"required"`
 }
 
 type HotelPhotoInput struct {
-	URL string `json:"url" binding:"required"`
+	URL string `json:"url" validate:"required"`
 }
 
 type HotelRoomPhotoInput struct {
-	URL string `json:"url" binding:"required"`
+	URL string `json:"url" validate:"required"`
 }
 
 type HotelFacilitiesInput struct {
-	Facility string `json:"facility" binding:"required"`
+	Facility string `json:"facility" validate:"required"`
 }
 
 type HotelOrderInput struct {
 	UserID           string
-	HotelID          string    `json:"hotel_id" binding:"required"`
-	HotelRoomID      uint      `json:"room_id" binding:"required"`
-	CheckInDate      time.Time `json:"check_in_date" binding:"required"`
-	CheckOutDate     time.Time `json:"check_out_date" binding:"required"`
+	HotelID          string    `json:"hotel_id" validate:"required"`
+	HotelRoomID      uint      `json:"room_id" validate:"required"`
+	CheckInDate      time.Time `json:"check_in_date" validate:"required"`
+	CheckOutDate     time.Time `json:"check_out_date" validate:"required"`
 	SpecialRequest   string    `json:"special_request"`
 	IsForSomeoneElse bool      `json:"is_for_someone_else"`
 	SomeoneName      string    `json:"someone_name"`
@@ -66,8 +66,8 @@ type HotelOrderInput struct {
 func (h *HotelOrderInput) UnmarshalJSON(data []byte) error {
 	type Alias HotelOrderInput
 	aux := &struct {
-		CheckInDate  string `json:"check_in_date" binding:"required"`
-		CheckOutDate string `json:"check_out_date" binding:"required"`
+		CheckInDate  string `json:"check_in_date" validate:"required"`
+		CheckOutDate string `json:"check_out_date" validate:"required"`
 		*Alias
 	}{
 		Alias: (*Alias)(h),

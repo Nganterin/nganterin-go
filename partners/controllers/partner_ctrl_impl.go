@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 	"nganterin-go/exceptions"
-	"nganterin-go/helpers"
 	"nganterin-go/models/dto"
 	"nganterin-go/partners/services"
 
@@ -26,18 +25,6 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 	jsonErr := ctx.ShouldBindJSON(&data)
 	if jsonErr != nil {
 		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
-		return
-	}
-
-	jsonErr = helpers.ValidateURL(data.LegalityFile)
-	if jsonErr != nil {
-		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrFileURL))
-		return
-	}
-
-	jsonErr = helpers.ValidateURL(data.MOUFile)
-	if jsonErr != nil {
-		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrFileURL))
 		return
 	}
 

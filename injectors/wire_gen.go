@@ -7,6 +7,7 @@
 package injectors
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/google/wire"
 	"gorm.io/gorm"
 	"nganterin-go/emails/services"
@@ -34,10 +35,10 @@ import (
 
 // Injectors from injector.go:
 
-func InitializeUserController(db *gorm.DB) controllers.CompControllers {
+func InitializeUserController(db *gorm.DB, validate *validator.Validate) controllers.CompControllers {
 	compRepositories := repositories.NewComponentRepository()
 	compServices := services.NewComponentServices()
-	servicesCompServices := services2.NewComponentServices(compRepositories, compServices, db)
+	servicesCompServices := services2.NewComponentServices(compRepositories, compServices, db, validate)
 	compControllers := controllers.NewCompController(servicesCompServices)
 	return compControllers
 }

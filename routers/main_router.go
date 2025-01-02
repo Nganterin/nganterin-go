@@ -8,10 +8,12 @@ import (
 	"nganterin-go/models/dto"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func CompRouters(api *gin.RouterGroup) {
 	db := config.InitDB()
+	validate := validator.New(validator.WithRequiredStructEnabled())
 
 	api.Use(middleware.ClientTracker(db))
 	api.Use(middleware.GzipResponseMiddleware())
@@ -23,7 +25,7 @@ func CompRouters(api *gin.RouterGroup) {
 		})
 	})
 
-	userController := injectors.InitializeUserController(db)
+	userController := injectors.InitializeUserController(db, validate)
 	hotelController := injectors.InitializeHotelController(db)
 	orderController := injectors.InitializeOrderController(db)
 	midtransController := injectors.InitializeMidtransController(db)
