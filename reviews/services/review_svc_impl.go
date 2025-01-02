@@ -41,7 +41,7 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelReviewInput) *
 		return err
 	}
 
-	if orderData.UserID != data.UserID {
+	if orderData.UserID != data.UserID || orderData.HotelReservations.ReservationStatus != "CheckedOut" {
 		return exceptions.NewException(http.StatusForbidden, exceptions.ErrForbidden)
 	}
 
