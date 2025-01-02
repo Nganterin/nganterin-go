@@ -23,5 +23,6 @@ const (
 	ErrRegisteredWithCredentials = "User already registered with credentials"
 	ErrAlreadyCheckedIn          = "Reservation already checked in"
 	ErrNotCheckedInYet           = "Reservation not checked in yet"
+	ErrNotCheckedOutYet           = "Reservation not checked out yet"
 	ErrInvalidDate               = "Invalid date"
 )
