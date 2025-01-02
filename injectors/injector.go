@@ -92,7 +92,7 @@ var reservationFeatureSet = wire.NewSet(
 )
 
 var reviewFeatureSet = wire.NewSet(
-	reservationRepositories.NewComponentRepository,
+	orderRepositories.NewComponentRepository,
 	reviewRepositories.NewComponentRepository,
 	reviewServices.NewComponentServices,
 	reviewControllers.NewCompController,

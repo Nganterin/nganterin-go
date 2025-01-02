@@ -101,6 +101,7 @@ type HotelOrders struct {
 	DeletedAt        *time.Time `gorm:"null;default:null"`
 
 	HotelReservations HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
+	HotelReviews      HotelReviews      `gorm:"foreignKey:HotelOrdersID;references:ID"`
 	Hotel             Hotels            `gorm:"foreignKey:HotelID"`
 	HotelRoom         HotelRooms        `gorm:"foreignKey:HotelRoomID"`
 }
@@ -110,32 +111,29 @@ type HotelReservations struct {
 
 	ID                string `gorm:"primaryKey"`
 	HotelOrdersID     string `gorm:"not null"`
-	HotelOrder        *HotelOrders
 	UserID            string `gorm:"not null"`
 	ReservationKey    string `gorm:"not null;unique"`
 	ReservationStatus string `gorm:"not null;default:confirmed"` // Enum: "Confirmed", "CheckedIn", "Completed"
 	CreatedAt         time.Time
 	UpdatedAt         time.Time
 	DeletedAt         *time.Time `gorm:"null;default:null"`
-
-	HotelReviews HotelReviews `gorm:"foreignKey:HotelReservationID;references:ID"`
 }
 
 type HotelReviews struct {
 	gorm.Model
 
-	ID                 uint   `gorm:"primaryKey"`
-	HotelReservationID string `gorm:"not null"`
-	HotelID            string `gorm:"not null"`
-	UserID             string `gorm:"not null"`
-	Review             string `gorm:"not null"`
-	Cleanliness        int    `gorm:"not null"`
-	Comfort            int    `gorm:"not null"`
-	ServiceQuality     int    `gorm:"not null"`
-	Facilities         int    `gorm:"not null"`
-	ValueForMoney      int    `gorm:"not null"`
-	Rating             int    `gorm:"not null"`
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
-	DeletedAt          *time.Time `gorm:"null;default:null"`
+	ID             uint   `gorm:"primaryKey"`
+	HotelOrdersID  string `gorm:"not null;unique"`
+	HotelID        string `gorm:"not null"`
+	UserID         string `gorm:"not null"`
+	Review         string `gorm:"not null"`
+	Cleanliness    int    `gorm:"not null"`
+	Comfort        int    `gorm:"not null"`
+	ServiceQuality int    `gorm:"not null"`
+	Facilities     int    `gorm:"not null"`
+	ValueForMoney  int    `gorm:"not null"`
+	Rating         int    `gorm:"not null"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	DeletedAt      *time.Time `gorm:"null;default:null"`
 }

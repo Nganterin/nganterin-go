@@ -27,9 +27,7 @@ func (r *CompRepositoriesImpl) Create(ctx *gin.Context, tx *gorm.DB, data databa
 func (r *CompRepositoriesImpl) FindByID(ctx *gin.Context, tx *gorm.DB, id string) (*database.HotelReservations, *exceptions.Exception) {
 	var data database.HotelReservations
 
-	result := tx.
-		Preload("HotelOrder").
-		First(&data, id)
+	result := tx.First(&data, id)
 	if result.Error != nil {
 		return nil, exceptions.ParseGormError(result.Error)
 	}

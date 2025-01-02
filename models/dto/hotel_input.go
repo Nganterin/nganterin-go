@@ -98,13 +98,13 @@ func (h *HotelOrderInput) UnmarshalJSON(data []byte) error {
 }
 
 type HotelReviewInput struct {
-	HotelReservationID string `json:"hotel_reservation_id"`
-	UserID             string
-	Review             string `json:"review" validate:"required"`
-	Cleanliness        int    `json:"cleanliness" validate:"required,min=0,max=10"`
-	Comfort            int    `json:"comfort" validate:"required,min=0,max=10"`
-	ServiceQuality     int    `json:"service_quality" validate:"required,min=0,max=10"`
-	Facilities         int    `json:"facilities" validate:"required,min=0,max=10"`
-	ValueForMoney      int    `json:"value_for_money" validate:"required,min=0,max=10"`
-	Rating             int    `json:"rating" validate:"required,min=0,max=10"`
+	HotelOrdersID  string `json:"hotel_order_id" validate:"required"`
+	UserID         string
+	Review         string `json:"review" validate:"required"`
+	Cleanliness    int    `json:"cleanliness" validate:"required,min=0,max=10"`
+	Comfort        int    `json:"comfort" validate:"required,min=0,max=10"`
+	ServiceQuality int    `json:"service_quality" validate:"required,min=0,max=10"`
+	Facilities     int    `json:"facilities" validate:"required,min=0,max=10"`
+	ValueForMoney  int    `json:"value_for_money" validate:"required,min=0,max=10"`
+	Rating         int    `json:"rating" validate:"required,min=0,max=10"`
 }
