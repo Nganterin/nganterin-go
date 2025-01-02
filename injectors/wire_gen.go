@@ -45,7 +45,7 @@ func InitializeUserController(db *gorm.DB, validate *validator.Validate) control
 
 func InitializeHotelController(db *gorm.DB, validate *validator.Validate) controllers2.CompControllers {
 	compRepositories := repositories2.NewComponentRepository()
-	compService := services3.NewComponentServices(compRepositories, db)
+	compService := services3.NewComponentServices(compRepositories, db, validate)
 	compControllers := controllers2.NewCompController(compService)
 	return compControllers
 }

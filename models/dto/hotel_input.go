@@ -19,13 +19,13 @@ type HotelInputDTO struct {
 
 type HotelRoomInput struct {
 	Type           string `json:"type" validate:"required"`
-	MaxVisitor     int    `json:"max_visitor" validate:"required"`
+	MaxVisitor     int    `json:"max_visitor" validate:"required,number"`
 	BedType        string `json:"bed_type" validate:"required"`
-	RoomSize       int    `json:"room_size" validate:"required"`
-	SmokingAllowed bool   `json:"smoking_allowed" validate:"required"`
-	OvernightPrice int64  `json:"overnight_price" validate:"required"`
-	TotalRoom      int    `json:"total_room" validate:"required"`
-	TotalBooked    int    `json:"total_booked" validate:"required"`
+	RoomSize       int    `json:"room_size" validate:"required,number"`
+	SmokingAllowed bool   `json:"smoking_allowed" validate:"required,boolean"`
+	OvernightPrice int64  `json:"overnight_price" validate:"required,number"`
+	TotalRoom      int    `json:"total_room" validate:"required,number"`
+	TotalBooked    int    `json:"total_booked" validate:"required,number"`
 
 	HotelRoomPhotoInput []HotelRoomPhotoInput `json:"hotel_room_photos" validate:"required,dive" mapstructure:"hotel_room_photos"`
 }
@@ -36,15 +36,15 @@ type HotelsLocationInput struct {
 	City            string `json:"city" validate:"required"`
 	ZipCode         string `json:"zip_code" validate:"required"`
 	CompleteAddress string `json:"complete_address" validate:"required"`
-	Gmaps           string `json:"gmaps" validate:"required"`
+	Gmaps           string `json:"gmaps" validate:"required,url"`
 }
 
 type HotelPhotoInput struct {
-	URL string `json:"url" validate:"required"`
+	URL string `json:"url" validate:"required,url"`
 }
 
 type HotelRoomPhotoInput struct {
-	URL string `json:"url" validate:"required"`
+	URL string `json:"url" validate:"required,url"`
 }
 
 type HotelFacilitiesInput struct {
@@ -66,8 +66,8 @@ type HotelOrderInput struct {
 func (h *HotelOrderInput) UnmarshalJSON(data []byte) error {
 	type Alias HotelOrderInput
 	aux := &struct {
-		CheckInDate  string `json:"check_in_date" validate:"required"`
-		CheckOutDate string `json:"check_out_date" validate:"required"`
+		CheckInDate  string `json:"check_in_date" binding:"required"`
+		CheckOutDate string `json:"check_out_date" binding:"required"`
 		*Alias
 	}{
 		Alias: (*Alias)(h),

@@ -8,22 +8,30 @@ import (
 	"nganterin-go/models/dto"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
 type CompServicesImpl struct {
 	repo repositories.CompRepositories
 	DB   *gorm.DB
+	validate     *validator.Validate
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB) CompService {
+func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB, validate *validator.Validate) CompService {
 	return &CompServicesImpl{
 		repo: compRepositories,
 		DB:   db,
+		validate: validate,
 	}
 }
 
 func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelInputDTO) (*string, *exceptions.Exception) {
+	validateErr := s.validate.Struct(data)
+	if validateErr != nil {
+		return nil, exceptions.NewValidationException(validateErr)
+	}
+
 	model_data := mapper.MapHotelInputToModel(data)
 	return s.repo.Create(ctx, s.DB, model_data)
 }
