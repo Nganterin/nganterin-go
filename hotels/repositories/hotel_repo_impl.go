@@ -58,8 +58,8 @@ func (r *CompRepositoriesImpl) SearchEngine(ctx *gin.Context, tx *gorm.DB, searc
 		Joins("LEFT JOIN hotel_rooms ON hotel_rooms.hotel_id = hotels.id")
 
 	if searchInput.Keyword != "" {
-		query = query.Where("LOWER(hotels.name) LIKE LOWER(?) OR LOWER(hotels.description) LIKE LOWER(?)",
-			"%"+searchInput.Keyword+"%", "%"+searchInput.Keyword+"%")
+		query = query.Where("LOWER(hotels.name) LIKE LOWER(?) OR LOWER(hotels.description) LIKE LOWER(?) OR EXISTS (SELECT 1 FROM hotels_locations WHERE hotels_locations.hotel_id = hotels.id AND LOWER(hotels_locations.complete_address) LIKE LOWER(?))",
+			"%"+searchInput.Keyword+"%", "%"+searchInput.Keyword+"%", "%"+searchInput.Keyword+"%")
 	}
 
 	if searchInput.Name != "" {
@@ -67,8 +67,8 @@ func (r *CompRepositoriesImpl) SearchEngine(ctx *gin.Context, tx *gorm.DB, searc
 	}
 
 	if searchInput.City != "" {
-		query = query.Where("EXISTS (SELECT 1 FROM hotels_locations WHERE hotels_locations.hotel_id = hotels.id AND LOWER(hotels_locations.city) LIKE LOWER(?))",
-			"%"+searchInput.City+"%")
+		query = query.Where("EXISTS (SELECT 1 FROM hotels_locations WHERE hotels_locations.hotel_id = hotels.id AND LOWER(hotels_locations.city) LIKE LOWER(?)) OR EXISTS (SELECT 1 FROM hotels_locations WHERE hotels_locations.hotel_id = hotels.id AND LOWER(hotels_locations.state) LIKE LOWER(?))",
+			"%"+searchInput.City+"%", "%"+searchInput.City+"%")
 	}
 
 	if searchInput.Country != "" {
