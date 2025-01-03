@@ -37,6 +37,8 @@ func (r *CompRepositoriesImpl) FindAll(ctx *gin.Context, tx *gorm.DB) ([]databas
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
+		Preload("HotelReviews").
+		Preload("HotelReviews.User").
 		Find(&data)
 
 	if result.Error != nil {
