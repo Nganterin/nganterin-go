@@ -63,7 +63,7 @@ func (s *CompServicesImpl) CheckIn(ctx *gin.Context, reservationKey string) *exc
 		return err
 	}
 
-	if data.HotelReservations.ReservationStatus != "confirmed" {
+	if data.HotelReservations.ReservationStatus != "Confirmed" {
 		return exceptions.NewException(http.StatusForbidden, exceptions.ErrAlreadyCheckedIn)
 	}
 
