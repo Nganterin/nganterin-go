@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"nganterin-go/exceptions"
+	"nganterin-go/helpers"
 	hotelRepo "nganterin-go/hotels/repositories"
 	"nganterin-go/mapper"
 	"nganterin-go/models/dto"
@@ -48,8 +49,7 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelOrderInput) (*
 
 	input := mapper.MapHotelOrderInputToModel(data)
 
-	duration := input.CheckOutDate.Sub(input.CheckInDate)
-	days := int(duration.Hours() / 24)
+	days := helpers.GetDaysFromCheckInCheckOut(data.CheckInDate, data.CheckOutDate)
 
 	if days <= 0 {
 		return nil, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest)
@@ -105,6 +105,7 @@ func (s *CompServicesImpl) FindByID(ctx *gin.Context, id string) (*dto.HotelOrde
 	}
 
 	result := mapper.MapHotelOrderModelToOutput(*data)
+	result.TotalDays = helpers.GetDaysFromCheckInCheckOut(data.CheckInDate, data.CheckOutDate)
 
 	return &result, nil
 }

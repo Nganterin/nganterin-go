@@ -68,6 +68,7 @@ type HotelOrderDetailsOutput struct {
 	HotelRoomID      uint      `json:"hotel_room_id"`
 	CheckInDate      time.Time `json:"check_in_date"`
 	CheckOutDate     time.Time `json:"check_out_date"`
+	TotalDays        int       `json:"total_days"`
 	TotalPrice       int64     `json:"total_price"`
 	PaymentStatus    string    `json:"payment_status"`
 	SnapToken        string    `json:"snap_token"`
@@ -84,8 +85,8 @@ type HotelOrderDetailsOutput struct {
 }
 
 type HotelReservationOutput struct {
-	ReservationKey    string `json:"reservation_key"`
-	ReservationStatus string `json:"reservation_status"`
+	ReservationKey    string    `json:"reservation_key"`
+	ReservationStatus string    `json:"reservation_status"`
 	CreatedAt         time.Time `json:"created_at"`
 	UpdatedAt         time.Time `json:"updated_at"`
 }

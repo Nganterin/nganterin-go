@@ -33,7 +33,10 @@ func (s *CompServicesImpl) FindByUserID(ctx *gin.Context, id string) ([]dto.Hote
 
 	var result []dto.HotelOrderDetailsOutput
 	for _, item := range data {
-		result = append(result, mapper.MapHotelOrderModelToOutput(item))
+		output := mapper.MapHotelOrderModelToOutput(item)
+		output.TotalDays = helpers.GetDaysFromCheckInCheckOut(item.CheckInDate, item.CheckOutDate)
+
+		result = append(result, output)
 	}
 
 	return result, nil
@@ -46,6 +49,7 @@ func (s *CompServicesImpl) FindByReservationKey(ctx *gin.Context, reservationKey
 	}
 
 	result := mapper.MapHotelOrderModelToOutput(*data)
+	result.TotalDays = helpers.GetDaysFromCheckInCheckOut(data.CheckInDate, data.CheckOutDate)
 
 	return &result, nil
 }
