@@ -54,7 +54,7 @@ func (s *CompServicesImpl) Notification(ctx *gin.Context, data dto.MidtransNotif
 		HotelOrdersID:     data.OrderID,
 		UserID:            orderData.UserID,
 		ReservationKey:    reservationKey,
-		ReservationStatus: "confirmed",
+		ReservationStatus: "Confirmed",
 	}
 
 	err = s.reservationRepo.Create(ctx, s.DB, reservationData)
