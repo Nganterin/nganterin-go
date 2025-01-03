@@ -96,3 +96,14 @@ func (r *CompRepositoriesImpl) CheckOut(ctx *gin.Context, tx *gorm.DB, reservati
 	}
 	return nil
 }
+
+func (r *CompRepositoriesImpl) Reviewed(ctx *gin.Context, tx *gorm.DB, orderID string) *exceptions.Exception {
+	var data database.HotelReservations
+
+	result := tx.Model(&data).Where("hotel_orders_id = ?", orderID).Update("reservation_status",
+		"Reviewed")
+	if result.Error != nil {
+		return exceptions.ParseGormError(result.Error)
+	}
+	return nil
+}

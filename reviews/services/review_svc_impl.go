@@ -3,11 +3,13 @@ package services
 import (
 	"net/http"
 	"nganterin-go/exceptions"
+	"nganterin-go/helpers"
 	"nganterin-go/mapper"
 	"nganterin-go/models/dto"
 	"nganterin-go/reviews/repositories"
 
 	orderRepo "nganterin-go/orders/repositories"
+	reservationRepo "nganterin-go/reservations/repositories"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -15,18 +17,20 @@ import (
 )
 
 type CompServicesImpl struct {
-	repo      repositories.CompRepositories
-	orderRepo orderRepo.CompRepositories
-	DB        *gorm.DB
-	validate  *validator.Validate
+	repo            repositories.CompRepositories
+	orderRepo       orderRepo.CompRepositories
+	reservationRepo reservationRepo.CompRepositories
+	DB              *gorm.DB
+	validate        *validator.Validate
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, orderRepo orderRepo.CompRepositories, db *gorm.DB, validate *validator.Validate) CompServices {
+func NewComponentServices(compRepositories repositories.CompRepositories, orderRepo orderRepo.CompRepositories, reservationRepo reservationRepo.CompRepositories, db *gorm.DB, validate *validator.Validate) CompServices {
 	return &CompServicesImpl{
-		repo:      compRepositories,
-		orderRepo: orderRepo,
-		DB:        db,
-		validate:  validate,
+		repo:            compRepositories,
+		orderRepo:       orderRepo,
+		reservationRepo: reservationRepo,
+		DB:              db,
+		validate:        validate,
 	}
 }
 
@@ -36,7 +40,10 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelReviewInput) *
 		return exceptions.NewValidationException(validateErr)
 	}
 
-	orderData, err := s.orderRepo.FindByID(ctx, s.DB, data.HotelOrdersID)
+	tx := s.DB.Begin()
+	defer helpers.CommitOrRollback(tx)
+
+	orderData, err := s.orderRepo.FindByID(ctx, tx, data.HotelOrdersID)
 	if err != nil {
 		return err
 	}
@@ -52,7 +59,12 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.HotelReviewInput) *
 	input := mapper.MapHotelReviewInputToModel(data)
 	input.HotelID = orderData.HotelID
 
-	err = s.repo.Create(ctx, s.DB, input)
+	err = s.repo.Create(ctx, tx, input)
+	if err != nil {
+		return err
+	}
+
+	err = s.reservationRepo.Reviewed(ctx, tx, orderData.ID)
 	if err != nil {
 		return err
 	}

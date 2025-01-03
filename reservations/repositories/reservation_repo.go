@@ -15,4 +15,5 @@ type CompRepositories interface {
 	FindByReservationKey(ctx *gin.Context, tx *gorm.DB, reservationKey string) (*database.HotelOrders, *exceptions.Exception)
 	CheckIn(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception
 	CheckOut(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception
+	Reviewed(ctx *gin.Context, tx *gorm.DB, orderID string) *exceptions.Exception
 }
