@@ -53,7 +53,7 @@ func (s *CompServicesImpl) FindAll(ctx *gin.Context) (*[]dto.HotelOutputDTO, *ex
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
-		output.AverageRating = averageRating
+		output.Rating = averageRating
 		result = append(result, output)
 	}
 	return &result, nil
@@ -72,7 +72,7 @@ func (s *CompServicesImpl) SearchEngine(ctx *gin.Context, searchInput dto.HotelS
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
-		output.AverageRating = averageRating
+		output.Rating = averageRating
 		result = append(result, output)
 	}
 
@@ -90,7 +90,7 @@ func (s *CompServicesImpl) FindByID(ctx *gin.Context, id string) (*dto.HotelOutp
 
 	result := mapper.MapHotelModelToOutput(*hotels)
 	result.PricingStart = pricingStart
-	result.AverageRating = averageRating
+	result.Rating = averageRating
 	return &result, nil
 }
 
@@ -109,15 +109,29 @@ func (s *CompServicesImpl) GetPricingStartHotelRooms(ctx *gin.Context, data []da
 	return pricingStart
 }
 
-func (s *CompServicesImpl) GetReviewAverageRating(ctx *gin.Context, data []database.HotelReviews) int {
-	var reviewAverageRating int
+func (s *CompServicesImpl) GetReviewAverageRating(ctx *gin.Context, data []database.HotelReviews) dto.HotelAverageRating {
+	var totalCleanliness, totalComfort, totalServiceQuality, totalFacilities, totalValueForMoney, totalRating int
 
-	if len(data) > 0 {
-		for _, review := range data {
-			reviewAverageRating += review.Rating
-		}
-		reviewAverageRating = reviewAverageRating / len(data)
+	for _, review := range data {
+		totalCleanliness += review.Cleanliness
+		totalComfort += review.Comfort
+		totalServiceQuality += review.ServiceQuality
+		totalFacilities += review.Facilities
+		totalValueForMoney += review.ValueForMoney
+		totalRating += review.Rating
 	}
 
-	return reviewAverageRating
+	result := dto.HotelAverageRating{}
+
+	if len(data) > 0 {
+		count := float32(len(data))
+		result.Cleanliness = float32(totalCleanliness) / count
+		result.Comfort = float32(totalComfort) / count
+		result.ServiceQuality = float32(totalServiceQuality) / count
+		result.Facilities = float32(totalFacilities) / count
+		result.ValueForMoney = float32(totalValueForMoney) / count
+		result.Rating = float32(totalRating) / count
+	}
+
+	return result
 }
