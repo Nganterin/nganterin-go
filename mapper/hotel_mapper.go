@@ -9,7 +9,7 @@ import (
 
 func MapHotelInputToModel(input dto.HotelInputDTO) database.Hotels {
 	var hotel database.Hotels
-	
+
 	mapstructure.Decode(input, &hotel)
 	return hotel
 }
@@ -27,7 +27,7 @@ func MapHotelOrderInputToModel(input dto.HotelOrderInput) database.HotelOrders {
 	mapstructure.Decode(input, &hotelOrder)
 	hotelOrder.CheckInDate = input.CheckInDate
 	hotelOrder.CheckOutDate = input.CheckOutDate
-	
+
 	return hotelOrder
 }
 
@@ -39,6 +39,8 @@ func MapHotelOrderModelToOutput(model database.HotelOrders) dto.HotelOrderDetail
 	orderOutput.CheckOutDate = model.CheckOutDate
 	orderOutput.CreatedAt = model.CreatedAt
 	orderOutput.UpdatedAt = model.UpdatedAt
+	orderOutput.HotelReservations.CreatedAt = model.HotelReservations.CreatedAt
+	orderOutput.HotelReservations.UpdatedAt = model.HotelReservations.UpdatedAt
 
 	return orderOutput
 }

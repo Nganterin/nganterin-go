@@ -86,6 +86,8 @@ type HotelOrderDetailsOutput struct {
 type HotelReservationOutput struct {
 	ReservationKey    string `json:"reservation_key"`
 	ReservationStatus string `json:"reservation_status"`
+	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
 }
 
 type HotelReviewOutput struct {
