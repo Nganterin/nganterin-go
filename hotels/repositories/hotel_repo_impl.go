@@ -55,6 +55,8 @@ func (r *CompRepositoriesImpl) SearchEngine(ctx *gin.Context, tx *gorm.DB, searc
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
+		Preload("HotelReviews").
+		Preload("HotelReviews.User").
 		Joins("LEFT JOIN hotel_rooms ON hotel_rooms.hotel_id = hotels.id")
 
 	if searchInput.Keyword != "" {

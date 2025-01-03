@@ -14,15 +14,15 @@ import (
 )
 
 type CompServicesImpl struct {
-	repo repositories.CompRepositories
-	DB   *gorm.DB
-	validate     *validator.Validate
+	repo     repositories.CompRepositories
+	DB       *gorm.DB
+	validate *validator.Validate
 }
 
 func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB, validate *validator.Validate) CompService {
 	return &CompServicesImpl{
-		repo: compRepositories,
-		DB:   db,
+		repo:     compRepositories,
+		DB:       db,
 		validate: validate,
 	}
 }
@@ -49,9 +49,11 @@ func (s *CompServicesImpl) FindAll(ctx *gin.Context) (*[]dto.HotelOutputDTO, *ex
 	var result []dto.HotelOutputDTO
 	for i := range hotels {
 		pricingStart := s.GetPricingStartHotelRooms(ctx, hotels[i].HotelRooms)
+		averageRating := s.GetReviewAverageRating(ctx, hotels[i].HotelReviews)
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
+		output.AverageRating = averageRating
 		result = append(result, output)
 	}
 	return &result, nil
@@ -66,9 +68,11 @@ func (s *CompServicesImpl) SearchEngine(ctx *gin.Context, searchInput dto.HotelS
 	var result []dto.HotelOutputDTO
 	for i := range hotels {
 		pricingStart := s.GetPricingStartHotelRooms(ctx, hotels[i].HotelRooms)
+		averageRating := s.GetReviewAverageRating(ctx, hotels[i].HotelReviews)
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
+		output.AverageRating = averageRating
 		result = append(result, output)
 	}
 
@@ -76,14 +80,17 @@ func (s *CompServicesImpl) SearchEngine(ctx *gin.Context, searchInput dto.HotelS
 }
 
 func (s *CompServicesImpl) FindByID(ctx *gin.Context, id string) (*dto.HotelOutputDTO, *exceptions.Exception) {
-	hotels, err := s.repo.FindByID(ctx, s.DB,id)
+	hotels, err := s.repo.FindByID(ctx, s.DB, id)
 	if err != nil {
 		return nil, err
 	}
 
 	pricingStart := s.GetPricingStartHotelRooms(ctx, hotels.HotelRooms)
+	averageRating := s.GetReviewAverageRating(ctx, hotels.HotelReviews)
+
 	result := mapper.MapHotelModelToOutput(*hotels)
 	result.PricingStart = pricingStart
+	result.AverageRating = averageRating
 	return &result, nil
 }
 
@@ -100,4 +107,17 @@ func (s *CompServicesImpl) GetPricingStartHotelRooms(ctx *gin.Context, data []da
 	}
 
 	return pricingStart
+}
+
+func (s *CompServicesImpl) GetReviewAverageRating(ctx *gin.Context, data []database.HotelReviews) int {
+	var reviewAverageRating int
+
+	if len(data) > 0 {
+		for _, review := range data {
+			reviewAverageRating += review.Rating
+		}
+		reviewAverageRating = reviewAverageRating / len(data)
+	}
+
+	return reviewAverageRating
 }
