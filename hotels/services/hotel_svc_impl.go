@@ -114,7 +114,7 @@ func (s *CompServicesImpl) GetReviewAverageRating(ctx *gin.Context, data []datab
 
 	if len(data) > 0 {
 		for _, review := range data {
-			reviewAverageRating += review.Rating / 2
+			reviewAverageRating += review.Rating
 		}
 		reviewAverageRating = reviewAverageRating / len(data)
 	}
