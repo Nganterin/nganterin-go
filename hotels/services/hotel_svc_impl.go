@@ -87,10 +87,12 @@ func (s *CompServicesImpl) FindByID(ctx *gin.Context, id string) (*dto.HotelOutp
 
 	pricingStart := s.GetPricingStartHotelRooms(ctx, hotels.HotelRooms)
 	averageRating := s.GetReviewAverageRating(ctx, hotels.HotelReviews)
+	reviewStatistic := s.GetReviewStatistics(ctx, hotels.HotelReviews)
 
 	result := mapper.MapHotelModelToOutput(*hotels)
 	result.PricingStart = pricingStart
 	result.Rating = averageRating
+	result.ReviewStatistic = reviewStatistic
 	return &result, nil
 }
 
@@ -131,6 +133,45 @@ func (s *CompServicesImpl) GetReviewAverageRating(ctx *gin.Context, data []datab
 		result.Facilities = float32(totalFacilities) / count
 		result.ValueForMoney = float32(totalValueForMoney) / count
 		result.Rating = float32(totalRating) / count
+	}
+
+	return result
+}
+
+func (s *CompServicesImpl) GetReviewStatistics(ctx *gin.Context, data []database.HotelReviews) dto.HotelReviewStatistic {
+	var totalReviews int
+	var totalRating int
+	var count1, count2, count3, count4, count5 int
+
+	for _, review := range data {
+		totalReviews++
+		totalRating += review.Rating
+
+		switch review.Rating {
+		case 5:
+			count5++
+		case 4:
+			count4++
+		case 3:
+			count3++
+		case 2:
+			count2++
+		case 1:
+			count1++
+		}
+	}
+
+	result := dto.HotelReviewStatistic{
+		TotalReviews: totalReviews,
+	}
+
+	if totalReviews > 0 {
+		result.AverageRating = float32(totalRating) / float32(totalReviews)
+		result.Percentage5 = (count5 * 100) / totalReviews
+		result.Percentage4 = (count4 * 100) / totalReviews
+		result.Percentage3 = (count3 * 100) / totalReviews
+		result.Percentage2 = (count2 * 100) / totalReviews
+		result.Percentage1 = (count1 * 100) / totalReviews
 	}
 
 	return result
