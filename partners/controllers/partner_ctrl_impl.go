@@ -79,11 +79,12 @@ func (h *CompControllersImpl) VerifyEmail(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) ApprovalCheck(ctx *gin.Context) {
-	userData := helpers.GetUserData(ctx)
+	userData := helpers.GetPartnerData(ctx)
 
 	token, err := h.services.ApprovalCheck(ctx, userData.ID)
 	if err != nil {
 		ctx.JSON(err.Status, err)
+		return
 	}
 
 	ctx.JSON(http.StatusOK, dto.Response{Status: http.StatusOK, Message: "data already verified", Data: token})
