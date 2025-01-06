@@ -115,7 +115,7 @@ func (s *CompServicesImpl) Login(ctx *gin.Context, email string, password string
 	claims["company_field"] = data.CompanyField
 	claims["company_email"] = data.CompanyEmail
 	claims["company_address"] = data.CompanyAddress
-	claims["is_data_verified"] = data.EmailVerifiedAt != nil
+	claims["is_data_verified"] = data.DataVerifiedAt != nil
 	claims["is_partner"] = true
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
