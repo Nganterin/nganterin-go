@@ -115,6 +115,7 @@ func (s *CompServicesImpl) Login(ctx *gin.Context, email string, password string
 	claims["company_field"] = data.CompanyField
 	claims["company_email"] = data.CompanyEmail
 	claims["company_address"] = data.CompanyAddress
+	claims["is_data_verified"] = data.EmailVerifiedAt != nil
 	claims["is_partner"] = true
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
@@ -130,4 +131,40 @@ func (s *CompServicesImpl) Login(ctx *gin.Context, email string, password string
 
 func (s *CompServicesImpl) VerifyEmail(ctx *gin.Context, token string) *exceptions.Exception {
 	return s.repo.VerifyEmail(ctx, s.DB, token)
+}
+
+func (s *CompServicesImpl) ApprovalCheck(ctx *gin.Context, id string) (*string, *exceptions.Exception) {
+	data, err := s.repo.FindByID(ctx, s.DB, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if data.EmailVerifiedAt == nil {
+		return nil, exceptions.NewException(418, exceptions.ErrDataNotVerified)
+	}
+
+	secret := os.Getenv("JWT_SECRET")
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["id"] = data.ID
+	claims["name"] = data.Name
+	claims["email"] = data.Email
+	claims["company_name"] = data.CompanyName
+	claims["owner"] = data.Owner
+	claims["company_field"] = data.CompanyField
+	claims["company_email"] = data.CompanyEmail
+	claims["company_address"] = data.CompanyAddress
+	claims["is_data_verified"] = data.EmailVerifiedAt != nil
+	claims["is_partner"] = true
+
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+
+	secretKey := []byte(secret)
+	tokenString, signErr := token.SignedString(secretKey)
+	if signErr != nil {
+		return nil, exceptions.NewException(http.StatusInternalServerError, exceptions.ErrTokenGenerate)
+	}
+
+	return &tokenString, nil
 }

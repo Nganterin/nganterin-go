@@ -36,6 +36,11 @@ func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompContro
 					hotelRoute.POST("/checkout", reservationControllers.CheckOut)
 				}
 			}
+
+			approvalRoute := partnerGroup.Group("/approval")
+			{
+				approvalRoute.GET("/status", partnerControllers.ApprovalCheck)
+			}
 		}
 	}
 }
