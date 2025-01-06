@@ -125,3 +125,19 @@ func (h *CompControllersImpl) FindByID(ctx *gin.Context) {
 		Data:    result,
 	})
 }
+
+func (h *CompControllersImpl) FindByPartnerID(ctx *gin.Context) {
+	partnerData := helpers.GetPartnerData(ctx)
+
+	result, err := h.services.FindByPartnerID(ctx, partnerData.ID)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "data retrieved successfully",
+		Data:    result,
+	})
+}

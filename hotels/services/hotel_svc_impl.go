@@ -176,3 +176,22 @@ func (s *CompServicesImpl) GetReviewStatistics(ctx *gin.Context, data []database
 
 	return result
 }
+
+func (s *CompServicesImpl) FindByPartnerID(ctx *gin.Context, id string) ([]dto.HotelOutputDTO, *exceptions.Exception) {
+	hotels, err := s.repo.FindByPartnerID(ctx, s.DB, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []dto.HotelOutputDTO
+	for i := range hotels {
+		pricingStart := s.GetPricingStartHotelRooms(ctx, hotels[i].HotelRooms)
+		averageRating := s.GetReviewAverageRating(ctx, hotels[i].HotelReviews)
+
+		output := mapper.MapHotelModelToOutput(hotels[i])
+		output.PricingStart = pricingStart
+		output.Rating = averageRating
+		result = append(result, output)
+	}
+	return result, nil
+}

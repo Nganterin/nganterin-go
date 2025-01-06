@@ -7,4 +7,5 @@ type CompControllers interface {
 	FindAll(ctx *gin.Context)
 	FindByID(ctx *gin.Context)
 	SearchEngine(ctx *gin.Context)
+	FindByPartnerID(ctx *gin.Context)
 }

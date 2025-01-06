@@ -24,6 +24,7 @@ func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompContro
 		{
 			hotelRoute := partnerGroup.Group("/hotel")
 			{
+				hotelRoute.GET("/getall", hotelControllers.FindByPartnerID)
 				hotelRoute.POST("/register", hotelControllers.Create)
 			}
 
