@@ -140,7 +140,7 @@ func (s *CompServicesImpl) ApprovalCheck(ctx *gin.Context, id string) (*string, 
 	}
 
 	if data.DataVerifiedAt == nil {
-		return nil, exceptions.NewException(http.StatusProcessing, exceptions.ErrDataNotVerified)
+		return nil, exceptions.NewException(http.StatusForbidden, exceptions.ErrDataNotVerified)
 	}
 
 	secret := os.Getenv("JWT_SECRET")
