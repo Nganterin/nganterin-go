@@ -139,7 +139,7 @@ func (s *CompServicesImpl) ApprovalCheck(ctx *gin.Context, id string) (*string, 
 		return nil, err
 	}
 
-	if data.EmailVerifiedAt == nil {
+	if data.DataVerifiedAt == nil {
 		return nil, exceptions.NewException(418, exceptions.ErrDataNotVerified)
 	}
 
@@ -155,7 +155,7 @@ func (s *CompServicesImpl) ApprovalCheck(ctx *gin.Context, id string) (*string, 
 	claims["company_field"] = data.CompanyField
 	claims["company_email"] = data.CompanyEmail
 	claims["company_address"] = data.CompanyAddress
-	claims["is_data_verified"] = data.EmailVerifiedAt != nil
+	claims["is_data_verified"] = data.DataVerifiedAt != nil
 	claims["is_partner"] = true
 
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
