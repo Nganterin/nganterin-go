@@ -177,8 +177,8 @@ func (s *CompServicesImpl) GetReviewStatistics(ctx *gin.Context, data []database
 	return result
 }
 
-func (s *CompServicesImpl) FindByPartnerID(ctx *gin.Context, id string) ([]dto.HotelOutputDTO, *exceptions.Exception) {
-	hotels, err := s.repo.FindByPartnerID(ctx, s.DB, id)
+func (s *CompServicesImpl) FindByPartnerID(ctx *gin.Context, partnerID string) ([]dto.HotelOutputDTO, *exceptions.Exception) {
+	hotels, err := s.repo.FindByPartnerID(ctx, s.DB, partnerID)
 	if err != nil {
 		return nil, err
 	}

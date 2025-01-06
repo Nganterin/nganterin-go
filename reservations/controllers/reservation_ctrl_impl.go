@@ -96,3 +96,19 @@ func (h *CompControllersImpl) CheckOut(ctx *gin.Context) {
 		Message: "reservation checked out successfully",
 	})
 }
+
+func (h *CompControllersImpl) FindLast12MonthReservationCount(ctx *gin.Context) {
+	partnerData := helpers.GetPartnerData(ctx)
+
+	result, err := h.services.FindLast12MonthReservationCount(ctx, partnerData.ID)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Message: "data retrieved successfully",
+		Data:    result,
+	})
+}

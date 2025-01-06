@@ -3,6 +3,7 @@ package repositories
 import (
 	"nganterin-go/exceptions"
 	"nganterin-go/models/database"
+	"nganterin-go/models/dto"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -16,4 +17,5 @@ type CompRepositories interface {
 	CheckIn(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception
 	CheckOut(ctx *gin.Context, tx *gorm.DB, reservationKey string) *exceptions.Exception
 	Reviewed(ctx *gin.Context, tx *gorm.DB, orderID string) *exceptions.Exception
+	FindLast12MonthReservationCount(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]dto.HotelMonthlyReservation, *exceptions.Exception)
 }

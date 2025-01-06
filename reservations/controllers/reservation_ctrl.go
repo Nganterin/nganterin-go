@@ -7,4 +7,5 @@ type CompControllers interface {
 	FindByReservationKey(ctx *gin.Context)
 	CheckIn(ctx *gin.Context)
 	CheckOut(ctx *gin.Context)
+	FindLast12MonthReservationCount(ctx *gin.Context)
 }

@@ -3,6 +3,8 @@ package repositories
 import (
 	"nganterin-go/exceptions"
 	"nganterin-go/models/database"
+	"nganterin-go/models/dto"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -106,4 +108,33 @@ func (r *CompRepositoriesImpl) Reviewed(ctx *gin.Context, tx *gorm.DB, orderID s
 		return exceptions.ParseGormError(result.Error)
 	}
 	return nil
+}
+
+func (r *CompRepositoriesImpl) FindLast12MonthReservationCount(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]dto.HotelMonthlyReservation, *exceptions.Exception) {
+	now := time.Now()
+	lastYear := now.AddDate(0, -11, 0)
+
+	var data []dto.HotelMonthlyReservation
+
+	result := tx.Raw(`
+				WITH months AS (
+				SELECT generate_series(
+					date_trunc('month', ?::timestamp),
+					date_trunc('month', ?::timestamp),
+					'1 month'
+				) AS month
+			)
+			SELECT 
+				TO_CHAR(months.month, 'FMMonth YYYY') AS month_year,
+				COALESCE(COUNT(hr.id), 0) AS reservation_count
+			FROM months
+			LEFT JOIN hotel_reservations hr ON date_trunc('month', hr.created_at) = months.month
+			GROUP BY months.month
+			ORDER BY months.month
+		`, lastYear, now).Scan(&data)
+	if result.Error != nil {
+		return nil, exceptions.ParseGormError(result.Error)
+	}
+
+	return data, nil
 }

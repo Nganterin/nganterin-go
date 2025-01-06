@@ -15,5 +15,5 @@ type CompRepositories interface {
 	SearchEngine(ctx *gin.Context, tx *gorm.DB, searchInput dto.HotelSearch) ([]database.Hotels, *exceptions.Exception)
 	FindByID(ctx *gin.Context, tx *gorm.DB, id string)(*database.Hotels, *exceptions.Exception)
 	FindRoomByID(ctx *gin.Context, tx *gorm.DB, id uint) (*database.HotelRooms, *exceptions.Exception)
-	FindByPartnerID(ctx *gin.Context, tx *gorm.DB, id string) ([]database.Hotels, *exceptions.Exception)
+	FindByPartnerID(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]database.Hotels, *exceptions.Exception)
 }

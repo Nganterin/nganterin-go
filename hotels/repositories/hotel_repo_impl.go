@@ -136,7 +136,7 @@ func (r *CompRepositoriesImpl) FindRoomByID(ctx *gin.Context, tx *gorm.DB, id ui
 	return &data, nil
 }
 
-func (r *CompRepositoriesImpl) FindByPartnerID(ctx *gin.Context, tx *gorm.DB, id string) ([]database.Hotels, *exceptions.Exception) {
+func (r *CompRepositoriesImpl) FindByPartnerID(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]database.Hotels, *exceptions.Exception) {
 	var data []database.Hotels
 	result := tx.
 		Preload("HotelRooms").
@@ -146,7 +146,7 @@ func (r *CompRepositoriesImpl) FindByPartnerID(ctx *gin.Context, tx *gorm.DB, id
 		Preload("HotelsLocation").
 		Preload("HotelPhotos").
 		Preload("HotelFacilities").
-		Where("partner_id = ?", id).
+		Where("partner_id = ?", partnerID).
 		Find(&data)
 	if result.Error != nil {
 		return nil, exceptions.ParseGormError(result.Error)

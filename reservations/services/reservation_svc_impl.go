@@ -97,3 +97,7 @@ func (s *CompServicesImpl) CheckOut(ctx *gin.Context, reservationKey string) *ex
 
 	return s.repo.CheckOut(ctx, tx, reservationKey)
 }
+
+func (s *CompServicesImpl) FindLast12MonthReservationCount(ctx *gin.Context, partnerID string) ([]dto.HotelMonthlyReservation, *exceptions.Exception) {
+	return s.repo.FindLast12MonthReservationCount(ctx, s.DB, partnerID)
+}

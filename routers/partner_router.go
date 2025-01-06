@@ -22,25 +22,30 @@ func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompContro
 
 		partnerGroup.Use(middleware.PartnerAuthMiddleware())
 		{
-			hotelRoute := partnerGroup.Group("/hotel")
+			hotelGroup := partnerGroup.Group("/hotel")
 			{
-				hotelRoute.GET("/getall", hotelControllers.FindByPartnerID)
-				hotelRoute.POST("/register", hotelControllers.Create)
+				hotelGroup.GET("/getall", hotelControllers.FindByPartnerID)
+				hotelGroup.POST("/register", hotelControllers.Create)
 			}
 
 			reservationGroup := partnerGroup.Group("/reservation")
 			{
-				hotelRoute := reservationGroup.Group("/hotel")
+				hotelGroup := reservationGroup.Group("/hotel")
 				{
-					hotelRoute.GET("/details", reservationControllers.FindByReservationKey)
-					hotelRoute.POST("/checkin", reservationControllers.CheckIn)
-					hotelRoute.POST("/checkout", reservationControllers.CheckOut)
+					hotelGroup.GET("/details", reservationControllers.FindByReservationKey)
+					hotelGroup.POST("/checkin", reservationControllers.CheckIn)
+					hotelGroup.POST("/checkout", reservationControllers.CheckOut)
 				}
 			}
 
-			approvalRoute := partnerGroup.Group("/approval")
+			analyticGroup := partnerGroup.Group("/analytic")
 			{
-				approvalRoute.GET("/status", partnerControllers.ApprovalCheck)
+				analyticGroup.GET("/monthly-reservation", reservationControllers.FindLast12MonthReservationCount)
+			}
+
+			approvalGroup := partnerGroup.Group("/approval")
+			{
+				approvalGroup.GET("/status", partnerControllers.ApprovalCheck)
 			}
 		}
 	}
