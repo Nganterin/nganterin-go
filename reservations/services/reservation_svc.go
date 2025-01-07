@@ -12,5 +12,5 @@ type CompServices interface {
 	FindByReservationKey(ctx *gin.Context, reservationKey string) (*dto.HotelOrderDetailsOutput, *exceptions.Exception)
 	CheckIn(ctx *gin.Context, reservationKey string) *exceptions.Exception
 	CheckOut(ctx *gin.Context, reservationKey string) *exceptions.Exception
-	FindLast12MonthReservationCount(ctx *gin.Context, partnerID string) ([]dto.HotelMonthlyReservation, *exceptions.Exception)
+	YearlyReservationAnalytic(ctx *gin.Context, partnerID string) (*dto.HotelYearlyReservationAnalytic, *exceptions.Exception)
 }

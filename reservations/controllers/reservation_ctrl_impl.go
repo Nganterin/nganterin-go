@@ -97,10 +97,10 @@ func (h *CompControllersImpl) CheckOut(ctx *gin.Context) {
 	})
 }
 
-func (h *CompControllersImpl) FindLast12MonthReservationCount(ctx *gin.Context) {
+func (h *CompControllersImpl) YearlyReservationAnalytic(ctx *gin.Context) {
 	partnerData := helpers.GetPartnerData(ctx)
 
-	result, err := h.services.FindLast12MonthReservationCount(ctx, partnerData.ID)
+	result, err := h.services.YearlyReservationAnalytic(ctx, partnerData.ID)
 	if err != nil {
 		ctx.JSON(err.Status, err)
 		return

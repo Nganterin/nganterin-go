@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"net/http"
 	"nganterin-go/exceptions"
 	"nganterin-go/helpers"
@@ -98,6 +99,28 @@ func (s *CompServicesImpl) CheckOut(ctx *gin.Context, reservationKey string) *ex
 	return s.repo.CheckOut(ctx, tx, reservationKey)
 }
 
-func (s *CompServicesImpl) FindLast12MonthReservationCount(ctx *gin.Context, partnerID string) ([]dto.HotelMonthlyReservation, *exceptions.Exception) {
-	return s.repo.FindLast12MonthReservationCount(ctx, s.DB, partnerID)
+func (s *CompServicesImpl) YearlyReservationAnalytic(ctx *gin.Context, partnerID string) (*dto.HotelYearlyReservationAnalytic, *exceptions.Exception) {
+	reservationData, err := s.repo.FindLast12MonthReservationCount(ctx, s.DB, partnerID)
+	if err != nil {
+		return nil, err
+	}
+
+	lastMonth := reservationData[len(reservationData)-2]
+	currentMonth := reservationData[len(reservationData)-1]
+	difference := currentMonth.ReservationCount - lastMonth.ReservationCount
+	percentageChange := 0.0
+
+	if lastMonth.ReservationCount == 0 {
+		percentageChange = 100 * float64(difference)
+	} else {
+		percentageChange = (float64(difference) / float64(lastMonth.ReservationCount)) * 100
+	}
+
+	result := dto.HotelYearlyReservationAnalytic{
+		Period:             fmt.Sprintf("%s - %s", lastMonth.MonthYear, currentMonth.MonthYear),
+		TrendPercentage:    float32(percentageChange),
+		MonthlyReservation: reservationData,
+	}
+
+	return &result, nil
 }

@@ -40,7 +40,7 @@ func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompContro
 
 			analyticGroup := partnerGroup.Group("/analytic")
 			{
-				analyticGroup.GET("/monthly-reservation", reservationControllers.FindLast12MonthReservationCount)
+				analyticGroup.GET("/yearly-reservation", reservationControllers.YearlyReservationAnalytic)
 			}
 
 			approvalGroup := partnerGroup.Group("/approval")
