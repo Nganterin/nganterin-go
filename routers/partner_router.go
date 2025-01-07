@@ -5,12 +5,19 @@ import (
 	"nganterin-go/partners/controllers"
 
 	hotelControllers "nganterin-go/hotels/controllers"
+	orderControllers "nganterin-go/orders/controllers"
 	reservationControllers "nganterin-go/reservations/controllers"
 
 	"github.com/gin-gonic/gin"
 )
 
-func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompControllers, hotelControllers hotelControllers.CompControllers, reservationControllers reservationControllers.CompControllers) {
+func PartnerRoutes(
+	r *gin.RouterGroup,
+	partnerControllers controllers.CompControllers,
+	hotelControllers hotelControllers.CompControllers,
+	reservationControllers reservationControllers.CompControllers,
+	orderControllers orderControllers.CompControllers,
+) {
 	partnerGroup := r.Group("/partner")
 	{
 		partnerAuthGroup := partnerGroup.Group("/auth")
@@ -40,7 +47,15 @@ func PartnerRoutes(r *gin.RouterGroup, partnerControllers controllers.CompContro
 
 			analyticGroup := partnerGroup.Group("/analytic")
 			{
-				analyticGroup.GET("/yearly-reservation", reservationControllers.YearlyReservationAnalytic)
+				reservationGroup := analyticGroup.Group("/reservation")
+				{
+					reservationGroup.GET("/yearly", reservationControllers.YearlyReservationAnalytic)
+				}
+
+				orderGroup := analyticGroup.Group("/order")
+				{
+					orderGroup.GET("/yearly", orderControllers.YearlyOrderAnalytic)
+				}
 			}
 
 			approvalGroup := partnerGroup.Group("/approval")

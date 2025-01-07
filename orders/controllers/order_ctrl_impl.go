@@ -88,3 +88,19 @@ func (h *CompControllersImpl) FindByUserID(ctx *gin.Context) {
 		Message: "data retrieved successfully",
 	})
 }
+
+func (h *CompControllersImpl) YearlyOrderAnalytic(ctx *gin.Context) {
+	userData := helpers.GetPartnerData(ctx)
+
+	result, err := h.services.YearlyOrderAnalytic(ctx, userData.ID)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Data:    result,
+		Message: "data retrieved successfully",
+	})
+}

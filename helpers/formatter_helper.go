@@ -25,3 +25,16 @@ func FormatDateStringToTimeTime(date string) (*time.Time, error) {
 
 	return &parsedDate, nil
 }
+
+func FormatMoneyAlt(amount float64) string {
+	switch {
+	case amount >= 1_000_000_000:
+		return fmt.Sprintf("%.2fB", amount/1_000_000_000)
+	case amount >= 1_000_000:
+		return fmt.Sprintf("%.2fM", amount/1_000_000)
+	case amount >= 1_000:
+		return fmt.Sprintf("%.2fK", amount/1_000)
+	default:
+		return fmt.Sprintf("%.2f", amount)
+	}
+}

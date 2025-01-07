@@ -12,6 +12,7 @@ import (
 	"nganterin-go/orders/repositories"
 	userRepo "nganterin-go/users/repositories"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -122,4 +123,40 @@ func (s *CompServicesImpl) FindByUserID(ctx *gin.Context, id string) ([]dto.Hote
 	}
 
 	return result, nil
+}
+
+func (s *CompServicesImpl) YearlyOrderAnalytic(ctx *gin.Context, partnerID string) (*dto.HotelYearlyOrderAnalytic, *exceptions.Exception) {
+	data, err := s.repo.FindByPartnerID(ctx, s.DB, partnerID)
+	if err != nil {
+		return nil, err
+	}
+
+	var yearlyAnalytic dto.HotelYearlyOrderAnalytic
+	lastMonth := time.Now().AddDate(0, -1, 0)
+	lastYear := time.Now().AddDate(-1, 0, 0)
+
+	for _, item := range data {
+		if item.CreatedAt.After(lastYear) {
+			yearlyAnalytic.TotalOrder++
+			yearlyAnalytic.TotalIncome += item.TotalPrice
+
+			if item.PaymentStatus == "paid" {
+				yearlyAnalytic.TotalReservation++
+			}
+
+			if item.CreatedAt.After(lastMonth) {
+				yearlyAnalytic.LastMonthData.TotalOrder++
+				yearlyAnalytic.LastMonthData.TotalIncome += item.TotalPrice
+
+				if item.PaymentStatus == "paid" {
+					yearlyAnalytic.LastMonthData.TotalReservation++
+				}
+			}
+		}
+	}
+
+	yearlyAnalytic.TotalIncomeAlt = helpers.FormatMoneyAlt(float64(yearlyAnalytic.TotalIncome))
+	yearlyAnalytic.LastMonthData.TotalIncomeAlt = helpers.FormatMoneyAlt(float64(yearlyAnalytic.LastMonthData.TotalIncome))
+
+	return &yearlyAnalytic, nil
 }

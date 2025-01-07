@@ -39,7 +39,7 @@ func CompRouters(api *gin.RouterGroup) {
 	OrderRoutes(api, orderController)
 	MidtransRoutes(api, midtransController)
 	StorageRoutes(api, storageController)
-	PartnerRoutes(api, partnerController, hotelController, reservationController)
+	PartnerRoutes(api, partnerController, hotelController, reservationController, orderController)
 	ReservationRoutes(api, reservationController)
 	ReviewRoutes(api, reviewController)
 }

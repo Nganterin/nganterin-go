@@ -6,4 +6,5 @@ type CompControllers interface {
 	Create(ctx *gin.Context)
 	FindByID(ctx *gin.Context)
 	FindByUserID(ctx *gin.Context)
+	YearlyOrderAnalytic(ctx *gin.Context)
 }

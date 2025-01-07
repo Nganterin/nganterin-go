@@ -67,3 +67,20 @@ func (r *CompRepositoriesImpl) FindByUserID(ctx *gin.Context, tx *gorm.DB, id st
 
 	return data, nil
 }
+
+func (r *CompRepositoriesImpl) FindByPartnerID(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]database.HotelOrders, *exceptions.Exception) {
+	var data []database.HotelOrders
+
+	result := tx.
+		Joins("JOIN hotels ON hotels.id = hotel_orders.hotel_id").
+		Preload("Hotel").
+		Preload("HotelRoom").
+		Where("hotels.partner_id = ?", partnerID).
+		Order("hotel_orders.created_at DESC").
+		Find(&data)
+	if result.Error != nil {
+		return nil, exceptions.ParseGormError(result.Error)
+	}
+
+	return data, nil
+}

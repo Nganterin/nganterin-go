@@ -13,4 +13,5 @@ type CompRepositories interface {
 	FindByID(ctx *gin.Context, tx *gorm.DB, id string) (*database.HotelOrders, *exceptions.Exception)
 	UpdatePaymentStatus(ctx *gin.Context, tx *gorm.DB, id string, status string) *exceptions.Exception
 	FindByUserID(ctx *gin.Context, tx *gorm.DB, id string) ([]database.HotelOrders, *exceptions.Exception)
+	FindByPartnerID(ctx *gin.Context, tx *gorm.DB, partnerID string) ([]database.HotelOrders, *exceptions.Exception)
 }
