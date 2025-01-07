@@ -187,10 +187,12 @@ func (s *CompServicesImpl) FindByPartnerID(ctx *gin.Context, partnerID string) (
 	for i := range hotels {
 		pricingStart := s.GetPricingStartHotelRooms(ctx, hotels[i].HotelRooms)
 		averageRating := s.GetReviewAverageRating(ctx, hotels[i].HotelReviews)
+		reviewStatistic := s.GetReviewStatistics(ctx, hotels[i].HotelReviews)
 
 		output := mapper.MapHotelModelToOutput(hotels[i])
 		output.PricingStart = pricingStart
 		output.Rating = averageRating
+		output.ReviewStatistic = reviewStatistic
 		result = append(result, output)
 	}
 	return result, nil
