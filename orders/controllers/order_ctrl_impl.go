@@ -35,7 +35,11 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 		}
 	}
 
-	userData := helpers.GetUserData(ctx)
+	userData, err := helpers.GetUserData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	orderInput.UserID = userData.ID
 
@@ -74,7 +78,11 @@ func (h *CompControllersImpl) FindByID(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) FindByUserID(ctx *gin.Context) {
-	userData := helpers.GetUserData(ctx)
+	userData, err := helpers.GetUserData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	result, err := h.services.FindByUserID(ctx, userData.ID)
 	if err != nil {
@@ -90,9 +98,13 @@ func (h *CompControllersImpl) FindByUserID(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) YearlyOrderAnalytic(ctx *gin.Context) {
-	userData := helpers.GetPartnerData(ctx)
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
-	result, err := h.services.YearlyOrderAnalytic(ctx, userData.ID)
+	result, err := h.services.YearlyOrderAnalytic(ctx, partnerData.ID)
 	if err != nil {
 		ctx.JSON(err.Status, err)
 		return

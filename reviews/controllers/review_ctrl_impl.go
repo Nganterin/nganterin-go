@@ -29,9 +29,15 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 		return
 	}
 
-	data.UserID = helpers.GetUserData(ctx).ID
+	userData, err := helpers.GetUserData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
-	err := h.services.Create(ctx, data)
+	data.UserID = userData.ID
+
+	err = h.services.Create(ctx, data)
 	if err != nil {
 		ctx.JSON(err.Status, err)
 		return

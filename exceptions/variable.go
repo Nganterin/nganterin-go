@@ -25,5 +25,6 @@ const (
 	ErrNotCheckedInYet           = "reservation not checked in yet"
 	ErrNotCheckedOutYet          = "reservation not checked out yet"
 	ErrInvalidDate               = "invalid date"
+	ErrInvalidTokenStructure     = "invalid token structure"
 	ErrDataNotVerified           = "data not verified"
 )

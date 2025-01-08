@@ -87,6 +87,7 @@ var partnerFeatureSet = wire.NewSet(
 
 var reservationFeatureSet = wire.NewSet(
 	reservationRepositories.NewComponentRepository,
+	hotelRepositories.NewComponentRepository,
 	reservationServices.NewComponentServices,
 	reservationControllers.NewCompController,
 )

@@ -87,7 +87,8 @@ func InitializePartnerController(db *gorm.DB, validate *validator.Validate) cont
 
 func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers7.CompControllers {
 	compRepositories := repositories4.NewComponentRepository()
-	compServices := services8.NewComponentServices(compRepositories, db)
+	repositoriesCompRepositories := repositories2.NewComponentRepository()
+	compServices := services8.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
 	compControllers := controllers7.NewCompController(compServices)
 	return compControllers
 }
@@ -115,6 +116,6 @@ var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, servic
 
 var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services.NewComponentServices, services7.NewComponentServices, controllers6.NewCompController)
 
-var reservationFeatureSet = wire.NewSet(repositories4.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)
+var reservationFeatureSet = wire.NewSet(repositories4.NewComponentRepository, repositories2.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)
 
 var reviewFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories4.NewComponentRepository, repositories7.NewComponentRepository, services9.NewComponentServices, controllers8.NewCompController)

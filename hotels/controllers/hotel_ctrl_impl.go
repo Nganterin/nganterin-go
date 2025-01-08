@@ -29,7 +29,11 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 		return
 	}
 
-	partnerData := helpers.GetPartnerData(ctx)
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	hotelInput.PartnerID = partnerData.ID
 
@@ -127,7 +131,11 @@ func (h *CompControllersImpl) FindByID(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) FindByPartnerID(ctx *gin.Context) {
-	partnerData := helpers.GetPartnerData(ctx)
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	result, err := h.services.FindByPartnerID(ctx, partnerData.ID)
 	if err != nil {

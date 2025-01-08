@@ -82,6 +82,7 @@ type HotelOrderDetailsOutput struct {
 
 	HotelReservations HotelReservationOutput `json:"hotel_reservation"`
 	Hotel             HotelOutputDTO         `json:"hotel"`
+	User              UserOutputDTO          `json:"user"`
 	HotelRoom         HotelRoomOutput        `json:"hotel_room"`
 }
 
@@ -105,5 +106,5 @@ type HotelReviewOutput struct {
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 
-	User UserReviewOutputDTO `json:"user"`
+	User UserOutputDTO `json:"user"`
 }

@@ -103,6 +103,7 @@ type HotelOrders struct {
 	HotelReservations HotelReservations `gorm:"foreignKey:HotelOrdersID;references:ID"`
 	HotelReviews      HotelReviews      `gorm:"foreignKey:HotelOrdersID;references:ID"`
 	Hotel             Hotels            `gorm:"foreignKey:HotelID"`
+	User              Users             `gorm:"foreignKey:UserID"`
 	HotelRoom         HotelRooms        `gorm:"foreignKey:HotelRoomID"`
 }
 

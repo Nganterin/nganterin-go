@@ -137,11 +137,14 @@ func (h *CompControllersImpl) LoginGoogleOAuth(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) AuthTest(ctx *gin.Context) {
-	user_data := helpers.GetUserData(ctx)
-
+	userData, err := helpers.GetUserData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 	ctx.JSON(http.StatusAccepted, dto.Response{
 		Status: http.StatusAccepted, 
 		Message: "Test Auth Success", 
-		Data: user_data,
+		Data: userData,
 	})
 }

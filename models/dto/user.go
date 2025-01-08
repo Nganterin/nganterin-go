@@ -29,7 +29,7 @@ type UserGoogle struct {
 	Avatar          string `json:"avatar" validate:"url"`
 }
 
-type UserReviewOutputDTO struct {
+type UserOutputDTO struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
 	Email  string `json:"email"`
