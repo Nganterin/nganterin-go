@@ -10,24 +10,59 @@ import (
 	"nganterin-go/reservations/repositories"
 	"time"
 
+	hotelRepo "nganterin-go/hotels/repositories"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type CompServicesImpl struct {
-	repo repositories.CompRepositories
-	DB   *gorm.DB
+	repo      repositories.CompRepositories
+	hotelRepo hotelRepo.CompRepositories
+	DB        *gorm.DB
 }
 
-func NewComponentServices(compRepositories repositories.CompRepositories, db *gorm.DB) CompServices {
+func NewComponentServices(compRepositories repositories.CompRepositories, hotelRepo hotelRepo.CompRepositories, db *gorm.DB) CompServices {
 	return &CompServicesImpl{
-		repo: compRepositories,
-		DB:   db,
+		repo:      compRepositories,
+		hotelRepo: hotelRepo,
+		DB:        db,
 	}
 }
 
 func (s *CompServicesImpl) FindByUserID(ctx *gin.Context, id string) ([]dto.HotelOrderDetailsOutput, *exceptions.Exception) {
 	data, err := s.repo.FindByUserID(ctx, s.DB, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []dto.HotelOrderDetailsOutput
+	for _, item := range data {
+		output := mapper.MapHotelOrderModelToOutput(item)
+		output.TotalDays = helpers.GetDaysFromCheckInCheckOut(item.CheckInDate, item.CheckOutDate)
+
+		result = append(result, output)
+	}
+
+	return result, nil
+}
+
+func (s *CompServicesImpl) FindByHotelID(ctx *gin.Context, hotelID string) ([]dto.HotelOrderDetailsOutput, *exceptions.Exception) {
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	hotelData, err := s.hotelRepo.FindByID(ctx, s.DB, hotelID)
+	if err != nil {
+		return nil, err
+	}
+
+	if partnerData.ID != hotelData.PartnerID {
+		return nil, exceptions.NewException(http.StatusForbidden, exceptions.ErrForbidden)
+	}
+
+	data, err := s.repo.FindByHotelID(ctx, s.DB, hotelID)
 	if err != nil {
 		return nil, err
 	}

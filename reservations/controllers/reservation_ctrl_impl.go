@@ -21,9 +21,34 @@ func NewCompController(compServices services.CompServices) CompControllers {
 }
 
 func (h *CompControllersImpl) FindByUserID(ctx *gin.Context) {
-	userData := helpers.GetUserData(ctx)
+	userData, err := helpers.GetUserData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	result, err := h.services.FindByUserID(ctx, userData.ID)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Status:  http.StatusOK,
+		Data:    result,
+		Message: "data retrieved successfully",
+	})
+}
+
+func (h *CompControllersImpl) FindByHotelID(ctx *gin.Context) {
+	hotelID := ctx.Query("id")
+
+	if hotelID == "" {
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		return
+	}
+
+	result, err := h.services.FindByHotelID(ctx, hotelID)
 	if err != nil {
 		ctx.JSON(err.Status, err)
 		return
@@ -98,7 +123,11 @@ func (h *CompControllersImpl) CheckOut(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) YearlyReservationAnalytic(ctx *gin.Context) {
-	partnerData := helpers.GetPartnerData(ctx)
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
 	result, err := h.services.YearlyReservationAnalytic(ctx, partnerData.ID)
 	if err != nil {

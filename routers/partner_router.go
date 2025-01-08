@@ -39,6 +39,7 @@ func PartnerRoutes(
 			{
 				hotelGroup := reservationGroup.Group("/hotel")
 				{
+					hotelGroup.GET("/getall", reservationControllers.FindByHotelID)
 					hotelGroup.GET("/details", reservationControllers.FindByReservationKey)
 					hotelGroup.POST("/checkin", reservationControllers.CheckIn)
 					hotelGroup.POST("/checkout", reservationControllers.CheckOut)

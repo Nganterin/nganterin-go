@@ -79,9 +79,13 @@ func (h *CompControllersImpl) VerifyEmail(ctx *gin.Context) {
 }
 
 func (h *CompControllersImpl) ApprovalCheck(ctx *gin.Context) {
-	userData := helpers.GetPartnerData(ctx)
+	partnerData, err := helpers.GetPartnerData(ctx)
+	if err != nil {
+		ctx.JSON(err.Status, err)
+		return
+	}
 
-	token, err := h.services.ApprovalCheck(ctx, userData.ID)
+	token, err := h.services.ApprovalCheck(ctx, partnerData.ID)
 	if err != nil {
 		ctx.JSON(err.Status, err)
 		return

@@ -57,6 +57,25 @@ func (r *CompRepositoriesImpl) FindByUserID(ctx *gin.Context, tx *gorm.DB, id st
 	return data, nil
 }
 
+func (r *CompRepositoriesImpl) FindByHotelID(ctx *gin.Context, tx *gorm.DB, hotelID string) ([]database.HotelOrders, *exceptions.Exception) {
+	var data []database.HotelOrders
+
+	result := tx.
+		Joins("JOIN hotel_reservations ON hotel_reservations.hotel_orders_id = hotel_orders.id").
+		Preload("HotelReservations").
+		Preload("Hotel").
+		Preload("HotelRoom").
+		Preload("User").
+		Where("hotel_orders.hotel_id = ?", hotelID).
+		Order("hotel_orders.created_at DESC").
+		Find(&data)
+	if result.Error != nil {
+		return nil, exceptions.ParseGormError(result.Error)
+	}
+
+	return data, nil
+}
+
 func (r *CompRepositoriesImpl) FindByReservationKey(ctx *gin.Context, tx *gorm.DB, reservationKey string) (*database.HotelOrders, *exceptions.Exception) {
 	var data database.HotelOrders
 	result := tx.
