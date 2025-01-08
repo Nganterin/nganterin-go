@@ -117,7 +117,7 @@ func (r *CompRepositoriesImpl) FindLast12MonthReservationCount(ctx *gin.Context,
 	var data []dto.HotelMonthlyReservation
 
 	result := tx.Raw(`
-				WITH months AS (
+			WITH months AS (
 				SELECT generate_series(
 					date_trunc('month', ?::timestamp),
 					date_trunc('month', ?::timestamp),
@@ -128,10 +128,15 @@ func (r *CompRepositoriesImpl) FindLast12MonthReservationCount(ctx *gin.Context,
 				TO_CHAR(months.month, 'FMMonth YYYY') AS month_year,
 				COALESCE(COUNT(hr.id), 0) AS reservation_count
 			FROM months
-			LEFT JOIN hotel_reservations hr ON date_trunc('month', hr.created_at) = months.month
+			LEFT JOIN hotel_reservations hr 
+				ON date_trunc('month', hr.created_at) = months.month
+			LEFT JOIN hotel_orders ho 
+				ON hr.hotel_orders_id = ho.id
+			LEFT JOIN hotels h 
+				ON ho.hotel_id = h.id AND h.partner_id = ?
 			GROUP BY months.month
 			ORDER BY months.month
-		`, lastYear, now).Scan(&data)
+		`, lastYear, now, partnerID).Scan(&data)
 	if result.Error != nil {
 		return nil, exceptions.ParseGormError(result.Error)
 	}
