@@ -80,6 +80,7 @@ func (r *CompRepositoriesImpl) FindByReservationKey(ctx *gin.Context, tx *gorm.D
 	var data database.HotelOrders
 	result := tx.
 		Preload("HotelReservations").
+		Preload("User").
 		Preload("Hotel").
 		Preload("Hotel.HotelsLocation").
 		Preload("HotelRoom").

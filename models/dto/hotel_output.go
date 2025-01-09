@@ -8,7 +8,7 @@ type HotelOutputDTO struct {
 	Name            string                  `json:"name"`
 	Description     string                  `json:"description"`
 	PricingStart    int64                   `json:"pricing_start,omitempty"`
-	Rating          HotelAverageRating      `json:"rating"`
+	Rating          HotelAverageRating      `json:"rating,omitempty"`
 	ReviewStatistic HotelReviewStatistic    `json:"review_statistic,omitempty"`
 	HotelRooms      []HotelRoomOutput       `json:"hotel_rooms,omitempty"`
 	HotelsLocation  HotelsLocationOutput    `json:"hotels_location,omitempty"`
