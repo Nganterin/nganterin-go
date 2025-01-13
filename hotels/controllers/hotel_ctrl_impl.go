@@ -25,7 +25,7 @@ func (h *CompControllersImpl) Create(ctx *gin.Context) {
 	var hotelInput dto.HotelInputDTO
 
 	if jsonErr := ctx.ShouldBindJSON(&hotelInput); jsonErr != nil {
-		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, exceptions.ErrBadRequest))
+		ctx.JSON(http.StatusBadRequest, exceptions.NewException(http.StatusBadRequest, jsonErr.Error()))
 		return
 	}
 
