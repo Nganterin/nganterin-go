@@ -1,8 +1,8 @@
 package services
 
 import (
-	"nganterin-go/exceptions"
 	"nganterin-go/models/dto"
+	"nganterin-go/pkg/exceptions"
 )
 
 type CompServices interface {

@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"nganterin-go/storages/controllers"
+	"nganterin-go/api/storages/controllers"
 
 	"github.com/gin-gonic/gin"
 )

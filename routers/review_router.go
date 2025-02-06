@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"nganterin-go/middleware"
-	"nganterin-go/reviews/controllers"
+	"nganterin-go/api/reviews/controllers"
+	"nganterin-go/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 )

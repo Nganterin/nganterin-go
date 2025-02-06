@@ -6,38 +6,35 @@
 package injectors
 
 import (
-	userControllers "nganterin-go/users/controllers"
-	userRepositories "nganterin-go/users/repositories"
-	userServices "nganterin-go/users/services"
+	userControllers "nganterin-go/api/users/controllers"
+	userRepositories "nganterin-go/api/users/repositories"
+	userServices "nganterin-go/api/users/services"
 
-	hotelControllers "nganterin-go/hotels/controllers"
-	hotelRepositories "nganterin-go/hotels/repositories"
-	hotelServices "nganterin-go/hotels/services"
+	hotelControllers "nganterin-go/api/hotels/controllers"
+	hotelRepositories "nganterin-go/api/hotels/repositories"
+	hotelServices "nganterin-go/api/hotels/services"
 
-	orderControllers "nganterin-go/orders/controllers"
-	orderRepositories "nganterin-go/orders/repositories"
-	orderServices "nganterin-go/orders/services"
-
-	midtransControllers "nganterin-go/midtrans/controllers"
-	midtransServices "nganterin-go/midtrans/services"
+	orderControllers "nganterin-go/api/orders/controllers"
+	orderRepositories "nganterin-go/api/orders/repositories"
+	orderServices "nganterin-go/api/orders/services"
 
 	emailServices "nganterin-go/emails/services"
 
-	storageControllers "nganterin-go/storages/controllers"
-	storageRepositories "nganterin-go/storages/repositories"
-	storageServices "nganterin-go/storages/services"
+	storageControllers "nganterin-go/api/storages/controllers"
+	storageRepositories "nganterin-go/api/storages/repositories"
+	storageServices "nganterin-go/api/storages/services"
 
-	partnerControllers "nganterin-go/partners/controllers"
-	partnerRepositories "nganterin-go/partners/repositories"
-	partnerServices "nganterin-go/partners/services"
+	partnerControllers "nganterin-go/api/partners/controllers"
+	partnerRepositories "nganterin-go/api/partners/repositories"
+	partnerServices "nganterin-go/api/partners/services"
 
-	reservationControllers "nganterin-go/reservations/controllers"
-	reservationRepositories "nganterin-go/reservations/repositories"
-	reservationServices "nganterin-go/reservations/services"
+	reservationControllers "nganterin-go/api/reservations/controllers"
+	reservationRepositories "nganterin-go/api/reservations/repositories"
+	reservationServices "nganterin-go/api/reservations/services"
 
-	reviewControllers "nganterin-go/reviews/controllers"
-	reviewRepositories "nganterin-go/reviews/repositories"
-	reviewServices "nganterin-go/reviews/services"
+	reviewControllers "nganterin-go/api/reviews/controllers"
+	reviewRepositories "nganterin-go/api/reviews/repositories"
+	reviewServices "nganterin-go/api/reviews/services"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/wire"
@@ -63,13 +60,6 @@ var orderFeatureSet = wire.NewSet(
 	orderRepositories.NewComponentRepository,
 	orderServices.NewComponentServices,
 	orderControllers.NewCompController,
-)
-
-var midtransFeatureSet = wire.NewSet(
-	orderRepositories.NewComponentRepository,
-	reservationRepositories.NewComponentRepository,
-	midtransServices.NewComponentServices,
-	midtransControllers.NewCompController,
 )
 
 var storageFeatureSet = wire.NewSet(
@@ -112,11 +102,6 @@ func InitializeHotelController(db *gorm.DB, validate *validator.Validate) hotelC
 
 func InitializeOrderController(db *gorm.DB, validate *validator.Validate) orderControllers.CompControllers {
 	wire.Build(orderFeatureSet)
-	return nil
-}
-
-func InitializeMidtransController(db *gorm.DB, validate *validator.Validate) midtransControllers.CompControllers {
-	wire.Build(midtransFeatureSet)
 	return nil
 }
 

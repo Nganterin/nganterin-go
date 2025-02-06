@@ -1,12 +1,12 @@
 package routers
 
 import (
-	"nganterin-go/middleware"
-	"nganterin-go/partners/controllers"
+	"nganterin-go/api/partners/controllers"
+	"nganterin-go/pkg/middleware"
 
-	hotelControllers "nganterin-go/hotels/controllers"
-	orderControllers "nganterin-go/orders/controllers"
-	reservationControllers "nganterin-go/reservations/controllers"
+	hotelControllers "nganterin-go/api/hotels/controllers"
+	orderControllers "nganterin-go/api/orders/controllers"
+	reservationControllers "nganterin-go/api/reservations/controllers"
 
 	"github.com/gin-gonic/gin"
 )

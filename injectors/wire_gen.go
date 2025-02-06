@@ -10,30 +10,28 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/google/wire"
 	"gorm.io/gorm"
+	controllers2 "nganterin-go/api/hotels/controllers"
+	repositories2 "nganterin-go/api/hotels/repositories"
+	services3 "nganterin-go/api/hotels/services"
+	controllers3 "nganterin-go/api/orders/controllers"
+	repositories3 "nganterin-go/api/orders/repositories"
+	services4 "nganterin-go/api/orders/services"
+	controllers5 "nganterin-go/api/partners/controllers"
+	repositories5 "nganterin-go/api/partners/repositories"
+	services6 "nganterin-go/api/partners/services"
+	controllers6 "nganterin-go/api/reservations/controllers"
+	repositories6 "nganterin-go/api/reservations/repositories"
+	services7 "nganterin-go/api/reservations/services"
+	controllers7 "nganterin-go/api/reviews/controllers"
+	repositories7 "nganterin-go/api/reviews/repositories"
+	services8 "nganterin-go/api/reviews/services"
+	controllers4 "nganterin-go/api/storages/controllers"
+	repositories4 "nganterin-go/api/storages/repositories"
+	services5 "nganterin-go/api/storages/services"
+	"nganterin-go/api/users/controllers"
+	"nganterin-go/api/users/repositories"
+	services2 "nganterin-go/api/users/services"
 	"nganterin-go/emails/services"
-	controllers2 "nganterin-go/hotels/controllers"
-	repositories2 "nganterin-go/hotels/repositories"
-	services3 "nganterin-go/hotels/services"
-	controllers4 "nganterin-go/midtrans/controllers"
-	services5 "nganterin-go/midtrans/services"
-	controllers3 "nganterin-go/orders/controllers"
-	repositories3 "nganterin-go/orders/repositories"
-	services4 "nganterin-go/orders/services"
-	controllers6 "nganterin-go/partners/controllers"
-	repositories6 "nganterin-go/partners/repositories"
-	services7 "nganterin-go/partners/services"
-	controllers7 "nganterin-go/reservations/controllers"
-	repositories4 "nganterin-go/reservations/repositories"
-	services8 "nganterin-go/reservations/services"
-	controllers8 "nganterin-go/reviews/controllers"
-	repositories7 "nganterin-go/reviews/repositories"
-	services9 "nganterin-go/reviews/services"
-	controllers5 "nganterin-go/storages/controllers"
-	repositories5 "nganterin-go/storages/repositories"
-	services6 "nganterin-go/storages/services"
-	"nganterin-go/users/controllers"
-	"nganterin-go/users/repositories"
-	services2 "nganterin-go/users/services"
 )
 
 // Injectors from injector.go:
@@ -62,43 +60,35 @@ func InitializeOrderController(db *gorm.DB, validate *validator.Validate) contro
 	return compControllers
 }
 
-func InitializeMidtransController(db *gorm.DB, validate *validator.Validate) controllers4.CompControllers {
-	compRepositories := repositories3.NewComponentRepository()
-	repositoriesCompRepositories := repositories4.NewComponentRepository()
-	compServices := services5.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
+func InitializeStorageController(db *gorm.DB, validate *validator.Validate) controllers4.CompControllers {
+	compRepositories := repositories4.NewComponentRepository()
+	compServices := services5.NewComponentServices(compRepositories, db)
 	compControllers := controllers4.NewCompController(compServices)
 	return compControllers
 }
 
-func InitializeStorageController(db *gorm.DB, validate *validator.Validate) controllers5.CompControllers {
+func InitializePartnerController(db *gorm.DB, validate *validator.Validate) controllers5.CompControllers {
 	compRepositories := repositories5.NewComponentRepository()
-	compServices := services6.NewComponentServices(compRepositories, db)
-	compControllers := controllers5.NewCompController(compServices)
-	return compControllers
-}
-
-func InitializePartnerController(db *gorm.DB, validate *validator.Validate) controllers6.CompControllers {
-	compRepositories := repositories6.NewComponentRepository()
 	compServices := services.NewComponentServices()
-	servicesCompServices := services7.NewComponentServices(compRepositories, compServices, db, validate)
-	compControllers := controllers6.NewCompController(servicesCompServices)
+	servicesCompServices := services6.NewComponentServices(compRepositories, compServices, db, validate)
+	compControllers := controllers5.NewCompController(servicesCompServices)
 	return compControllers
 }
 
-func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers7.CompControllers {
-	compRepositories := repositories4.NewComponentRepository()
+func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers6.CompControllers {
+	compRepositories := repositories6.NewComponentRepository()
 	repositoriesCompRepositories := repositories2.NewComponentRepository()
-	compServices := services8.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
-	compControllers := controllers7.NewCompController(compServices)
+	compServices := services7.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
+	compControllers := controllers6.NewCompController(compServices)
 	return compControllers
 }
 
-func InitializeReviewController(db *gorm.DB, validate *validator.Validate) controllers8.CompControllers {
+func InitializeReviewController(db *gorm.DB, validate *validator.Validate) controllers7.CompControllers {
 	compRepositories := repositories7.NewComponentRepository()
 	repositoriesCompRepositories := repositories3.NewComponentRepository()
-	compRepositories2 := repositories4.NewComponentRepository()
-	compServices := services9.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db, validate)
-	compControllers := controllers8.NewCompController(compServices)
+	compRepositories2 := repositories6.NewComponentRepository()
+	compServices := services8.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db, validate)
+	compControllers := controllers7.NewCompController(compServices)
 	return compControllers
 }
 
@@ -110,12 +100,10 @@ var hotelFeatureSet = wire.NewSet(repositories2.NewComponentRepository, services
 
 var orderFeatureSet = wire.NewSet(repositories.NewComponentRepository, repositories2.NewComponentRepository, repositories3.NewComponentRepository, services4.NewComponentServices, controllers3.NewCompController)
 
-var midtransFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories4.NewComponentRepository, services5.NewComponentServices, controllers4.NewCompController)
+var storageFeatureSet = wire.NewSet(repositories4.NewComponentRepository, services5.NewComponentServices, controllers4.NewCompController)
 
-var storageFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services6.NewComponentServices, controllers5.NewCompController)
+var partnerFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services.NewComponentServices, services6.NewComponentServices, controllers5.NewCompController)
 
-var partnerFeatureSet = wire.NewSet(repositories6.NewComponentRepository, services.NewComponentServices, services7.NewComponentServices, controllers6.NewCompController)
+var reservationFeatureSet = wire.NewSet(repositories6.NewComponentRepository, repositories2.NewComponentRepository, services7.NewComponentServices, controllers6.NewCompController)
 
-var reservationFeatureSet = wire.NewSet(repositories4.NewComponentRepository, repositories2.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)
-
-var reviewFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories4.NewComponentRepository, repositories7.NewComponentRepository, services9.NewComponentServices, controllers8.NewCompController)
+var reviewFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories6.NewComponentRepository, repositories7.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)

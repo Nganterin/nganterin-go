@@ -1,15 +1,15 @@
 package routers
 
 import (
-	"nganterin-go/middleware"
-	"nganterin-go/users/controllers"
+	"nganterin-go/api/users/controllers"
+	"nganterin-go/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func AuthRoutes(r *gin.RouterGroup, userController controllers.CompControllers) {
 	authGroup := r.Group("/auth")
-	{	
+	{
 		authGroup.POST("/register", userController.CreateCredentials)
 		authGroup.POST("/login", userController.LoginCredentials)
 		authGroup.POST("/verify", userController.VerifyEmail)

@@ -2,23 +2,16 @@ package routers
 
 import (
 	"net/http"
-	"nganterin-go/config"
 	"nganterin-go/injectors"
-	"nganterin-go/middleware"
 	"nganterin-go/models/dto"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 )
 
-func CompRouters(api *gin.RouterGroup) {
-	db := config.InitDB()
-	validate := validator.New(validator.WithRequiredStructEnabled())
-
-	api.Use(middleware.ClientTracker(db))
-	api.Use(middleware.GzipResponseMiddleware())
-
-	api.GET("/ping", func(ctx *gin.Context) {
+func CompRouters(r *gin.RouterGroup, db *gorm.DB, validate *validator.Validate) {
+	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, dto.Response{
 			Status: http.StatusOK,
 			Data:   "pong",
@@ -28,18 +21,16 @@ func CompRouters(api *gin.RouterGroup) {
 	userController := injectors.InitializeUserController(db, validate)
 	hotelController := injectors.InitializeHotelController(db, validate)
 	orderController := injectors.InitializeOrderController(db, validate)
-	midtransController := injectors.InitializeMidtransController(db, validate)
 	storageController := injectors.InitializeStorageController(db, validate)
 	partnerController := injectors.InitializePartnerController(db, validate)
 	reservationController := injectors.InitializeReservationController(db, validate)
 	reviewController := injectors.InitializeReviewController(db, validate)
 
-	AuthRoutes(api, userController)
-	HotelRoutes(api, hotelController)
-	OrderRoutes(api, orderController)
-	MidtransRoutes(api, midtransController)
-	StorageRoutes(api, storageController)
-	PartnerRoutes(api, partnerController, hotelController, reservationController, orderController)
-	ReservationRoutes(api, reservationController)
-	ReviewRoutes(api, reviewController)
+	AuthRoutes(r, userController)
+	HotelRoutes(r, hotelController)
+	OrderRoutes(r, orderController)
+	StorageRoutes(r, storageController)
+	PartnerRoutes(r, partnerController, hotelController, reservationController, orderController)
+	ReservationRoutes(r, reservationController)
+	ReviewRoutes(r, reviewController)
 }

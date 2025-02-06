@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"nganterin-go/middleware"
-	"nganterin-go/reservations/controllers"
+	"nganterin-go/api/reservations/controllers"
+	"nganterin-go/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 )
