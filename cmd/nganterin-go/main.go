@@ -8,6 +8,9 @@ import (
 	"os"
 	"time"
 
+	midtransRouters "nganterin-go/midtrans/routers"
+	partnerRouters "nganterin-go/partners/routers"
+
 	"github.com/didip/tollbooth/v7"
 	"github.com/didip/tollbooth/v7/limiter"
 	"github.com/gin-contrib/cors"
@@ -38,13 +41,18 @@ func main() {
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	lmt := tollbooth.NewLimiter(5, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Second})
 
-
 	r.Use(middleware.ClientTracker(db))
 	r.Use(middleware.GzipResponseMiddleware())
 	r.Use(middleware.RateLimitMiddleware(lmt))
 
 	api := r.Group("/api")
 	routers.CompRouters(api, db, validate)
+
+	partner := r.Group("/partner")
+	partnerRouters.PartnerRoutes(partner, db, validate)
+
+	midtrans := r.Group("/midtrans")
+	midtransRouters.MidtransRouters(midtrans, db, validate)
 
 	var host string
 	switch environment {
