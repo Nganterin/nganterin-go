@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"nganterin-go/models"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/reservations/dto"
 	"nganterin-go/pkg/exceptions"
 
 	"github.com/gin-gonic/gin"

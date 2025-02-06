@@ -16,15 +16,12 @@ import (
 	controllers3 "nganterin-go/api/orders/controllers"
 	repositories3 "nganterin-go/api/orders/repositories"
 	services4 "nganterin-go/api/orders/services"
-	controllers5 "nganterin-go/api/partners/controllers"
-	repositories5 "nganterin-go/api/partners/repositories"
-	services6 "nganterin-go/api/partners/services"
-	controllers6 "nganterin-go/api/reservations/controllers"
-	repositories6 "nganterin-go/api/reservations/repositories"
-	services7 "nganterin-go/api/reservations/services"
-	controllers7 "nganterin-go/api/reviews/controllers"
-	repositories7 "nganterin-go/api/reviews/repositories"
-	services8 "nganterin-go/api/reviews/services"
+	controllers5 "nganterin-go/api/reservations/controllers"
+	repositories5 "nganterin-go/api/reservations/repositories"
+	services6 "nganterin-go/api/reservations/services"
+	controllers6 "nganterin-go/api/reviews/controllers"
+	repositories6 "nganterin-go/api/reviews/repositories"
+	services7 "nganterin-go/api/reviews/services"
 	controllers4 "nganterin-go/api/storages/controllers"
 	repositories4 "nganterin-go/api/storages/repositories"
 	services5 "nganterin-go/api/storages/services"
@@ -67,28 +64,20 @@ func InitializeStorageController(db *gorm.DB, validate *validator.Validate) cont
 	return compControllers
 }
 
-func InitializePartnerController(db *gorm.DB, validate *validator.Validate) controllers5.CompControllers {
+func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers5.CompControllers {
 	compRepositories := repositories5.NewComponentRepository()
-	compServices := services.NewComponentServices()
-	servicesCompServices := services6.NewComponentServices(compRepositories, compServices, db, validate)
-	compControllers := controllers5.NewCompController(servicesCompServices)
-	return compControllers
-}
-
-func InitializeReservationController(db *gorm.DB, validate *validator.Validate) controllers6.CompControllers {
-	compRepositories := repositories6.NewComponentRepository()
 	repositoriesCompRepositories := repositories2.NewComponentRepository()
-	compServices := services7.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
-	compControllers := controllers6.NewCompController(compServices)
+	compServices := services6.NewComponentServices(compRepositories, repositoriesCompRepositories, db)
+	compControllers := controllers5.NewCompController(compServices)
 	return compControllers
 }
 
-func InitializeReviewController(db *gorm.DB, validate *validator.Validate) controllers7.CompControllers {
-	compRepositories := repositories7.NewComponentRepository()
+func InitializeReviewController(db *gorm.DB, validate *validator.Validate) controllers6.CompControllers {
+	compRepositories := repositories6.NewComponentRepository()
 	repositoriesCompRepositories := repositories3.NewComponentRepository()
-	compRepositories2 := repositories6.NewComponentRepository()
-	compServices := services8.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db, validate)
-	compControllers := controllers7.NewCompController(compServices)
+	compRepositories2 := repositories5.NewComponentRepository()
+	compServices := services7.NewComponentServices(compRepositories, repositoriesCompRepositories, compRepositories2, db, validate)
+	compControllers := controllers6.NewCompController(compServices)
 	return compControllers
 }
 
@@ -102,8 +91,6 @@ var orderFeatureSet = wire.NewSet(repositories.NewComponentRepository, repositor
 
 var storageFeatureSet = wire.NewSet(repositories4.NewComponentRepository, services5.NewComponentServices, controllers4.NewCompController)
 
-var partnerFeatureSet = wire.NewSet(repositories5.NewComponentRepository, services.NewComponentServices, services6.NewComponentServices, controllers5.NewCompController)
+var reservationFeatureSet = wire.NewSet(repositories5.NewComponentRepository, repositories2.NewComponentRepository, services6.NewComponentServices, controllers5.NewCompController)
 
-var reservationFeatureSet = wire.NewSet(repositories6.NewComponentRepository, repositories2.NewComponentRepository, services7.NewComponentServices, controllers6.NewCompController)
-
-var reviewFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories6.NewComponentRepository, repositories7.NewComponentRepository, services8.NewComponentServices, controllers7.NewCompController)
+var reviewFeatureSet = wire.NewSet(repositories3.NewComponentRepository, repositories5.NewComponentRepository, repositories6.NewComponentRepository, services7.NewComponentServices, controllers6.NewCompController)

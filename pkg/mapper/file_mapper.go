@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"nganterin-go/models"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/storages/dto"
 
 	"github.com/go-viper/mapstructure/v2"
 )

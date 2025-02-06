@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"nganterin-go/api/storages/repositories"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/storages/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"nganterin-go/pkg/mapper"

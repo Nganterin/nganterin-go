@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 	"nganterin-go/api/users/services"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/users/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 

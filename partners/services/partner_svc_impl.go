@@ -3,15 +3,16 @@ package services
 import (
 	"fmt"
 	"net/http"
-	"nganterin-go/api/partners/repositories"
+	"nganterin-go/partners/repositories"
 	"nganterin-go/models"
-	"nganterin-go/models/dto"
+	"nganterin-go/partners/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"os"
 	"time"
 
 	emailServices "nganterin-go/emails/services"
+	emailDTO "nganterin-go/emails/dto"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -73,7 +74,7 @@ func (s *CompServicesImpl) Create(ctx *gin.Context, data dto.Partner) *exception
 	}
 
 	go func() {
-		verificationEmail := dto.EmailVerification{
+		verificationEmail := emailDTO.EmailVerification{
 			Email:           data.Email,
 			Subject:         "Nganterin - Verification Partner Email",
 			VerificationURL: os.Getenv("DASHBOARD_BASE_URL") + "/auth/verify?token=" + *token,

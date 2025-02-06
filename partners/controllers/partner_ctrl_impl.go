@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"nganterin-go/api/partners/services"
-	"nganterin-go/models/dto"
+	"nganterin-go/partners/services"
+	"nganterin-go/partners/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 

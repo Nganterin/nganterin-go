@@ -24,10 +24,6 @@ import (
 	storageRepositories "nganterin-go/api/storages/repositories"
 	storageServices "nganterin-go/api/storages/services"
 
-	partnerControllers "nganterin-go/api/partners/controllers"
-	partnerRepositories "nganterin-go/api/partners/repositories"
-	partnerServices "nganterin-go/api/partners/services"
-
 	reservationControllers "nganterin-go/api/reservations/controllers"
 	reservationRepositories "nganterin-go/api/reservations/repositories"
 	reservationServices "nganterin-go/api/reservations/services"
@@ -68,13 +64,6 @@ var storageFeatureSet = wire.NewSet(
 	storageControllers.NewCompController,
 )
 
-var partnerFeatureSet = wire.NewSet(
-	partnerRepositories.NewComponentRepository,
-	emailServices.NewComponentServices,
-	partnerServices.NewComponentServices,
-	partnerControllers.NewCompController,
-)
-
 var reservationFeatureSet = wire.NewSet(
 	reservationRepositories.NewComponentRepository,
 	hotelRepositories.NewComponentRepository,
@@ -107,11 +96,6 @@ func InitializeOrderController(db *gorm.DB, validate *validator.Validate) orderC
 
 func InitializeStorageController(db *gorm.DB, validate *validator.Validate) storageControllers.CompControllers {
 	wire.Build(storageFeatureSet)
-	return nil
-}
-
-func InitializePartnerController(db *gorm.DB, validate *validator.Validate) partnerControllers.CompControllers {
-	wire.Build(partnerFeatureSet)
 	return nil
 }
 

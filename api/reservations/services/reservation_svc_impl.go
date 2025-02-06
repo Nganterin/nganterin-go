@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"nganterin-go/api/reservations/repositories"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/reservations/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"nganterin-go/pkg/mapper"
@@ -38,7 +38,7 @@ func (s *CompServicesImpl) FindByUserID(ctx *gin.Context, id string) ([]dto.Hote
 
 	var result []dto.HotelOrderDetailsOutput
 	for _, item := range data {
-		output := mapper.MapHotelOrderModelToOutput(item)
+		output := mapper.MapHotelOrderReservationModelToOutput(item)
 		output.TotalDays = helpers.GetDaysFromCheckInCheckOut(item.CheckInDate, item.CheckOutDate)
 
 		result = append(result, output)
@@ -69,7 +69,7 @@ func (s *CompServicesImpl) FindByHotelID(ctx *gin.Context, hotelID string) ([]dt
 
 	var result []dto.HotelOrderDetailsOutput
 	for _, item := range data {
-		output := mapper.MapHotelOrderModelToOutput(item)
+		output := mapper.MapHotelOrderReservationModelToOutput(item)
 		output.TotalDays = helpers.GetDaysFromCheckInCheckOut(item.CheckInDate, item.CheckOutDate)
 
 		result = append(result, output)
@@ -84,7 +84,7 @@ func (s *CompServicesImpl) FindByReservationKey(ctx *gin.Context, reservationKey
 		return nil, err
 	}
 
-	result := mapper.MapHotelOrderModelToOutput(*data)
+	result := mapper.MapHotelOrderReservationModelToOutput(*data)
 	result.TotalDays = helpers.GetDaysFromCheckInCheckOut(data.CheckInDate, data.CheckOutDate)
 
 	return &result, nil

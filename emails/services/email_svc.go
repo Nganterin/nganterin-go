@@ -1,7 +1,7 @@
 package services
 
 import (
-	"nganterin-go/models/dto"
+	"nganterin-go/emails/dto"
 	"nganterin-go/pkg/exceptions"
 )
 

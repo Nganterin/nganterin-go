@@ -4,7 +4,7 @@ import (
 	orderRepo "nganterin-go/api/orders/repositories"
 	reservationRepo "nganterin-go/api/reservations/repositories"
 	"nganterin-go/models"
-	"nganterin-go/models/dto"
+	"nganterin-go/midtrans/notifications/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 

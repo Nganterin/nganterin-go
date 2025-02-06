@@ -1,7 +1,7 @@
 package services
 
 import (
-	"nganterin-go/models/dto"
+	"nganterin-go/api/storages/dto"
 	"nganterin-go/pkg/exceptions"
 
 	"github.com/gin-gonic/gin"

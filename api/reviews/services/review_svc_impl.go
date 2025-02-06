@@ -3,7 +3,7 @@ package services
 import (
 	"net/http"
 	"nganterin-go/api/reviews/repositories"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/reviews/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"nganterin-go/pkg/mapper"

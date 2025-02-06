@@ -3,7 +3,7 @@ package services
 import (
 	"fmt"
 	"net/http"
-	"nganterin-go/models/dto"
+	"nganterin-go/emails/dto"
 	"nganterin-go/pkg/exceptions"
 	"os"
 	"strconv"

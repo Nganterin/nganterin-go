@@ -6,7 +6,10 @@ import (
 	"nganterin-go/pkg/middleware"
 	"nganterin-go/routers"
 	"os"
+	"time"
 
+	"github.com/didip/tollbooth/v7"
+	"github.com/didip/tollbooth/v7/limiter"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -33,9 +36,12 @@ func main() {
 
 	db := config.InitDB()
 	validate := validator.New(validator.WithRequiredStructEnabled())
+	lmt := tollbooth.NewLimiter(5, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Second})
+
 
 	r.Use(middleware.ClientTracker(db))
 	r.Use(middleware.GzipResponseMiddleware())
+	r.Use(middleware.RateLimitMiddleware(lmt))
 
 	api := r.Group("/api")
 	routers.CompRouters(api, db, validate)

@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"net/http"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/users/dto"
 	"nganterin-go/pkg/exceptions"
 
 	"github.com/gin-gonic/gin"

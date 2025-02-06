@@ -3,7 +3,7 @@ package services
 import (
 	"nganterin-go/api/hotels/repositories"
 	"nganterin-go/models"
-	"nganterin-go/models/dto"
+	"nganterin-go/api/hotels/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"nganterin-go/pkg/mapper"

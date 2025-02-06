@@ -4,7 +4,7 @@ import (
 	"crypto/hmac"
 	"net/http"
 	"nganterin-go/midtrans/notifications/services"
-	"nganterin-go/models/dto"
+	"nganterin-go/midtrans/notifications/dto"
 	"nganterin-go/pkg/exceptions"
 	"nganterin-go/pkg/helpers"
 	"os"

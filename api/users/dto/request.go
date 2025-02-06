@@ -28,10 +28,3 @@ type UserGoogle struct {
 	CompleteAddress string `json:"complete_address" validate:"required,min=10"`
 	Avatar          string `json:"avatar" validate:"url"`
 }
-
-type UserOutputDTO struct {
-	ID     string `json:"id"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Avatar string `json:"avatar"`
-}

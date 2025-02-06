@@ -46,3 +46,6 @@ wire-internal:
 
 wire-midtrans:
 	wire gen ./midtrans/injectors
+
+wire-partners:
+	wire gen ./partners/injectors
