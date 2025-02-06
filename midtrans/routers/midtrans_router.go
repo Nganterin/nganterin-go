@@ -7,8 +7,8 @@ import (
 )
 
 func MidtransRoutes(r *gin.RouterGroup, midtransController controllers.CompControllers) {
-	midtransGroup := r.Group("/midtrans")
+	notificationGroup := r.Group("/notification")
 	{
-		midtransGroup.POST("/notification", midtransController.Notification)
+		notificationGroup.POST("/payment", midtransController.Notification)
 	}
 }
