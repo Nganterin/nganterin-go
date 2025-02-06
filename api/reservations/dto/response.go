@@ -46,4 +46,33 @@ type HotelOrderDetailsOutput struct {
 	UpdatedAt        time.Time `json:"updated_at"`
 
 	HotelReservations HotelReservationOutput `json:"hotel_reservation"`
+	Hotel             HotelOutputDTO         `json:"hotel"`
+	HotelRoom         HotelRoomOutput        `json:"hotel_room"`
+}
+
+type HotelOutputDTO struct {
+	ID              string                  `json:"id"`
+	PartnerID       string                  `json:"partner_id"`
+	Name            string                  `json:"name"`
+	Description     string                  `json:"description"`
+	PricingStart    int64                   `json:"pricing_start,omitempty"`
+}
+
+type HotelRoomOutput struct {
+	ID             uint   `json:"id"`
+	Type           string `json:"type"`
+	MaxVisitor     int    `json:"max_visitor"`
+	BedType        string `json:"bed_type"`
+	RoomSize       int    `json:"room_size"`
+	SmokingAllowed bool   `json:"smoking_allowed"`
+	OvernightPrice int64  `json:"overnight_price"`
+	TotalRoom      int    `json:"total_room"`
+	TotalBooked    int    `json:"total_booked"`
+
+	HotelRoomPhotoOutput []HotelRoomPhotoOutput `json:"hotel_room_photos" mapstructure:"hotel_room_photos"`
+}
+
+type HotelRoomPhotoOutput struct {
+	ID  uint   `json:"id"`
+	URL string `json:"url"`
 }
