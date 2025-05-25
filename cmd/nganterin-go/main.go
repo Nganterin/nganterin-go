@@ -30,7 +30,7 @@ func main() {
 	r.Use(gin.Logger())
 
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{"https://nganterin.web.id", "https://partner.nganterin.web.id", "http://localhost:3000"}
+	corsConfig.AllowOrigins = []string{"*"}
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
 	corsConfig.AllowHeaders = []string{"*"}
 	corsConfig.ExposeHeaders = []string{"Content-Length"}
