@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"nganterin-go/models"
 	"nganterin-go/api/reservations/dto"
+	"nganterin-go/models"
 	"nganterin-go/pkg/exceptions"
 	"time"
 
@@ -143,17 +143,19 @@ func (r *CompRepositoriesImpl) FindLast12MonthReservationCount(ctx *gin.Context,
 					date_trunc('month', ?::timestamp),
 					'1 month'
 				) AS month
+			),
+			partner_reservations AS (
+				SELECT hr.*, date_trunc('month', hr.created_at) AS reservation_month
+				FROM hotel_reservations hr
+				JOIN hotel_orders ho ON hr.hotel_orders_id = ho.id
+				JOIN hotels h ON ho.hotel_id = h.id
+				WHERE h.partner_id = ?
 			)
 			SELECT 
 				TO_CHAR(months.month, 'FMMonth YYYY') AS month_year,
-				COALESCE(COUNT(hr.id), 0) AS reservation_count
+				COALESCE(COUNT(pr.id), 0) AS reservation_count
 			FROM months
-			LEFT JOIN hotel_reservations hr 
-				ON date_trunc('month', hr.created_at) = months.month
-			LEFT JOIN hotel_orders ho 
-				ON hr.hotel_orders_id = ho.id
-			LEFT JOIN hotels h 
-				ON ho.hotel_id = h.id AND h.partner_id = ?
+			LEFT JOIN partner_reservations pr ON pr.reservation_month = months.month
 			GROUP BY months.month
 			ORDER BY months.month
 		`, lastYear, now, partnerID).Scan(&data)
