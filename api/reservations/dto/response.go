@@ -1,6 +1,9 @@
 package dto
 
-import "time"
+import (
+	userDTO "nganterin-go/api/users/dto"
+	"time"
+)
 
 type Response struct {
 	Status  int         `json:"status"`
@@ -48,14 +51,15 @@ type HotelOrderDetailsOutput struct {
 	HotelReservations HotelReservationOutput `json:"hotel_reservation"`
 	Hotel             HotelOutputDTO         `json:"hotel"`
 	HotelRoom         HotelRoomOutput        `json:"hotel_room"`
+	User              userDTO.UserOutputDTO  `json:"user"`
 }
 
 type HotelOutputDTO struct {
-	ID              string                  `json:"id"`
-	PartnerID       string                  `json:"partner_id"`
-	Name            string                  `json:"name"`
-	Description     string                  `json:"description"`
-	PricingStart    int64                   `json:"pricing_start,omitempty"`
+	ID           string `json:"id"`
+	PartnerID    string `json:"partner_id"`
+	Name         string `json:"name"`
+	Description  string `json:"description"`
+	PricingStart int64  `json:"pricing_start,omitempty"`
 }
 
 type HotelRoomOutput struct {
