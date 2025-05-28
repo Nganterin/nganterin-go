@@ -55,11 +55,22 @@ type HotelOrderDetailsOutput struct {
 }
 
 type HotelOutputDTO struct {
-	ID           string `json:"id"`
-	PartnerID    string `json:"partner_id"`
-	Name         string `json:"name"`
-	Description  string `json:"description"`
-	PricingStart int64  `json:"pricing_start,omitempty"`
+	ID             string               `json:"id"`
+	PartnerID      string               `json:"partner_id"`
+	Name           string               `json:"name"`
+	Description    string               `json:"description"`
+	PricingStart   int64                `json:"pricing_start,omitempty"`
+	HotelsLocation HotelsLocationOutput `json:"hotels_location,omitempty"`
+}
+
+type HotelsLocationOutput struct {
+	ID              uint   `json:"id"`
+	Country         string `json:"country"`
+	State           string `json:"state"`
+	City            string `json:"city"`
+	ZipCode         string `json:"zip_code"`
+	CompleteAddress string `json:"complete_address"`
+	Gmaps           string `json:"gmaps"`
 }
 
 type HotelRoomOutput struct {
